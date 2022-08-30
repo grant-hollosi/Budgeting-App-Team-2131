@@ -1,0 +1,7 @@
+{
+  "name": "Status-Of-Funds-App",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
