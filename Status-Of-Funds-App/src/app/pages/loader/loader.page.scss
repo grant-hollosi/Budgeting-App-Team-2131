@@ -1,0 +1,27 @@
+#container {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#container img {
+    margin-top: 100px;
+    max-width: 300px;
+    width: 75%;
+}
+
+#container p {
+    margin: 20px auto;
+}
+
+.loader {
+    max-width: 500px;
+    width: 75%;
+    display: block;
+    margin: 20px auto;
+}
