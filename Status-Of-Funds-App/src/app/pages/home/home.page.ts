@@ -9,6 +9,10 @@ export class HomePage implements OnInit {
 
   constructor() { }
 
+  sayHi() {
+    console.log("Hi");
+  }
+
   ngOnInit() {
   }
 
