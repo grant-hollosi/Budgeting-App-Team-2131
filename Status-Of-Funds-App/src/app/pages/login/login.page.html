@@ -1,13 +1,18 @@
-<ion-content>
+<head>
+  <title>Login</title>
+</head>
 
-  <div id="container">
-    <h1>75th Army Ranger Regiment</h1>
-    <img src="../../../assets/logo/shield logo.png" />
-    <h3>Status of Funds</h3>
-    <ion-item class="password" id="passwordText">
-      <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" [(ngModel)]="inputValue"></ion-input>
-    </ion-item>
-    <ion-button (click)="logInButtonAction()">Login</ion-button>
+<ion-content>
+  <div class="flex-center">
+    <div id="container">
+      <h1>75th Army Ranger Regiment</h1>
+      <img src="../../../assets/logo/shield logo.png" />
+      <h3>Status of Funds</h3>
+      <ion-item class="password" id="passwordText">
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" [(ngModel)]="inputValue"></ion-input>
+      </ion-item>
+      <ion-button (click)="logInButtonAction()">Login</ion-button>
+    </div>
   </div>
 </ion-content>
