@@ -1,0 +1,22 @@
+#container {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#container img {
+    max-width: 500px;
+    width: 75%;
+}
+
+#container p {
+    font-weight: 500;
+    margin: 50px auto;
+}
+
+.loader {
+    max-width: 500px;
+    width: 75%;
+    display: block;
+    margin: 20px auto;
+}
