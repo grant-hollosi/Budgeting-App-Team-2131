@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,18 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPage implements OnInit {
   inputValue: string = "";
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
-  logInButtonAction(){
+  login(){
     console.log("Button pressed");
     if (this.inputValue == "adminPassword123") {
       console.log("Admin Login");
-
+      this.router.navigate(['loader']);
     } else if (this.inputValue== "userPassword123") {
-      console.log("User password")
+      console.log("User password");
+      this.router.navigate(['loader']);
     }
     else {
       //Consider writing our own custom error
