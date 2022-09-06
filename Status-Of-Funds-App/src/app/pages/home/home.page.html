@@ -1,11 +1,4 @@
 <ion-content>
   <app-header title="Home" [goBack]="false"></app-header>
-  <ion-tabs>
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button (click)="sayHi()" tab="home">
-        <ion-icon name="home"></ion-icon>
-        <ion-label>Home</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
+  <app-tabs page="home"></app-tabs>
 </ion-content>
