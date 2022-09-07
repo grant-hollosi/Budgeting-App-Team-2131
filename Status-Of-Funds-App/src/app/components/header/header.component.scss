@@ -1,14 +1,28 @@
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 20px 20px 0 20px;
+    width: 100vw;
+}
+
 h1 {
     display: inline-block;
     font-size: 32px;
+    align-self: center;
+    justify-self: center;
 }
 
-.row {
+span {
+    display: flex;
+    width: 32px;
+    height: 100%;
     justify-content: center;
-    text-align: center;
-    height: 40px;
+    align-items: center;
 }
+
 ion-label {
+    justify-content: center;
     text-align: center;
 }
 
