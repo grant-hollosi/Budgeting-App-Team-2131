@@ -7,10 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class TabsComponent implements OnInit {
 
-  @Input() page: string;
-
   constructor() { }
 
   ngOnInit() {}
-
 }
