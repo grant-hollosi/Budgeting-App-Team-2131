@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { TabsComponent } from './components/tabs/tabs.component';
 
 const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
-  },  {
+  },
+  {
     path: 'loader',
     loadChildren: () => import('./pages/loader/loader.module').then( m => m.LoaderPageModule)
   },
@@ -13,7 +15,30 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
   },
-
+  {
+    path: 'pie-chart',
+    loadChildren: () => import('./pages/graphs/pie-chart/pie-chart.module').then( m => m.PieChartPageModule)
+  },
+  {
+    path: 'line-graph',
+    loadChildren: () => import('./pages/graphs/line-graph/line-graph.module').then( m => m.LineGraphPageModule)
+  },
+  {
+    path: 'bar-graph',
+    loadChildren: () => import('./pages/graphs/bar-graph/bar-graph.module').then( m => m.BarGraphPageModule)
+  },
+  {
+    path: 'fund-details',
+    loadChildren: () => import('./pages/fund-details/fund-details.module').then( m => m.FundDetailsPageModule)
+  },
+  {
+    path: 'calculator',
+    loadChildren: () => import('./pages/calculator/calculator.module').then( m => m.CalculatorPageModule)
+  },
+  {
+    path: 'upload',
+    loadChildren: () => import('./pages/upload/upload.module').then( m => m.UploadPageModule)
+  },
 
 ];
 
