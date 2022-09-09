@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { Router } from '@angular/router';
+import { IonButton, IonIcon, IonInfiniteScroll } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -6,14 +8,36 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  @ViewChildren(IonIcon) icon: IonIcon;
+  @ViewChildren(IonButton) button: IonButton;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  sayHi() {
-    console.log("Hi");
+  ngOnInit() { }
+
+  loadData(event) {
+    setTimeout(() => {
+      console.log("Done");
+      event.target.complete();
+
+      if (DataTransfer.length === 1000) {
+        event.target.disabled = true;
+      }
+    }, 500);
   }
 
-  ngOnInit() {
+  toggleInfiniteScroll() {
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+  }
+
+  toggleFlag(event) {
+    event.stopPropagation();
+    event.target.children[0].name = event.target.children[0].name == "flag" ? "flag-outline" : "flag";
+  }
+
+  navigate(page: string) {
+    this.router.navigate([page]);
   }
 
 }
