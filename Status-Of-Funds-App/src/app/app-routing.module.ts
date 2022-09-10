@@ -39,7 +39,7 @@ const routes: Routes = [
   },
   {
     path: 'upload',
-    loadChildren: () => import('./pages/upload/upload.module').then(m => m.UploadPageModule)
+    loadChildren: () => import('./pages/upload/upload.module').then(m => m.UploadPageModule), canActivate: [AuthGuard]
   },
   {
     path: 'settings',

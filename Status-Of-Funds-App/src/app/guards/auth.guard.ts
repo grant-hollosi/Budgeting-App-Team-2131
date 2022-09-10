@@ -18,17 +18,20 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
       take(1),
       map(user => {
         console.log("Log: ", user);
-        if (user) {
+        let role = user.role;
+        if (role == "ADMIN") {
           return true;
         } else {
           this.showAlert();
-          return this.router.parseUrl("/login");
+          return this.router.parseUrl("/loader");
         }
       })
     )
   }
 
   async showAlert() {
+    // alert("You are not authorized to visit that page. Returning to Home");
+    console.log("Show Alert");
     let alert = await this.alertCtrl.create({
       header: "Unauthorized",
       message: "You are not authorized to visit that page",
@@ -36,6 +39,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
     });
     alert.present;
   }
+  
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {

@@ -9,7 +9,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginPage implements OnInit {
   user = {
-    pw: ''
+    pw: '', 
+    role: ''
   };
   constructor(private router: Router, private auth: AuthService) { }
 
@@ -23,11 +24,11 @@ export class LoginPage implements OnInit {
     console.log("Button Pressed");
     this.auth.signIn(this.user).subscribe(user => {
       console.log("Login: ", user);
-      let role = user["role"];
+      let role = user.role;
       if (role == "ADMIN") {
         this.router.navigateByUrl("/loader");
       } else if (role == "USER") {
-        this.router.navigateByUrl("/loader");
+        this.router.navigateByUrl("/upload");
       }
     })
   }
