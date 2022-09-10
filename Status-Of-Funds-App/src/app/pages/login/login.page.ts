@@ -28,7 +28,7 @@ export class LoginPage implements OnInit {
       if (role == "ADMIN") {
         this.router.navigateByUrl("/loader");
       } else if (role == "USER") {
-        this.router.navigateByUrl("/upload");
+        this.router.navigateByUrl("/loader");
       }
     })
   }
