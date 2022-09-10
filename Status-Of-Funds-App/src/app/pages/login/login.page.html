@@ -9,7 +9,7 @@
     <h3>Status of Funds</h3>
     <ion-item class="password" id="passwordText">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" (keyup.enter)="login()" [(ngModel)]="inputValue"></ion-input>
+      <ion-input type="password" [(ngModel)]="user.pw"></ion-input>
     </ion-item>
     <ion-button (click)="login()">Login</ion-button>
   </div>
