@@ -1,0 +1,43 @@
+.flex-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    padding: 0 10px;
+    width: 100vw;
+}
+
+h1 {
+    display: inline-block;
+    font-size: 32px;
+    align-self: center;
+    justify-self: center;
+}
+
+span {
+    display: flex;
+    width: 32px;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+ion-label {
+    justify-content: center;
+    text-align: center;
+}
+
+ion-icon {
+    width: 32px;
+    height: 32px;
+    border-left: 24px;
+    border-right: 24px;
+}
+
+ion-button {
+    height: 32px;
+}
+
+ion-searchbar {
+    max-width: 250px;
+    width: 75%;
+}
