@@ -1,11 +1,11 @@
 <ion-toolbar>
   <div class="flex-container">
     <span><ion-button (click)="filter()" slot="end" fill="clear">
-      <ion-icon name="filter-outline" slot="icon-only" color="dark"></ion-icon>
+      <ion-icon name="filter" slot="icon-only" color="dark"></ion-icon>
     </ion-button></span>
-    <ion-input type="search" (keyup.enter)="search()" [(ngModel)]="inputValue"></ion-input>
+    <ion-searchbar [ngModel]="inputValue" showCancelButton="never" placeholder="Search..."></ion-searchbar>
     <span><ion-button (click)="sort()" slot="end" fill="clear">
-      <ion-icon name="funnel-outline" slot="icon-only" color="dark"></ion-icon>
+      <ion-icon name="funnel" slot="icon-only" color="dark"></ion-icon>
     </ion-button></span>
   </div>
 </ion-toolbar>

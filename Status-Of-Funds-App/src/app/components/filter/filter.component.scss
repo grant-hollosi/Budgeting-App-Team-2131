@@ -1,8 +1,8 @@
 .flex-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: flex-end;
-    padding: 20px 20px 0 20px;
+    padding: 0 10px;
     width: 100vw;
 }
 
@@ -37,9 +37,7 @@ ion-button {
     height: 32px;
 }
 
-ion-input {
-    min-width: 100px;
-    margin-left: 24px;
-    margin-right: 24px;
-    color: white;
+ion-searchbar {
+    max-width: 250px;
+    width: 75%;
 }
