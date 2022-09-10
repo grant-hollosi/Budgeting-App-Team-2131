@@ -1,4 +1,4 @@
-<app-header title="List of Funds" [goBack]="true"></app-header>
+<app-header title="List of Funds" [goBack]="false"></app-header>
 <ion-content role="feed">
   <ion-list>
       <ion-item detail="true" role="article" (click)="navigate('../fund-details/')">
@@ -284,8 +284,8 @@
   </ion-list>
     <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
       <ion-infinite-scroll-content
-        loadingSpinner="bubbles"
-        loadingText="Loading more data..."></ion-infinite-scroll-content>
+        loadingSpinner="dots"
+        loadingText="Loading more funds..."></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 </ion-content>
 <app-tabs page="home"></app-tabs>

@@ -9,8 +9,6 @@ import { IonButton, IonIcon, IonInfiniteScroll } from '@ionic/angular';
 })
 export class HomePage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-  @ViewChildren(IonIcon) icon: IonIcon;
-  @ViewChildren(IonButton) button: IonButton;
 
   constructor(private router: Router) { }
 
@@ -18,17 +16,15 @@ export class HomePage implements OnInit {
 
   loadData(event) {
     setTimeout(() => {
-      console.log("Done");
+      console.log("Loaded More Data");
       event.target.complete();
 
+      // Determines if all data has been loaded
+      // and disables infinite scroll if so.
       if (DataTransfer.length === 1000) {
         event.target.disabled = true;
       }
     }, 500);
-  }
-
-  toggleInfiniteScroll() {
-    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 
   toggleFlag(event) {
