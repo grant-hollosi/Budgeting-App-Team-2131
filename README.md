@@ -3,7 +3,8 @@ Jacob Porter |
 Mathiew Tackitt |
 Vinhky Nguyen |
 Luis Bowen |
-Grant Hollosi
+Grant Hollosi |
+Sidarth Rajan
 # Status of Funds App
 - Problem: The leadership of the 75th Army Ranger Regiment do not have full access to GFEBS, a database that serves to keep track of their transaction history and budget. 
 - Solution: An iOS app that allows those without access to GFEBS to view, but not modify, the transaction history, budget, and their various graphs of the 75th Army Ranger Regiment.
