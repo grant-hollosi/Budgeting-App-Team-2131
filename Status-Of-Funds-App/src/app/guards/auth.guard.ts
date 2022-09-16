@@ -31,14 +31,12 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
 
   async showAlert() {
     console.log("Show Alert");
-    alert("You are not authorized to visit that page. Returning to Home");
-    
-    // let alert = await this.alertCtrl.create({
-    //   header: "Unauthorized",
-    //   message: "You are not authorized to visit that page",
-    //   buttons: ['OK'],
-    // });
-    // alert.present;
+    let alert = await this.alertCtrl.create({
+      header: "Unauthorized",
+      message: "You are not authorized to visit that page. Rerouting to home page",
+      buttons: ['OK'],
+    }); // .then(res => res.present());
+    alert.present();
   }
   
   canActivateChild(
