@@ -4,19 +4,19 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CalculatorPageRoutingModule } from './calculator-routing.module';
+import { DashboardPageRoutingModule } from './dashboard-routing.module';
 
-import { CalculatorPage } from './calculator.page';
-import { HeaderComponent } from 'src/app/components/header/header.component';
+import { DashboardPage } from './dashboard.page';
 import { TabsComponent } from 'src/app/components/tabs/tabs.component';
+import { HeaderComponent } from 'src/app/components/header/header.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CalculatorPageRoutingModule
+    DashboardPageRoutingModule
   ],
-  declarations: [CalculatorPage, HeaderComponent, TabsComponent]
+  declarations: [DashboardPage, TabsComponent, HeaderComponent]
 })
-export class CalculatorPageModule {}
+export class DashboardPageModule {}
