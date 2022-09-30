@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginPage implements OnInit {
   user = {
     pw: '', 
-    role: ''
+    // role: '';
   };
   constructor(private router: Router, private auth: AuthService) { }
 
@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
     console.log("Button Pressed");
     this.auth.signIn(this.user).subscribe(user => {
       console.log("Login: ", user);
-      let role = user.role;
+      let role = user['role'];
       if (role == "ADMIN") {
         this.router.navigateByUrl("/upload");
       } else if (role == "USER") {
@@ -32,22 +32,4 @@ export class LoginPage implements OnInit {
       }
     })
   }
-
-  // login(){
-  //   console.log("Button pressed");
-  //   if (this.user.pw == "adminPassword123") {
-  //     console.log("Admin Login");
-  //     this.router.navigate(['loader']);
-  //   } else if (this.user.pw == "userPassword123") {
-  //     console.log("User password");
-  //     this.router.navigate(['loader']);
-  //   }
-  //   else {
-  //     //Consider writing our own custom error
-  //     //Need functionality to add red text underneath 
-  //     //password text field saying "Wrong Password"
-  //     throw new Error("Wrong Password");
-  //   }
-  // }
-
 }

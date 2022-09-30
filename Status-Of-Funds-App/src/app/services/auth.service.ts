@@ -3,6 +3,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { of } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { AlertController } from '@ionic/angular';
+import { filter } from 'rxjs/operators';
 const TOKEN_KEY = 'user-access-token';
 
 @Injectable({
@@ -14,7 +15,21 @@ export class AuthService {
 
   // Storage to store web token or any other cookies you might want to save
   constructor(private storage: Storage, private alertCtrl: AlertController) {
-    this.user = this.authState.asObservable();
+    this.loadUser();
+    this.user = this.authState.asObservable().pipe(
+      filter(response => response)
+    )
+  }
+
+  // Keep user logged in after refresh
+  loadUser() {
+    this.storage.get(TOKEN_KEY).then(data => {
+      if (data) {
+        this.authState.next(data);
+      } else {
+        this.authState.next({role: null});
+      }
+    });
   }
 
   // Return Observable<any>
