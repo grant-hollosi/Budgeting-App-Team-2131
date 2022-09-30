@@ -58,11 +58,11 @@ const routes: Routes = [
     }
   },
   {
-    path: 'calculator',
-    loadChildren: () => import('./pages/calculator/calculator.module').then(m => m.CalculatorPageModule), 
+    path: 'dashboard',
+    loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule), 
     canActivate: [AuthGuard], 
     data: {
-      role: 'USER'
+      role: 'ADMIN'
     }
   },
   {
@@ -81,6 +81,9 @@ const routes: Routes = [
       role: 'USER'
     }
   },
+
+
+];
 
 
 ];
