@@ -34,17 +34,17 @@ const routes: Routes = [
     loadChildren: () => import('./pages/fund-details/fund-details.module').then(m => m.FundDetailsPageModule)
   },
   {
-    path: 'calculator',
-    loadChildren: () => import('./pages/calculator/calculator.module').then(m => m.CalculatorPageModule)
-  },
-  {
     path: 'upload',
     loadChildren: () => import('./pages/upload/upload.module').then(m => m.UploadPageModule), canActivate: [AuthGuard]
   },
   {
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsPageModule)
+  },  {
+    path: 'dashboard',
+    loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
+
 
 
 ];
