@@ -12,4 +12,26 @@ export class SettingsPage implements OnInit {
   ngOnInit() {
   }
 
+  isHelpOpen = false;
+  isAboutOpen = false;
+  isPolicyOpen = false;
+  isTermsOpen = false;
+
+
+  SetHelp(isOpen: boolean) {
+    this.isHelpOpen = isOpen;
+  }
+
+  SetAbout(isOpen: boolean) {
+    this.isAboutOpen = isOpen;
+  }
+
+  SetPolicy(isOpen: boolean) {
+    this.isPolicyOpen = isOpen;
+  }
+
+  SetTerms(isOpen: boolean) {
+    this.isTermsOpen = isOpen;
+  }
+
 }
