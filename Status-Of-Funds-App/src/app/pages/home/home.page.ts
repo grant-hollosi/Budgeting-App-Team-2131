@@ -1,5 +1,5 @@
 import { AuthService } from '../../services/auth.service';
-import {take, map} from 'rxjs/operators'
+import {take, map} from 'rxjs/operators';
 
 import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ export class HomePage implements OnInit {
 
   loadData(event) {
     setTimeout(() => {
-      console.log("Loaded More Data");
+      console.log('Loaded More Data');
       event.target.complete();
 
       // Determines if all data has been loaded
@@ -32,11 +32,19 @@ export class HomePage implements OnInit {
 
   toggleFlag(event) {
     event.stopPropagation();
-    event.target.children[0].name = event.target.children[0].name == "flag" ? "flag-outline" : "flag";
+    event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
   }
 
   navigate(page: string) {
     this.router.navigate([page]);
+  }
+
+  filter() {
+    console.log('filter clicked');
+  }
+
+  sort() {
+    console.log('sort clicked');
   }
 
 }
