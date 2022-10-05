@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
             return true;
           } else {
             this.showAlert();
-            return this.router.parseUrl('');
+            return this.router.parseUrl('/home');
           }
         } else {
           this.showAlert();
@@ -51,7 +51,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
     console.log("Show Alert");
     let alert = await this.alertCtrl.create({
       header: "Unauthorized",
-      message: "You are not authorized to visit that page. Rerouting to home page",
+      message: "You are not authorized to visit that page. Rerouting...",
       buttons: ['OK'],
     }); // .then(res => res.present());
     alert.present();
