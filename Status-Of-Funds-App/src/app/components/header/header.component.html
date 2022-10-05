@@ -1,10 +1,18 @@
 <ion-toolbar>
   <div class="flex-container">
+<<<<<<< HEAD
     <span><ion-button *ngIf="goBack" (click)="back()" slot="start" fill="clear">
       <ion-icon name="arrow-undo" color="dark" slot="icon-only"></ion-icon>
     </ion-button></span>
     <ion-label><h1>{{title}}</h1></ion-label>
     <span><ion-button slot="end" (click)="settings()" fill="clear">
+=======
+    <span><ion-button [routerLink]="['/home']" *ngIf="goBack" slot="start" fill="clear">
+      <ion-icon name="arrow-undo" color="dark" slot="icon-only"></ion-icon>
+    </ion-button></span>
+    <ion-label><h1>{{title}}</h1></ion-label>
+    <span><ion-button [routerLink]="['/settings']" slot="end" fill="clear">
+>>>>>>> 4afa54cb43f156d0c07ec888188b8303559331f7
       <ion-icon name="settings" slot="icon-only" color="dark"></ion-icon>
     </ion-button></span>
   </div>

@@ -8,11 +8,9 @@ import { Router } from '@angular/router';
 })
 export class TabsComponent implements OnInit {
 
+  @Input() page : String
+
   constructor(private router: Router) { }
 
   ngOnInit() {}
-
-  navigate(page: string) {
-    this.router.navigate([page]);
-  }
 }

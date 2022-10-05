@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { take, map } from 'rxjs/operators'
+import { FundDetailsPage } from '../pages/fund-details/fund-details.page';
 
 @Injectable({
   providedIn: 'root'
@@ -14,31 +15,46 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
 
   canActivate(
     route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.auth.user.pipe(
+      const expectedRole = route.data.role;
+      // console.log('expected: ', expectedRole); SHOWS EXPECTED ROLE, JUST FOR TESTING
+
+      return this.auth.user.pipe(
       take(1),
       map(user => {
-        console.log("Log: ", user);
-        let role = user.role;
-        if (role == "ADMIN") {
-          return true;
+        
+        // console.log("Log: ", user);
+        if (user) {
+          let role = user['role'];
+          if (expectedRole == role) {
+            return true;
+          } else if (role == "ADMIN") {
+            return true;
+          } else {
+            this.showAlert();
+            return this.router.parseUrl('/home');
+          }
         } else {
           this.showAlert();
-          return this.router.parseUrl("/loader");
+          return this.router.parseUrl('');
         }
       })
+      // if (role == "ADMIN") {
+      //   return true;
+      // } else {
+      //   this.showAlert();
+      //   return this.router.parseUrl("/loader");
+      // }
     )
   }
 
   async showAlert() {
     console.log("Show Alert");
-    alert("You are not authorized to visit that page. Returning to Home");
-    
-    // let alert = await this.alertCtrl.create({
-    //   header: "Unauthorized",
-    //   message: "You are not authorized to visit that page",
-    //   buttons: ['OK'],
-    // });
-    // alert.present;
+    let alert = await this.alertCtrl.create({
+      header: "Unauthorized",
+      message: "You are not authorized to visit that page. Rerouting...",
+      buttons: ['OK'],
+    }); // .then(res => res.present());
+    alert.present();
   }
   
   canActivateChild(

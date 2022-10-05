@@ -1,9 +1,82 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>settings</ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<app-header title="Settings" [goBack]="true"></app-header>
 <ion-content>
+  <div id="container">
+    <ion-button expand="block" (click)="SetHelp(true)" color="light">Help</ion-button>
+    <ion-modal [isOpen]="isHelpOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Help</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="SetHelp(false)">Close</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <p>
+            This is a temporary Help page.
+          </p>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
 
+    <ion-button (click)="LogOut()" [routerLink]="['/']" color="light">Log Out</ion-button>
+
+    <ion-button expand="block" (click)="SetAbout(true)" color="light">About Us</ion-button>
+    <ion-modal [isOpen]="isAboutOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>About Us</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="SetAbout(false)">Close</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <p>
+            This is a temporary About page.
+          </p>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <ion-button expand="block" (click)="SetPolicy(true)" color="light">Privacy Policy</ion-button>
+    <ion-modal [isOpen]="isPolicyOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Privacy Policy</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="SetPolicy(false)">Close</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <p>
+            This is a temporary Policy page
+          </p>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <ion-button expand="block" (click)="SetTerms(true)" color="light">Terms and Conditions</ion-button>
+    <ion-modal [isOpen]="isTermsOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Terms and Conditions</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="SetTerms(false)">Close</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <p>
+            This is a temporary Terms page.
+          </p>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </div>
 </ion-content>

@@ -11,39 +11,75 @@ const routes: Routes = [
   },
   {
     path: 'loader',
-    loadChildren: () => import('./pages/loader/loader.module').then(m => m.LoaderPageModule)
+    loadChildren: () => import('./pages/loader/loader.module').then(m => m.LoaderPageModule), 
+    canActivate: [AuthGuard], 
+    data: {
+      role: 'USER'
+    }
   },
   {
     path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule), 
+    canActivate: [AuthGuard], 
+    data: {
+      role: 'USER'
+    }
   },
   {
     path: 'pie-chart',
-    loadChildren: () => import('./pages/graphs/pie-chart/pie-chart.module').then(m => m.PieChartPageModule)
+    loadChildren: () => import('./pages/graphs/pie-chart/pie-chart.module').then(m => m.PieChartPageModule), 
+    canActivate: [AuthGuard], 
+    data: {
+      role: 'USER'
+    }
   },
   {
     path: 'line-graph',
-    loadChildren: () => import('./pages/graphs/line-graph/line-graph.module').then(m => m.LineGraphPageModule)
+    loadChildren: () => import('./pages/graphs/line-graph/line-graph.module').then(m => m.LineGraphPageModule), 
+    canActivate: [AuthGuard], 
+    data: {
+      role: 'USER'
+    }
   },
   {
     path: 'bar-graph',
-    loadChildren: () => import('./pages/graphs/bar-graph/bar-graph.module').then(m => m.BarGraphPageModule)
+    loadChildren: () => import('./pages/graphs/bar-graph/bar-graph.module').then(m => m.BarGraphPageModule), 
+    canActivate: [AuthGuard], 
+    data: {
+      role: 'USER'
+    }
   },
   {
     path: 'fund-details',
-    loadChildren: () => import('./pages/fund-details/fund-details.module').then(m => m.FundDetailsPageModule)
+    loadChildren: () => import('./pages/fund-details/fund-details.module').then(m => m.FundDetailsPageModule), 
+    canActivate: [AuthGuard], 
+    data: {
+      role: 'USER'
+    }
   },
   {
-    path: 'calculator',
-    loadChildren: () => import('./pages/calculator/calculator.module').then(m => m.CalculatorPageModule)
+    path: 'dashboard',
+    loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule), 
+    canActivate: [AuthGuard], 
+    data: {
+      role: 'ADMIN'
+    }
   },
   {
     path: 'upload',
-    loadChildren: () => import('./pages/upload/upload.module').then(m => m.UploadPageModule), canActivate: [AuthGuard]
+    loadChildren: () => import('./pages/upload/upload.module').then(m => m.UploadPageModule), 
+    canActivate: [AuthGuard],
+    data: {
+      role: 'ADMIN'
+    }
   },
   {
     path: 'settings',
-    loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsPageModule)
+    loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsPageModule), 
+    canActivate: [AuthGuard], 
+    data: {
+      role: 'USER'
+    }
   },
 
 
