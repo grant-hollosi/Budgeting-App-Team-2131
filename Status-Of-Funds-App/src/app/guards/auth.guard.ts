@@ -16,13 +16,13 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
   canActivate(
     route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       const expectedRole = route.data.role;
-      console.log('expected: ', expectedRole);
+      // console.log('expected: ', expectedRole); SHOWS EXPECTED ROLE, JUST FOR TESTING
 
       return this.auth.user.pipe(
       take(1),
       map(user => {
         
-        console.log("Log: ", user);
+        // console.log("Log: ", user);
         if (user) {
           let role = user['role'];
           if (expectedRole == role) {

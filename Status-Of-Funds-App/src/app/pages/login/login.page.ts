@@ -29,9 +29,7 @@ export class LoginPage implements OnInit {
       this.auth.signIn(this.user).subscribe(async user => {
         console.log('Login: ', user);
         const role = user.role;
-        if (role === 'ADMIN') {
-          this.router.navigateByUrl('/loader');
-        } else if (role === 'USER') {
+        if (role) {
           this.router.navigateByUrl('/loader');
         }
       });

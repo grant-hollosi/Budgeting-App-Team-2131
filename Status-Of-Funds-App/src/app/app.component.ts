@@ -8,8 +8,8 @@ import { Storage } from '@ionic/storage';
 })
 export class AppComponent {
   constructor(private storage: Storage) {}
-
   async ngOnInit() {
     await this.storage.create();
   }
 }
+export const TOKEN_KEY = 'user-access-token';
