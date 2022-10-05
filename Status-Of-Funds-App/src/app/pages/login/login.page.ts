@@ -21,21 +21,7 @@ export class LoginPage implements OnInit {
   // New login() with authentication services
   // subscribe() is basically a method to display an Observable. Here is a quick read to describe what it is, I'm not entirely sure yet 
   // https://blog.logrocket.com/understanding-rxjs-observables/#:~:text=An%20Observable%20is%20basically%20a,an%20infinite%20range%20of%20values
-<<<<<<< HEAD
-  login() {
-    console.log("Button Pressed");
-    this.auth.signIn(this.user).subscribe(user => {
-      console.log("Login: ", user);
-      let role = user.role;
-      if (role == "ADMIN") {
-        this.router.navigateByUrl("/upload");
-      } else if (role == "USER") {
-        this.router.navigateByUrl("/loader");
-      }
-    })
-  }
-=======
->>>>>>> 4afa54cb43f156d0c07ec888188b8303559331f7
+
 
   async login() {
     console.log('Button Pressed');

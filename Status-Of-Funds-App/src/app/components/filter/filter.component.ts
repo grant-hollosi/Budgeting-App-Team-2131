@@ -15,7 +15,6 @@ export class FilterComponent implements OnInit {
   ngOnInit() {}
 
   filter(){
-<<<<<<< HEAD
     console.log("Opening filter options");
   }
 
@@ -25,17 +24,8 @@ export class FilterComponent implements OnInit {
 
   sort(){
     console.log("Opening sorting options");
-=======
+
     console.log('filter pressed');
-  }
-
-  search(){
-    console.log('search pressed');
-  }
-
-  sort(){
-    console.log('sort pressed');
->>>>>>> 4afa54cb43f156d0c07ec888188b8303559331f7
   }
 
 }

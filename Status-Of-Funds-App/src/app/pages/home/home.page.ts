@@ -34,11 +34,7 @@ export class HomePage implements OnInit {
     event.stopPropagation();
     event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
   }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> 4afa54cb43f156d0c07ec888188b8303559331f7
+  
   navigate(page: string) {
     this.router.navigate([page]);
   }
