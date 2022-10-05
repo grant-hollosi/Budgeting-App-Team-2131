@@ -12,4 +12,8 @@ export class UploadPage implements OnInit {
   ngOnInit() {
   }
 
+  upload() {
+    console.log("Uploading data");
+  }
+
 }

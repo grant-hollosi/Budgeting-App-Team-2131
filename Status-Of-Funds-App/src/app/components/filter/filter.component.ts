@@ -15,15 +15,15 @@ export class FilterComponent implements OnInit {
   ngOnInit() {}
 
   filter(){
-    console.log("filter pressed");
+    console.log("Opening filter options");
   }
 
   search(){
-    console.log("search pressed");
+    console.log("Beginning search");
   }
 
   sort(){
-    console.log("sort pressed");
+    console.log("Opening sorting options");
   }
 
 }

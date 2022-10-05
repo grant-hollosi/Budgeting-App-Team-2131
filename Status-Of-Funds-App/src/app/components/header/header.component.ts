@@ -14,4 +14,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {}
 
+  settings() {
+    console.log("Opening settings");
+  }
+
+  back() {
+    console.log("Going back");
+  }
 }

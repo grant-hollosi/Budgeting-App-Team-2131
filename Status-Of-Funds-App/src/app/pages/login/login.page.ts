@@ -26,7 +26,7 @@ export class LoginPage implements OnInit {
       console.log("Login: ", user);
       let role = user.role;
       if (role == "ADMIN") {
-        this.router.navigateByUrl("/loader");
+        this.router.navigateByUrl("/upload");
       } else if (role == "USER") {
         this.router.navigateByUrl("/loader");
       }
