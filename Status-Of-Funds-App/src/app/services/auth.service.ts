@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { AlertController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
+import { ExceptionCode } from '@capacitor/core';
 const TOKEN_KEY = 'user-access-token';
 
 @Injectable({
@@ -45,7 +46,7 @@ export class AuthService {
     } else if (pw === "userPassword123") {
       user = { pw, role: "USER" };
     } else {
-      this.showAlert();
+      throw new Error("Incorrect Login");
     }
 
     this.authState.next(user);

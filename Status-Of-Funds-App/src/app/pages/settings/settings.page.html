@@ -20,7 +20,7 @@
       </ng-template>
     </ion-modal>
 
-    <ion-button [routerLink]="['/']" color="light">Log Out</ion-button>
+    <ion-button (click)="LogOut()" [routerLink]="['/']" color="light">Log Out</ion-button>
 
     <ion-button expand="block" (click)="SetAbout(true)" color="light">About Us</ion-button>
     <ion-modal [isOpen]="isAboutOpen">

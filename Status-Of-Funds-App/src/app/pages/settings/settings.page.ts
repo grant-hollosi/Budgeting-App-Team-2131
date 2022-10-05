@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-settings',
@@ -32,6 +33,11 @@ export class SettingsPage implements OnInit {
 
   SetTerms(isOpen: boolean) {
     this.isTermsOpen = isOpen;
+  }
+
+  Logout() {
+    // Logout function: Remove storage access token
+    // this.storage.remove(TOKEN_KEY);
   }
 
 }
