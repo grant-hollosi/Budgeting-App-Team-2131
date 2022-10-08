@@ -15,7 +15,7 @@ export class AuthService {
   authState = new BehaviorSubject(null);
 
   // Storage to store web token or any other cookies you might want to save
-  constructor(private storage: Storage, private alertCtrl: AlertController) {
+  constructor(public storage: Storage, private alertCtrl: AlertController) {
     this.loadUser();
     this.user = this.authState.asObservable().pipe(
       filter(response => response)
@@ -52,7 +52,7 @@ export class AuthService {
     this.authState.next(user);
     
     // Stores Token Locally
-    this.storage.set(TOKEN_KEY, user);
+    localStorage.setItem(TOKEN_KEY, user);
 
     // Video guide said to use return of(user), but of is not recognized
     return of(user); 
