@@ -18,6 +18,8 @@ Sidarth Rajan
 - Settings page that allows the user to log out, and will allow the user to view the liscence, view a help page, as well as change some other settings
 - Ui feedback for an incorrect password entered
 ### Bug Fixes
+- Users who refresh/exit the app will no longer be denied access as log as they originally logged in
+- Upload page can now be accessed from the admin dashboard
 ### Known Problems
 - "Unauthorized access" modal after clicking on admin dashboard as a regular user takes you back to the log in screen instead of the home screen
 ## Version 0.1.0
@@ -26,4 +28,6 @@ Sidarth Rajan
 - Implementation of the home screen and the ability to navigate to the different pages that connect to it
 ### Bug Fixes 
 ### Known Problems 
-- The logins are currently hard coded into the app. We would need to establish a database going into sprint 2 to continue further developments.
+- The logins are currently hard coded into the app. We would need to establish a database going into sprint 2 to continue further developments
+- No way to access the upload page
+- Users who refresh the page will lose access to the screens past the login screen as they are immediately logged out
