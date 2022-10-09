@@ -35,9 +35,10 @@ export class SettingsPage implements OnInit {
     this.isTermsOpen = isOpen;
   }
 
-  Logout() {
+  async Logout() {
     // Logout function: Remove storage access token
     // this.storage.remove(TOKEN_KEY);
+    localStorage.removeItem('user-access-token');
   }
 
 }
