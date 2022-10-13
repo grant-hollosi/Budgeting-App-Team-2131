@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { IonModal } from '@ionic/angular'
+import { IonModal } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-header',
@@ -12,13 +13,20 @@ export class HeaderComponent implements OnInit {
   @Input() goBack: boolean;
 
   @ViewChild(IonModal) modal: IonModal;
+  @ViewChild(IonModal) help: IonModal;
 
-  constructor() { }
+  constructor(private storage: Storage) { }
 
   ngOnInit() {}
 
   close() {
     this.modal.dismiss(null, 'close');
+  }
+
+  async logout() {
+    console.log("logging out");
+    this.close();
+    this.storage.remove('user-access-token');
   }
 
 }
