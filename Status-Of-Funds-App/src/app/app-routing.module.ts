@@ -73,14 +73,6 @@ const routes: Routes = [
       role: 'ADMIN'
     }
   },
-  {
-    path: 'settings',
-    loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsPageModule) 
-    // canActivate: [AuthGuard], 
-    // data: {
-    //   role: 'USER'
-    // }
-  },
 
 
 ];
