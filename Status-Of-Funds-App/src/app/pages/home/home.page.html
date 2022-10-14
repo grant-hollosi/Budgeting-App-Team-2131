@@ -1,16 +1,5 @@
 <app-header title="List of Funds" [goBack]="false"></app-header>
-
-<ion-toolbar>
-  <div class="home-toolbar">
-    <span><ion-button (click)="filter()" slot="end" fill="clear">
-      <ion-icon name="filter" slot="icon-only" color="dark"></ion-icon>
-    </ion-button></span>
-    <ion-searchbar [ngModel]="inputValue" showCancelButton="never" placeholder="Search..."></ion-searchbar>
-    <span><ion-button (click)="sort()" slot="end" fill="clear">
-      <ion-icon name="funnel" slot="icon-only" color="dark"></ion-icon>
-    </ion-button></span>
-  </div>
-</ion-toolbar>
+<app-filter></app-filter>
 
 <ion-content role="feed">
   <ion-list>

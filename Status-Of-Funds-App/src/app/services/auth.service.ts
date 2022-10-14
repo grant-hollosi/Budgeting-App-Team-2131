@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { AlertController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
+import { ExceptionCode } from '@capacitor/core';
 const TOKEN_KEY = 'user-access-token';
 
 @Injectable({
@@ -14,7 +15,7 @@ export class AuthService {
   authState = new BehaviorSubject(null);
 
   // Storage to store web token or any other cookies you might want to save
-  constructor(private storage: Storage, private alertCtrl: AlertController) {
+  constructor(public storage: Storage, private alertCtrl: AlertController) {
     this.loadUser();
     this.user = this.authState.asObservable().pipe(
       filter(response => response)
@@ -45,13 +46,13 @@ export class AuthService {
     } else if (pw === "userPassword123") {
       user = { pw, role: "USER" };
     } else {
-      this.showAlert();
+      throw new Error("Incorrect Login");
     }
 
     this.authState.next(user);
     
     // Stores Token Locally
-    this.storage.set(TOKEN_KEY, user);
+    localStorage.setItem(TOKEN_KEY, user);
 
     // Video guide said to use return of(user), but of is not recognized
     return of(user); 

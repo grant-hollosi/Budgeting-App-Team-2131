@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {}
 
+
   close() {
     this.modal.dismiss(null, 'close');
   }
@@ -27,6 +28,15 @@ export class HeaderComponent implements OnInit {
     console.log("logging out");
     this.close();
     this.storage.remove('user-access-token');
+  }
+
+
+  settings() {
+    console.log("Opening settings");
+  }
+
+  back() {
+    console.log("Going back");
   }
 
 }
