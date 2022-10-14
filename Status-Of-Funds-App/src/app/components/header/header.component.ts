@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
   async logout() {
     console.log("logging out");
     this.close();
-    this.storage.remove('user-access-token');
+    localStorage.removeItem('user-access-token');
   }
 
 
