@@ -26,7 +26,11 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
         // console.log("Log: ", user);
 
         let role = user['role'];
-        // If they are a user with a non-null role, then 
+        // If they are a user with a non-null role,
+        // then if the expected role for the page is the same, they are able to access the page,
+        // if they are an admin, they have access to everything
+        // the last else if checks if they have the USER role to return them home
+        // else return them to login screen
         if (role == "ADMIN" || role == "USER") {
           if (expectedRole == role) {
             return true;
