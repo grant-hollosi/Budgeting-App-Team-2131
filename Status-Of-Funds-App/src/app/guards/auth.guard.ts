@@ -16,20 +16,23 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
   canActivate(
     route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       const expectedRole = route.data.role;
-      // console.log('expected: ', expectedRole); SHOWS EXPECTED ROLE, JUST FOR TESTING
+      // SHOWS EXPECTED ROLE, JUST FOR TESTING
+      // console.log('expected: ', expectedRole);
 
       return this.auth.user.pipe(
       take(1),
       map(user => {
-        
+        // SHOWS USER OBSERVABLE, JUST FOR TESTING
         // console.log("Log: ", user);
-        if (user) {
-          let role = user['role'];
+
+        let role = user['role'];
+        // If they are a user with a non-null role, then 
+        if (role == "ADMIN" || role == "USER") {
           if (expectedRole == role) {
             return true;
           } else if (role == "ADMIN") {
             return true;
-          } else {
+          } else if (role == "USER") {
             this.showAlert();
             return this.router.parseUrl('/home');
           }
@@ -38,12 +41,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
           return this.router.parseUrl('');
         }
       })
-      // if (role == "ADMIN") {
-      //   return true;
-      // } else {
-      //   this.showAlert();
-      //   return this.router.parseUrl("/loader");
-      // }
     )
   }
 
@@ -53,7 +50,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
       header: "Unauthorized",
       message: "You are not authorized to visit that page. Rerouting...",
       buttons: ['OK'],
-    }); // .then(res => res.present());
+    });
     alert.present();
   }
   

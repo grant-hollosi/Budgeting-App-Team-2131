@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { AuthService } from 'c:/Users/Vinhky Nguyen/Desktop/iOS App/Budgeting-App-Team-2131/Status-Of-Funds-App/src/app/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -27,7 +28,7 @@ export class HeaderComponent implements OnInit {
   async logout() {
     console.log("logging out");
     this.close();
-    localStorage.removeItem('user-access-token');
+    this.storage.clear();
   }
 
 
