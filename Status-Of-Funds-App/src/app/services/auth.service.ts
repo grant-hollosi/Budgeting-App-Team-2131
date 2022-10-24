@@ -52,7 +52,7 @@ export class AuthService {
     this.authState.next(user);
     
     // Stores Token Locally
-    localStorage.setItem(TOKEN_KEY, user);
+    this.storage.set(TOKEN_KEY, user);
 
     // Video guide said to use return of(user), but of is not recognized
     return of(user); 
