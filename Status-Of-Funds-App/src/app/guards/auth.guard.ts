@@ -29,9 +29,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
             return true;
           } else if (role == "ADMIN") {
             return true;
-          } else {
-            this.showAlert();
-            return this.router.parseUrl('/home');
           }
         } else {
           this.showAlert();
