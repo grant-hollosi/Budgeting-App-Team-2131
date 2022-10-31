@@ -7,6 +7,9 @@ import { IonButton, IonIcon, IonInfiniteScroll } from '@ionic/angular';
 
 import { ApiService } from './../../api.service'
 
+// let mysql = require('mysql');
+// let config = require('./config.js');
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -21,6 +24,23 @@ export class HomePage implements OnInit {
   ngOnInit() { 
     this.getDataUser();
   }
+
+  // async getDataBase() {
+  //   let connection = mysql.createConnection({     
+  //     host: 'current-funds.ceg6zn3wrywt.us-east-2.rds.amazonaws.com',
+  //     database: 'currentFunds',
+  //     user: 'admin',
+  //     password: 'yellowjackets',
+  //   })
+  //   let sql = `SELECT * FROM dataTable WHERE id = 2`;
+  //   connection.query(sql, (error, results, fields) => {
+  //     if (error) {
+  //       return console.error(error.message);
+  //     }
+  //     console.log(results);
+  //   });
+  //   connection.end();
+  // }
 
   async getDataUser() {
     await this.api.getDataUser().subscribe(res => {
