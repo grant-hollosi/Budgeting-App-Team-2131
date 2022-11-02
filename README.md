@@ -18,7 +18,7 @@ Sidarth Rajan
 - "Unauthorized access" modal that appears when trying to access the admin dashboard will take you back to the home screen if you are logged in as an appropriate user
 ### Known Problems
 - Currently, the displayed list of transactions are hard coded into the app. In the future, we plan to try to implement some form of backend and frontend communication
-- The settings page will not display after leaving and returning to the home page 
+- The settings page will not display after leaving and returning to the home page
 ## Version 0.2.0
 ### New Features
 - Admin Dashboard page that is only accessable as an admin, with "change password" and "upload data" buttons
