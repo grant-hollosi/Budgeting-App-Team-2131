@@ -9,7 +9,18 @@ helmet = require('helmet'),
 secrets = require('./secrets'),
 awsController = require('./aws-controller');
 
+const {createPool} = require('mysql')
+const pool = createPool({
+    host: 'current-funds.ceg6zn3wrywt.us-east-2.rds.amazonaws.com',
+    database: 'currentFunds',
+    user: 'admin',
+    password: 'yellowjackets',
+    port: '3306'
+})
+
 var app = express();
+app.use(cors());
+app.use(express.json());
 app.use(helmet());
 
 // Load values from the ./enf file into process.env
@@ -29,9 +40,21 @@ app.get('/aws/file', awsController.listFiles);
 app.get('/aws/file/:fileName', awsController.getFileSignedRequest);
 app.delete('/aws/files/:fileName', awsController.deleteFile);
 
+app.get("/", (req, res) => {
+    pool.query(`SELECT * FROM dataTable`, (err, result) => {
+        if (err) {
+            return console.log(err);
+        }
+        // return console.log(res[0]['FundedProgram']);
+        res.json({Result: result});
+    });
+});
+
 var port = process.env.PORT || 5000;
 var server = http.createServer(app);
 
 server.listen(port, function (err) {
     console.log('Listening in http://localhost:' + port);
 });
+
+module.exports = pool;
