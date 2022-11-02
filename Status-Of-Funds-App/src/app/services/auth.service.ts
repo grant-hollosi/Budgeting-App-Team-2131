@@ -67,4 +67,6 @@ export class AuthService {
     }); // .then(res => res.present());
     alert.present();
   }
+
+  protected static apiUrl = "https://localhostrxlhaqtsbl.execute-api.us-east-2.amazonaws.com/test/test"
 }
