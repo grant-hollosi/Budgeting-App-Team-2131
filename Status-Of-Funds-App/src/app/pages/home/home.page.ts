@@ -5,6 +5,11 @@ import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonIcon, IonInfiniteScroll } from '@ionic/angular';
 
+import { ApiService } from './../../api.service'
+
+// let mysql = require('mysql');
+// let config = require('./config.js');
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -12,10 +17,28 @@ import { IonButton, IonIcon, IonInfiniteScroll } from '@ionic/angular';
 })
 export class HomePage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  datauser: any;
 
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private auth: AuthService, private router: Router, public api: ApiService) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.getTest();
+    // this.getDataUser();
+  }
+
+  async getTest() {
+    const result = fetch("http://localhost:5000/").then((res) => res.json()).then((data) => console.log(data));
+  }
+
+  // async getDataUser() {
+  //   await this.api.getDataUser().subscribe(res => {
+  //     console.log(res);
+  //     this.datauser = res.results;
+  //     console.log(this.datauser);
+  //   }, err => {
+  //     console.log(err);
+  //   });
+  // }
 
   loadData(event) {
     setTimeout(() => {

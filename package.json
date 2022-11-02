@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@ionic-native/file": "^5.36.0"
+  }
+}
