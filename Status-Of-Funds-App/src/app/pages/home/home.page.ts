@@ -5,7 +5,51 @@ import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonIcon, IonInfiniteScroll } from '@ionic/angular';
 
-import { ApiService } from './../../api.service'
+import { ApiService } from './../../api.service';
+
+// import { PutObjectCommand, CreateBucketCommand } from "@aws-sdk/client-s3";
+// import { s3Client } from "../../../libs/sampleClient.js";
+// import { secrets } from "../../../../../Server/secrets.js";
+
+// const params = {
+//   Bucket: "75raw-data",
+//   Key: "lol.txt",
+//   Body: "Hello world!"
+// }
+
+// const run = async () => {
+//   try {
+//     const data = await s3Client.send(
+//       new CreateBucketCommand({ Bucket: params.Bucket })
+//     );
+//     console.log(data);
+//     console.log("Successfully created a bucket called ", data.location);
+//     return data;
+//   } catch (err) {
+//     console.log(err);
+//   }
+
+//   try {
+//     const results = await s3Client.send(new PutObjectCommand(params));
+//     console.log("Successfully created " + 
+//       params.Key + 
+//       " and uploaded it to " + 
+//       params.Bucket + "/" +
+//       params.Key
+//     );
+//     return results;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
+
+
+fetch('http://localhost:2020/')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(err => console.error(err));
+
+
 
 // let mysql = require('mysql');
 // let config = require('./config.js');
@@ -21,8 +65,15 @@ export class HomePage implements OnInit {
 
   constructor(private auth: AuthService, private router: Router, public api: ApiService) { }
 
-  ngOnInit() { 
-    this.getDataUser();
+  ngOnInit() {
+    // const params = {
+    //   Bucket: secrets.aws_bucket,
+    //   Key: "lol.txt",
+    //   Body: secrets.aws_body
+    // }
+    console.log("running");
+    // run();
+    // this.getDataUser();
   }
 
   // async getDataBase() {
@@ -43,13 +94,21 @@ export class HomePage implements OnInit {
   // }
 
   async getDataUser() {
-    await this.api.getDataUser().subscribe(res => {
-      console.log(res);
-      this.datauser = res.results;
-      console.log(this.datauser);
-    }, err => {
-      console.log(err);
-    });
+    // await this.api.getDataUser().subscribe(res => {
+    //   console.log(res);
+    //   this.datauser = res.results;
+    //   console.log(this.datauser);
+    // }, err => {
+    //   console.log(err);
+    // });
+    // var s3 = new AWS.S3;
+    // s3.createBucket({
+    //   Bucket: "testBucket"
+    // }, function(err, data) {
+    //   if (err) console.log(err, err.stack);
+    //   else  console.log(data);
+    // });
+    console.log("getting data")
   }
 
   loadData(event) {

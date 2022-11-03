@@ -1,0 +1,7 @@
+{
+    "connect": "current-funds",
+    "host": "current-funds.ceg6zn3wrywt.us-east-2.rds.amazonaws.com",
+    "port": "3306",
+    "username": "admin",
+    "password": "yellowjackets"
+}

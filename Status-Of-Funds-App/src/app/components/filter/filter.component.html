@@ -1,11 +1,56 @@
 <ion-toolbar>
   <div class="flex-container">
-    <span><ion-button (click)="filter()" slot="end" fill="clear">
+    <span><ion-button id="filter_modal" slot="end" fill="clear">
       <ion-icon name="filter" slot="icon-only" color="dark"></ion-icon>
     </ion-button></span>
     <ion-searchbar (click)="search()" [ngModel]="inputValue" showCancelButton="never" placeholder="Search..."></ion-searchbar>
-    <span><ion-button (click)="sort()" slot="end" fill="clear">
+    <span><ion-button id="sort_modal" slot="end" fill="clear">
       <ion-icon name="funnel" slot="icon-only" color="dark"></ion-icon>
     </ion-button></span>
   </div>
 </ion-toolbar>
+
+<ion-modal trigger="filter_modal">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title size="medium">Filter</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="modal.dismiss()">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-item detail="true"><ion-label><h2>By Date</h2></ion-label></ion-item>
+        <ion-item><ion-label><h2>By Amount</h2></ion-label></ion-item>
+        <ion-item><ion-label><h2>By Battalion</h2></ion-label></ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal trigger="sort_modal">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title size="medium">Sort</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="modal.dismiss()">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-item detail="true"><ion-label><h2>Alphabetically</h2></ion-label></ion-item>
+        <ion-item><ion-label><h2>By Date</h2></ion-label></ion-item>
+        <ion-item><ion-label><h2>By Amount</h2></ion-label></ion-item>
+        <ion-item><ion-label><h2>By Battalion</h2></ion-label></ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>
