@@ -65,51 +65,24 @@ export class HomePage implements OnInit {
 
   constructor(private auth: AuthService, private router: Router, public api: ApiService) { }
 
-  ngOnInit() {
-    // const params = {
-    //   Bucket: secrets.aws_bucket,
-    //   Key: "lol.txt",
-    //   Body: secrets.aws_body
-    // }
-    console.log("running");
-    // run();
+  ngOnInit() { 
+    this.getTest();
     // this.getDataUser();
   }
 
-  // async getDataBase() {
-  //   let connection = mysql.createConnection({     
-  //     host: 'current-funds.ceg6zn3wrywt.us-east-2.rds.amazonaws.com',
-  //     database: 'currentFunds',
-  //     user: 'admin',
-  //     password: 'yellowjackets',
-  //   })
-  //   let sql = `SELECT * FROM dataTable WHERE id = 2`;
-  //   connection.query(sql, (error, results, fields) => {
-  //     if (error) {
-  //       return console.error(error.message);
-  //     }
-  //     console.log(results);
-  //   });
-  //   connection.end();
-  // }
-
-  async getDataUser() {
-    // await this.api.getDataUser().subscribe(res => {
-    //   console.log(res);
-    //   this.datauser = res.results;
-    //   console.log(this.datauser);
-    // }, err => {
-    //   console.log(err);
-    // });
-    // var s3 = new AWS.S3;
-    // s3.createBucket({
-    //   Bucket: "testBucket"
-    // }, function(err, data) {
-    //   if (err) console.log(err, err.stack);
-    //   else  console.log(data);
-    // });
-    console.log("getting data")
+  async getTest() {
+    const result = fetch("http://localhost:5000/").then((res) => res.json()).then((data) => console.log(data));
   }
+
+  // async getDataUser() {
+  //   await this.api.getDataUser().subscribe(res => {
+  //     console.log(res);
+  //     this.datauser = res.results;
+  //     console.log(this.datauser);
+  //   }, err => {
+  //     console.log(err);
+  //   });
+  // }
 
   loadData(event) {
     setTimeout(() => {

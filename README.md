@@ -10,7 +10,15 @@ Sidarth Rajan
 - Solution: An iOS app that allows those without access to GFEBS to view, but not modify, the transaction history, budget, and their various graphs of the 75th Army Ranger Regiment.
 - App Info: The app will permit the user to view the Regiment’s financial data and history from the convenience of their smartphone. The user groups are those who can view the data, and those who can view and upload more data. <br /><br />
 [Licensed under the Apache License](https://github.com/grant-hollosi/Budgeting-App-Team-2131/blob/master/LICENSE)
-# Release Notes 
+# Release Notes
+## Version 0.3.0
+### New Features
+- Back End Server is created and it has functionality to make signed requests to upload to the S3 bucket.
+### Bug Fixes
+- "Unauthorized access" modal that appears when trying to access the admin dashboard will take you back to the home screen if you are logged in as an appropriate user
+### Known Problems
+- Currently, the displayed list of transactions are hard coded into the app. In the future, we plan to try to implement some form of backend and frontend communication
+- The settings page will not display after leaving and returning to the home page
 ## Version 0.2.0
 ### New Features
 - Admin Dashboard page that is only accessable as an admin, with "change password" and "upload data" buttons
