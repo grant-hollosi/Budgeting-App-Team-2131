@@ -1,0 +1,29 @@
+[
+    {
+        "name": "Fund name",
+        "department": "Department",
+        "amount": 9000,
+        "flagged": true,
+        "info": {
+            "description": "This is a test"
+        }
+    },
+    {
+        "name": "Fund name2",
+        "department": "Department",
+        "amount": 5000,
+        "flagged": true,
+        "info": {
+            "description": "This is a test"
+        }
+    },
+    {
+        "name": "Fund name3",
+        "department": "Department",
+        "amount": 3000,
+        "flagged": true,
+        "info": {
+            "description": "This is a test"
+        }
+    }
+]
