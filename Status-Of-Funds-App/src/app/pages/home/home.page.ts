@@ -5,40 +5,52 @@ import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonIcon, IonInfiniteScroll } from '@ionic/angular';
 
-import { ApiService } from './../../api.service'
+import { ApiService } from './../../api.service';
+import { HttpClient } from '@angular/common/http';
+// import { HTTP } from 'http';
+// import { askAndReceive }  from './../../../../../Server/server';
 
-// let mysql = require('mysql');
-// let config = require('./config.js');
+// var mysql = require('serverless-mysql')();
+
+// mysql.config({
+//     host: 'current-funds.ceg6zn3wrywt.us-east-2.rds.amazonaws.com',
+//     database: 'currentFunds',
+//     user: 'admin',
+//     password: 'yellowjackets',
+//     port: '3306'
+// });
+
+
+// function askAndReceive(q) {
+//     let results = mysql.query(q);
+//     return results;
+// }
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
+
 export class HomePage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   datauser: any;
 
-  constructor(private auth: AuthService, private router: Router, public api: ApiService) { }
+  constructor(private auth: AuthService, private router: Router, public http: HttpClient) { }
 
-  ngOnInit() { 
-    this.getTest();
-    // this.getDataUser();
+  ngOnInit() {
+    let data = this.getQuery("SELECT * FROM dataTable WHERE id BETWEEN 1 AND 5");
+    data.then((crud) => console.log(crud));
   }
 
-  async getTest() {
-    const result = fetch("http://localhost:5000/").then((res) => res.json()).then((data) => console.log(data));
+  async getQuery(query) {
+    let url = "https://rxlhaqtsbl.execute-api.us-east-2.amazonaws.com/v1/populate/?query=" + query;
+    let req = this.http.get(url);
+    let results = new Promise((resolve) => {
+      req.subscribe((data) => resolve(data));
+    });
+    return results;
   }
-
-  // async getDataUser() {
-  //   await this.api.getDataUser().subscribe(res => {
-  //     console.log(res);
-  //     this.datauser = res.results;
-  //     console.log(this.datauser);
-  //   }, err => {
-  //     console.log(err);
-  //   });
-  // }
 
   loadData(event) {
     setTimeout(() => {
