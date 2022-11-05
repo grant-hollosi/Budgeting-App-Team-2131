@@ -50,7 +50,17 @@ app.get("/", (req, res) => {
     });
 });
 
-var port = process.env.PORT || 5000;
+app.get("/AOR/FU", (req, res) => {
+    pool.query(`SELECT * FROM dataTable WHERE AOR = 'FU'`, (err, result) => {
+        if (err) {
+            return console.log(err);
+        }
+        // return console.log(res[0]['FundedProgram']);
+        res.json({Result: result});
+    });
+});
+
+var port = process.env.PORT || 3233;
 var server = http.createServer(app);
 
 server.listen(port, function (err) {
