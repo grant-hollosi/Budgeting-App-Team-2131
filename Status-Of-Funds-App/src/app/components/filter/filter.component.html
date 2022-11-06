@@ -1,22 +1,22 @@
 <ion-toolbar>
   <div class="flex-container">
-    <span><ion-button id="filter-modal" slot="end" fill="clear">
+    <span><ion-button (click)="setOpen(true, 'filter')" slot="end" fill="clear">
       <ion-icon name="funnel" slot="icon-only" color="dark"></ion-icon>
     </ion-button></span>
     <ion-searchbar (click)="search()" [ngModel]="inputValue" showCancelButton="never" placeholder="Search..."></ion-searchbar>
-    <span><ion-button id="sort-modal" slot="end" fill="clear">
+    <span><ion-button (click)="setOpen(true, 'sort')" slot="end" fill="clear">
       <ion-icon name="filter" slot="icon-only" color="dark"></ion-icon>
     </ion-button></span>
   </div>
 </ion-toolbar>
 
-<ion-modal trigger="filter-modal">
+<ion-modal [isOpen]="isFilterModalOpen">
   <ng-template>
     <ion-header>
       <ion-toolbar>
-        <ion-title size="medium">Settings</ion-title>
+        <ion-title size="medium">Filter</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="close()">
+          <ion-button (click)="setOpen(false, 'filter')">
             <ion-icon name="close-outline"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -26,27 +26,23 @@
       <ion-list>
         <ion-item detail="true">
           <ion-label>
-            <h2>Help</h2>
-          </ion-label>
-        </ion-item>
-        <ion-item [routerLink]="['/']" (click)="logout()">
-          <ion-label color="danger">
-            <h2>Logout</h2>
+            <h2>Amount</h2>
           </ion-label>
         </ion-item>
         <ion-item detail="true">
           <ion-label>
-            <h2>About us</h2>
+            <h2>AOR</h2>
           </ion-label>
         </ion-item>
         <ion-item detail="true">
           <ion-label>
-            <h2>Privacy Policy</h2>
+            <h2>Date</h2>
+            <ion-icon name="calendar"></ion-icon>
           </ion-label>
         </ion-item>
         <ion-item detail="true">
           <ion-label>
-            <h2>Terms and Conditions</h2>
+            <h2>Flag</h2>
           </ion-label>
         </ion-item>
       </ion-list>
@@ -54,13 +50,13 @@
   </ng-template>
 </ion-modal>
 
-<ion-modal trigger="sort-modal">
+<ion-modal [isOpen]="isSortModalOpen">
   <ng-template>
     <ion-header>
       <ion-toolbar>
         <ion-title size="medium">Settings</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="close()">
+          <ion-button (click)="setOpen(false, 'sort')">
             <ion-icon name="close-outline"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -70,27 +66,22 @@
       <ion-list>
         <ion-item detail="true">
           <ion-label>
-            <h2>Help</h2>
-          </ion-label>
-        </ion-item>
-        <ion-item [routerLink]="['/']" (click)="logout()">
-          <ion-label color="danger">
-            <h2>Logout</h2>
+            <h2>Alphabetically</h2>
           </ion-label>
         </ion-item>
         <ion-item detail="true">
           <ion-label>
-            <h2>About us</h2>
+            <h2>Date</h2>
           </ion-label>
         </ion-item>
         <ion-item detail="true">
           <ion-label>
-            <h2>Privacy Policy</h2>
+            <h2>Amount</h2>
           </ion-label>
         </ion-item>
         <ion-item detail="true">
           <ion-label>
-            <h2>Terms and Conditions</h2>
+            <h2>AOR</h2>
           </ion-label>
         </ion-item>
       </ion-list>
