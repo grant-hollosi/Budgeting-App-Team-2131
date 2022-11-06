@@ -3,7 +3,16 @@
 
 <ion-content role="feed">
   <ion-list>
-      
+    <ion-item *ngFor="let result of results" detail="true" role="article" (click)="navigate('../fund-details/')">
+      <ion-label>
+        <h2>{{result['Commodity']}}</h2>
+        <p>{{result['AOR']}}</p>
+      </ion-label>
+      <p>${{result['Obligations']}}</p>
+      <ion-button (click)="toggleFlag($event)" fill="clear" color="dark">
+        <ion-icon style="height: 24px; width: 24px" name="flag-outline" slot="end"></ion-icon>
+      </ion-button>
+    </ion-item>
   </ion-list>
     <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
       <ion-infinite-scroll-content

@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { IonModal } from '@ionic/angular';
 
 @Component({
   selector: 'app-filter',
@@ -10,9 +11,17 @@ export class FilterComponent implements OnInit {
   @Input() title: string;
   @Input() goBack: boolean;
 
+  @ViewChild(IonModal) filterModal: IonModal;
+  @ViewChild(IonModal) sortModal: IonModal;
+
   constructor() { }
 
   ngOnInit() {}
+
+  close() {
+    if (this.filterModal.didPresent) {this.filterModal.dismiss(null, 'close')}
+    if (this.sortModal.didPresent) {this.sortModal.dismiss(null, 'close')}
+  }
 
   filter(){
     console.log("Opening filter options");

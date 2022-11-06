@@ -9,12 +9,11 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-
   @Input() title: string;
   @Input() goBack: boolean;
 
   @ViewChild(IonModal) modal: IonModal;
-  @ViewChild(IonModal) help: IonModal;
+  // @ViewChild(IonModal) help: IonModal;
 
   constructor(private storage: Storage) { }
 
@@ -22,7 +21,8 @@ export class HeaderComponent implements OnInit {
 
 
   close() {
-    this.modal.dismiss(null, 'close');
+    if (this.modal.didPresent) {this.modal.dismiss(null, 'close');}
+    // if (this.help.didPresent) {this.help.dismiss(null, 'close')}
   }
 
   async logout() {
