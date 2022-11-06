@@ -73,7 +73,6 @@ export class HomePage implements OnInit {
 
   toggleFlag(event) {
     event.stopPropagation();
-    console.log(event.target.children);
     event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
   }
   
