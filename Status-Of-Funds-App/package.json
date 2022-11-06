@@ -29,8 +29,24 @@
     "@ionic/cli": "^6.20.1",
     "@ionic/storage": "^3.0.6",
     "@ionic/storage-angular": "^3.0.6",
+    "aws-sdk": "^2.1247.0",
+    "cordova-plugin-file": "^7.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "errorhandler": "^1.5.1",
+    "express": "^4.18.2",
+    "helmet": "^6.0.0",
+    "install": "^0.13.0",
+    "morgan": "^1.10.0",
+    "mssql": "^9.0.1",
+    "mysql": "^2.18.1",
+    "npm": "^8.19.2",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
     "rxjs": "~6.6.0",
+    "serverless-mysql": "^1.5.4",
     "tslib": "^2.2.0",
+    "util": "^0.12.5",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -47,7 +63,7 @@
     "@ionic/angular-toolkit": "^6.0.0",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "^12.11.1",
+    "@types/node": "^12.20.55",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
     "eslint": "^7.6.0",
@@ -66,5 +82,15 @@
     "ts-node": "~8.3.0",
     "typescript": "~4.7.3"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "browser": {
+    "crypto": "@types/node/crypto.d",
+    "net": "@types/node/net.d",
+    "tls": "@types/node/tls.d",
+    "stream": "@types/node/stream.d",
+    "timers": "@types/node/timers.d",
+    "fs": "@types/node/fs.d",
+    "path": "@types/node/path.d",
+    "os": "@types/node/os.d"
+  }
 }
