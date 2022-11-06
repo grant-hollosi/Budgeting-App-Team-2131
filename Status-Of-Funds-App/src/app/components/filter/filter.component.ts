@@ -11,16 +11,19 @@ export class FilterComponent implements OnInit {
   @Input() title: string;
   @Input() goBack: boolean;
 
-  @ViewChild(IonModal) filterModal: IonModal;
-  @ViewChild(IonModal) sortModal: IonModal;
+  isFilterModalOpen = false;
+  isSortModalOpen = false;
 
   constructor() { }
 
   ngOnInit() {}
 
-  close() {
-    if (this.filterModal.didPresent) {this.filterModal.dismiss(null, 'close')}
-    if (this.sortModal.didPresent) {this.sortModal.dismiss(null, 'close')}
+  setOpen(isOpen: boolean, variable: string) {
+    if (variable == 'filter') {
+      this.isFilterModalOpen = isOpen;
+    } else if (variable == 'sort') {
+      this.isSortModalOpen = isOpen;
+    }
   }
 
   filter(){

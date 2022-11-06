@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./fund-details.page.scss'],
 })
 export class FundDetailsPage implements OnInit {
+  data = history.state.data;
 
   constructor() { }
 
   ngOnInit() {
+    console.log(this.data);
   }
 
+  
 }

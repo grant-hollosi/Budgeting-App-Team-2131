@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
   @Input() title: string;
   @Input() goBack: boolean;
 
-  @ViewChild(IonModal) modal: IonModal;
+  isSettingsModalOpen = false;
   // @ViewChild(IonModal) help: IonModal;
 
   constructor(private storage: Storage) { }
@@ -20,14 +20,15 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {}
 
 
-  close() {
-    if (this.modal.didPresent) {this.modal.dismiss(null, 'close');}
-    // if (this.help.didPresent) {this.help.dismiss(null, 'close')}
+  setOpen(isOpen: boolean, variable: string) {
+    if (variable == "settings") {
+      this.isSettingsModalOpen = isOpen;
+    }
   }
 
   async logout() {
     console.log("logging out");
-    this.close();
+    this.setOpen(false, "settings");
     this.storage.clear();
   }
 

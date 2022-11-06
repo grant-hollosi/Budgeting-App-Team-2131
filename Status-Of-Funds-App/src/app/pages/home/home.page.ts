@@ -41,7 +41,9 @@ export class HomePage implements OnInit {
   populate(query) {
     let data = this.getQuery(query);
     data.then((result) => {
-      if (Array.isArray(result)) { this.results = this.results.concat(result); }
+      if (Array.isArray(result)) {
+        this.results = this.results.concat(result);
+       }
     });
   }
 
@@ -73,12 +75,11 @@ export class HomePage implements OnInit {
 
   toggleFlag(event) {
     event.stopPropagation();
-    console.log(event.target.children);
     event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
   }
   
-  navigate(page: string) {
-    this.router.navigate([page]);
+  navigate(page: string, extras: any) {
+    this.router.navigate([page], {state: {data: extras}});
   }
 
   filter() {
