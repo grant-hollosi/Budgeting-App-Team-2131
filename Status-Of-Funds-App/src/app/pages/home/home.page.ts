@@ -5,8 +5,6 @@ import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonIcon, IonInfiniteScroll, IonList } from '@ionic/angular';
 
-import { ApiService } from './../../api.service';
-// import { HttpClient } from '@angular/common/http';
 import { DataService } from "src/app/services/data.service";
 
 @Component({

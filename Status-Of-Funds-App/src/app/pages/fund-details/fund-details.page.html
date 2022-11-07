@@ -1,4 +1,37 @@
-<app-header title="Fund Details" [goBack]="true"></app-header>
-<ion-content>
+<app-header title="Fund Details" [goBack]="true">
+    <style>
+        .container {
+            height: 800px;
+            width: 300px;
+            border-radius: 10px;
+            border: 2px solid gray;
+
+        }
+    </style>
+</app-header>
+<ion-content role="Fund Details" detail = "true">
+    <div class = "container" *ngIf = "data">
+        <ion-label class = "ionBody">
+            <h1><u>{{data.id}}: {{data.Commodity}}</u> <ion-button (click)="toggleFlag($event)" fill="clear" color="dark">
+                <ion-icon name="flag-outline" slot="end"></ion-icon>
+            </ion-button></h1>
+            <h2>
+                ID: {{data.ID}}
+            </h2> 
+        </ion-label>
+        <body> 
+            <h1 style = "margin-left: 20px">
+                DPI: {{data.DPI}}<br>
+                AOR: {{data.AOR}}<br>
+                Funded Program: {{data.FundedProgram}}<br>
+                Cost Center: {{data.CostCenter}}<br>
+                Obligations: {{data.Obligations}}<br>
+                Commitments: {{data.Commitments}}<br>
+                Disbursements: {{data.Disbursements}}<br>
+                SAG: {{data.SAG}}<br>
+                Transaction Date: {{data.TransDate}}<br>
+            </h1>
+        </body>
+    </div>
 </ion-content>
 <app-tabs></app-tabs>

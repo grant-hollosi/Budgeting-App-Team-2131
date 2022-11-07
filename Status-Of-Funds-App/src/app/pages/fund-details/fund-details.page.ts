@@ -14,5 +14,10 @@ export class FundDetailsPage implements OnInit {
     console.log(this.data);
   }
 
+  toggleFlag(event) {
+    event.stopPropagation();
+    event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
+  }
+
   
 }
