@@ -23,29 +23,70 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <ion-list>
-        <ion-item detail="true">
-          <ion-label>
-            <h2>Amount</h2>
-          </ion-label>
-        </ion-item>
-        <ion-item detail="true">
-          <ion-label>
-            <h2>AOR</h2>
-          </ion-label>
-        </ion-item>
-        <ion-item detail="true">
-          <ion-label>
-            <h2>Date</h2>
+      <ion-accordion-group>
+        <ion-accordion value="first">
+          <ion-item lines="inset" slot="header" detail="true">
+            <ion-label>
+              <h2>Amount</h2>
+            </ion-label>
+            <ion-icon name="cash"></ion-icon>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <ion-range [pin]="true" [dualKnobs]="true" [min]="-100" [max]="100" [value]="{lower:-100, upper: 100}"></ion-range>
+          </div>
+        </ion-accordion>
+        <ion-accordion value="second">
+          <ion-item lines="inset" slot="header" detail="true">
+            <ion-label>
+              <h2>AOR</h2>
+            </ion-label>
+            <ion-icon name="shield"></ion-icon>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <ion-item *ngFor="let aor of aors">
+              <ion-checkbox slot="start"></ion-checkbox>
+              <div *ngIf="aor['AOR']; then label; else blank_label"></div>
+                <ng-template #label><ion-label>{{aor['AOR']}}</ion-label></ng-template>
+                <ng-template #blank_label><ion-label #blank_label>Blank</ion-label></ng-template>
+            </ion-item>
+          </div>
+        </ion-accordion>
+        <ion-accordion value="third">
+          <ion-item lines="inset" slot="header" detail="true">
+            <ion-label>
+              <h2>Date</h2>
+            </ion-label>
             <ion-icon name="calendar"></ion-icon>
-          </ion-label>
-        </ion-item>
-        <ion-item detail="true">
-          <ion-label>
-            <h2>Flag</h2>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+          </ion-item>
+          <div slot="content">
+            <ion-datetime
+              [showDefaultButtons]="true"
+              presentation="date"
+              [multiple]="true"
+              ></ion-datetime>
+          </div>
+        </ion-accordion>
+        <ion-accordion value="fourth">
+          <ion-item lines="inset" slot="header" detail="true">
+            <ion-label>
+              <h2>Flag</h2>
+            </ion-label>
+            <ion-icon name="flag"></ion-icon>
+          </ion-item>
+          <div slot="content">
+            <ion-item>
+              <ion-checkbox slot="start"></ion-checkbox>
+              <ion-label>Flagged</ion-label>
+              <ion-icon name="flag" slot="end"></ion-icon>
+            </ion-item>
+            <ion-item>
+              <ion-checkbox slot="start"></ion-checkbox>
+              <ion-label>Unflagged</ion-label>
+              <ion-icon name="flag-outline" slot="end"></ion-icon>
+            </ion-item>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
     </ion-content>
   </ng-template>
 </ion-modal>

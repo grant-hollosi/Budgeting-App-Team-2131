@@ -3,8 +3,8 @@
 
 <ion-content role="feed">
   <ion-list>
-    <div *ngFor="let result of results">
-      <ion-item detail="true" role="article" (click)="navigate('../fund-details/', result)">
+    <div *ngIf="results">
+      <ion-item *ngFor="let result of results" detail="true" role="article" (click)="navigate('../fund-details/', result)">
         <ion-label>
           <h2>{{result['Commodity']}}</h2>
           <p>{{result['AOR']}}</p>

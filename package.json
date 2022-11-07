@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@ionic-native/file": "^5.36.0"
+    "@ionic-native/file": "^5.36.0",
+    "mysql": "^2.18.1"
   }
 }
