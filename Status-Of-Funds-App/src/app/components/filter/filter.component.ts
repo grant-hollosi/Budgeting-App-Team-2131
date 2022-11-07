@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-filter',
@@ -14,9 +16,20 @@ export class FilterComponent implements OnInit {
   isFilterModalOpen = false;
   isSortModalOpen = false;
 
-  constructor() { }
+  aors: any[];
 
-  ngOnInit() {}
+  constructor(private dataService: DataService) {
+    this.aors = new Array();
+  }
+
+  ngOnInit() {
+    let query = this.dataService.populate(`SELECT DISTINCT AOR FROM dataTable`);
+    query.then((result) => {
+      if (Array.isArray(result)) {
+        this.aors = result;
+      }
+    })
+  }
 
   setOpen(isOpen: boolean, variable: string) {
     if (variable == 'filter') {

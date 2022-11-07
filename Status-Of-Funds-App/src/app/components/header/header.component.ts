@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class HeaderComponent implements OnInit {
   isSettingsModalOpen = false;
   // @ViewChild(IonModal) help: IonModal;
 
-  constructor(private storage: Storage) { }
+  constructor(private storage: Storage, private router: Router) { }
 
   ngOnInit() {}
 
@@ -27,9 +28,11 @@ export class HeaderComponent implements OnInit {
   }
 
   async logout() {
-    console.log("logging out");
     this.setOpen(false, "settings");
     this.storage.clear();
+    setTimeout(() => {
+      this.navigate('/');
+    }, 10);
   }
 
 
@@ -41,4 +44,7 @@ export class HeaderComponent implements OnInit {
     console.log("Going back");
   }
 
+  navigate(page: string) {
+    this.router.navigate([page]);
+  }
 }
