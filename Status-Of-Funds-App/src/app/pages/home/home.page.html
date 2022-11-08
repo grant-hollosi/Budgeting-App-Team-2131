@@ -11,7 +11,9 @@
           <h2>{{result['Commodity']}}</h2>
           <p>{{result['AOR']}}</p>
         </ion-label>
-        <p>${{result['Obligations']}}</p>
+        <div *ngIf="result['Obligations'] < 0; then red; else green"></div>
+          <ng-template #red><ion-text color="danger">${{result['Obligations'] | number:'1.2-2'}}</ion-text></ng-template>
+          <ng-template #green><ion-text color="success">${{result['Obligations'] | number:'1.2-2'}}</ion-text></ng-template>
         <ion-button (click)="toggleFlag($event)" fill="clear" color="dark">
           <ion-icon style="height: 24px; width: 24px" name="flag-outline" slot="end"></ion-icon>
         </ion-button>

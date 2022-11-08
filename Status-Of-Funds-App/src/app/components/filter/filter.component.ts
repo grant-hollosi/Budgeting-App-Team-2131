@@ -33,8 +33,8 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    let query = this.dataService.populate(`SELECT DISTINCT AOR FROM dataTable`);
-    query.then((result) => {
+    let fetch = this.dataService.populate(`SELECT DISTINCT AOR FROM dataTable`);
+    fetch.then((result) => {
       if (Array.isArray(result)) {
         for (let r in result) {
           this.aors.push(result[r]['AOR']);
@@ -43,18 +43,18 @@ export class FilterComponent implements OnInit {
       }
     });
 
-    query = this.dataService.populate("SELECT MIN(Obligations) FROM dataTable WHERE id > 1");
-    query.then((result) => {
+    fetch = this.dataService.populate("SELECT MIN(Obligations) FROM dataTable WHERE id > 1");
+    fetch.then((result) => {
       this.min = result[0]['MIN(Obligations)'];
     });
 
-    query = this.dataService.populate("SELECT MAX(Obligations) FROM dataTable WHERE id > 1");
-    query.then((result) => {
+    fetch = this.dataService.populate("SELECT MAX(Obligations) FROM dataTable WHERE id > 1");
+    fetch.then((result) => {
       this.max = result[0]['MAX(Obligations)'];
     });
 
-    query = this.dataService.populate("SELECT MAX(TransDate) FROM dataTable");
-    query.then((result) => {
+    fetch = this.dataService.populate("SELECT MAX(TransDate) FROM dataTable");
+    fetch.then((result) => {
       this.maxDate = result[0]['MAX(TransDate)'].slice(0, -1);
     });
   }
@@ -68,9 +68,8 @@ export class FilterComponent implements OnInit {
   }
 
   filter(filter_by: string){
-    let query;
     if (filter_by == 'amount') {
-      query = this.dataService.populate(`SELECT * FROM dataTable WHERE Obligations BETWEEN ${this.range.value['lower']} AND ${this.range.value['upper']}`);
+      this.home.query = `SELECT * FROM dataTable WHERE Obligations BETWEEN ${this.range.value['lower']} AND ${this.range.value['upper']}`;
     } else if (filter_by == 'aor') {
       let selected_aors = '';
       for (let cb in this.checkboxes['_results']) {
@@ -79,10 +78,10 @@ export class FilterComponent implements OnInit {
         }
       }
       selected_aors = selected_aors.slice(0, -1);
-      query = this.dataService.populate(`SELECT * FROM dataTable WHERE AOR IN (${selected_aors})`);
+      this.home.query = `SELECT * FROM dataTable WHERE AOR IN (${selected_aors})`;
     } else if (filter_by == 'date') {
       let date = moment(this.date_picker.value).format('YYYY-MM-DD');
-      query = this.dataService.populate(`SELECT * FROM dataTable WHERE TransDate >= '${date} 00:00:00'`)
+      this.home.query = `SELECT * FROM dataTable WHERE TransDate >= '${date} 00:00:00'`
     } else if (filter_by == 'flag') {
       let selected_statuses = '';
       for (let cb in this.checkboxes['_results']) {
@@ -92,19 +91,14 @@ export class FilterComponent implements OnInit {
       }
       selected_statuses = selected_statuses.slice(0, -1);
     }
-    if (query !== undefined) {
-      query.then((result) => {
-        if (Array.isArray(result)) {
-          this.home.results = result;
-        }
-      });
-      this.home.filters = true;
-      this.setOpen(false, 'filter');
-    }
+    this.home.showLoading(true);
+    this.home.ngOnInit();
+    this.setOpen(false, 'filter');
   }
 
   clearFilters() {
-    this.home.filters = false;
+    this.home.showLoading(true);
+    this.home.query = `SELECT * FROM dataTable WHERE id > 1`;
     this.home.ngOnInit();
     this.setOpen(false, 'filter');
   }
