@@ -32,7 +32,11 @@
             <ion-icon name="cash"></ion-icon>
           </ion-item>
           <div class="ion-padding" slot="content">
-            <ion-range [pin]="true" [dualKnobs]="true" [min]="-100" [max]="100" [value]="{lower:-100, upper: 100}"></ion-range>
+            <ion-range [pin]="true" [dualKnobs]="true" [min]="min" [max]="max" [value]="{lower:min, upper: max}">
+              <label slot="start">{{min}}</label>
+              <label slot="end">{{max}}</label>
+            </ion-range>
+            <ion-button expand="block" color="primary" (click)="filter('amount')">Apply Filters</ion-button>
           </div>
         </ion-accordion>
         <ion-accordion value="second">
@@ -44,11 +48,12 @@
           </ion-item>
           <div class="ion-padding" slot="content">
             <ion-item *ngFor="let aor of aors">
-              <ion-checkbox slot="start"></ion-checkbox>
-              <div *ngIf="aor['AOR']; then label; else blank_label"></div>
-                <ng-template #label><ion-label>{{aor['AOR']}}</ion-label></ng-template>
+              <ion-checkbox id="aor" value="{{aor}}" slot="start"></ion-checkbox>
+              <div *ngIf="aor; then label; else blank_label"></div>
+                <ng-template #label><ion-label>{{aor}}</ion-label></ng-template>
                 <ng-template #blank_label><ion-label #blank_label>Blank</ion-label></ng-template>
             </ion-item>
+            <ion-button expand="block" color="primary" (click)="filter('aor')">Apply Filters</ion-button>
           </div>
         </ion-accordion>
         <ion-accordion value="third">
@@ -60,10 +65,13 @@
           </ion-item>
           <div slot="content">
             <ion-datetime
-              [showDefaultButtons]="true"
               presentation="date"
-              [multiple]="true"
-              ></ion-datetime>
+              hourCycle="h23"
+              [max]="maxDate"
+              [value]="maxDate"
+              >
+              <span slot='title'>Select earliest date</span></ion-datetime>
+              <ion-button expand="block" color="primary" (click)="filter('date')">Apply Filters</ion-button>
           </div>
         </ion-accordion>
         <ion-accordion value="fourth">
@@ -75,18 +83,22 @@
           </ion-item>
           <div slot="content">
             <ion-item>
-              <ion-checkbox slot="start"></ion-checkbox>
+              <ion-checkbox id="flag" value="flagged" slot="start"></ion-checkbox>
               <ion-label>Flagged</ion-label>
               <ion-icon name="flag" slot="end"></ion-icon>
             </ion-item>
             <ion-item>
-              <ion-checkbox slot="start"></ion-checkbox>
+              <ion-checkbox id='flag' value="unflagged" slot="start"></ion-checkbox>
               <ion-label>Unflagged</ion-label>
-              <ion-icon name="flag-outline" slot="end"></ion-icon>
+              <ion-icon #flagged name="flag-outline" slot="end"></ion-icon>
             </ion-item>
+            <ion-button expand="block" color="primary" (click)="filter('flag')">Apply Filters</ion-button>
           </div>
         </ion-accordion>
       </ion-accordion-group>
+      <div>
+        <ion-button expand="block" color="dark" (click)="clearFilters()">Clear Filters</ion-button>
+      </div>
     </ion-content>
   </ng-template>
 </ion-modal>

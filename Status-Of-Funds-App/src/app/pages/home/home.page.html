@@ -1,6 +1,8 @@
 <app-header title="List of Funds" [goBack]="false"></app-header>
 <app-filter></app-filter>
 
+<ion-nav #navCtrl></ion-nav>
+
 <ion-content role="feed">
   <ion-list>
     <div *ngIf="results">
