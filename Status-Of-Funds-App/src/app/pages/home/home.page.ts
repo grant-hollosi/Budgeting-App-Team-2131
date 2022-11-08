@@ -3,12 +3,12 @@ import {take, map} from 'rxjs/operators';
 
 import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonButton, IonIcon, IonInfiniteScroll, IonList } from '@ionic/angular';
+import { IonButton, IonIcon, IonInfiniteScroll, IonList, LoadingController } from '@ionic/angular';
+
 
 import { ApiService } from './../../api.service';
 // import { HttpClient } from '@angular/common/http';
 import { DataService } from "src/app/services/data.service";
-import { FundDetailsPage } from "../fund-details/fund-details.page";
 
 @Component({
   selector: 'app-home',
@@ -21,43 +21,40 @@ export class HomePage implements OnInit {
   @ViewChild(IonList) list: IonList;
 
   datauser: any;
+  public all_results: any[];
   public results: any[];
   chunk: any;
   start_id: any;
   end_id: any;
   public list_item: any;
-  public filters: boolean;
+  public query = `SELECT * FROM dataTable WHERE id > 1`;
+  private loading: any;
 
-  constructor(private auth: AuthService, private router: Router, private dataService: DataService) { }
+  constructor(private auth: AuthService, private router: Router, private dataService: DataService, private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
     this.chunk = 100;
-    this.start_id = 2;
+    this.start_id = 0;
     this.end_id = this.start_id + this.chunk;
-    this.results = new Array();
     this.dataService.wipe();
-    let query = this.dataService.populate(`SELECT * FROM dataTable WHERE id BETWEEN ${this.start_id} AND ${this.end_id}`);
-    query.then((result) => {
+    this.results = new Array();
+    let fetch = this.dataService.populate(this.query);
+    fetch.then((result) => {
       if (Array.isArray(result)) {
-        this.results = result;
+        this.all_results = result;
+        this.results = this.results.concat(this.all_results.slice(this.start_id, this.end_id));
+        this.showLoading(false);
       }
     });
-    this.filters = false;
   }
 
   loadData(event) {
     setTimeout(() => {
       event.target.complete();
-      if (!this.filters) {
-        this.start_id += this.chunk;
-        this.end_id = this.start_id + this.chunk;
-        let query = this.dataService.populate(`SELECT * FROM dataTable WHERE id BETWEEN ${this.start_id} AND ${this.end_id}`);
-        query.then((result) => {
-          if (Array.isArray(result)) {
-            this.results = this.results.concat(result);
-          }
-        });
-      }
+      this.start_id += this.chunk;
+      this.end_id = this.start_id + this.chunk;
+      this.results = this.results.concat(this.all_results.slice(this.start_id, this.end_id));
+
       // Determines if all data has been loaded
       // and disables infinite scroll if so.
       if (DataTransfer.length === 1000) {
@@ -74,6 +71,18 @@ export class HomePage implements OnInit {
   navigate(page: string, item: any) {
     // this.router.navigate([page]);
     this.router.navigate([page], {state: {data: {'result': item}}});
+  }
+
+  async showLoading(show: boolean) {
+    if (show) {
+      this.loading = await this.loadingCtrl.create({
+        message: 'Retrieving filtered data...',
+        spinner: 'bubbles'
+      });
+      this.loading.present();
+    } else if (this.loading) {
+      this.loading.dismiss();
+    }
   }
 
 }
