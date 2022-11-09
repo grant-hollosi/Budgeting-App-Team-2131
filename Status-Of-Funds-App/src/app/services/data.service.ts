@@ -50,4 +50,8 @@ export class DataService {
   getResults() {
     return this.results;
   }
+
+  getItem(id: number) {
+    return this.populate(`SELECT * FROM dataTable WHERE id = ${id}`);
+  }
 }

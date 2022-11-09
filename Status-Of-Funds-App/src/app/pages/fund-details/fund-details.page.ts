@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
+import { HomePage } from '../home/home.page';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-fund-details',
@@ -6,18 +9,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./fund-details.page.scss'],
 })
 export class FundDetailsPage implements OnInit {
-  data = history.state.data['result'];
+  data: any;
+  static item_id: number;
 
-  constructor() {}
+  constructor(private dataService: DataService, private storage: Storage) {}
 
   ngOnInit() {
-    console.log(this.data);
+    this.storage.get('id').then((val) => {
+      console.log(val);
+      let fetch = this.dataService.getItem(val);
+      fetch.then((result) => {
+        this.data = result[0];
+      });
+    });
   }
-
-  toggleFlag(event) {
-    event.stopPropagation();
-    event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
-  }
-
   
 }

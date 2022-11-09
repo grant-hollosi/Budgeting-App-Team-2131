@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { IonButton, IonIcon, IonInfiniteScroll, IonList, LoadingController } from '@ionic/angular';
 import { DataService } from "src/app/services/data.service";
 import { HttpClient } from '@angular/common/http';
+import { FundDetailsPage } from "../fund-details/fund-details.page";
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-home',
@@ -32,7 +34,7 @@ export class HomePage implements OnInit {
     'amount': ''
   }
 
-  constructor(private auth: AuthService, private router: Router, private dataService: DataService, private loadingCtrl: LoadingController) { }
+  constructor(private auth: AuthService, private router: Router, public dataService: DataService, private loadingCtrl: LoadingController, private storage: Storage) { }
 
   ngOnInit() {
     this.showLoading(true);
@@ -75,7 +77,8 @@ export class HomePage implements OnInit {
   
   navigate(page: string, item: any) {
     // this.router.navigate([page]);
-    this.router.navigate([page], {state: {data: {'result': item}}});
+    this.storage.set('id', item.id);
+    this.router.navigate([page]);
   }
 
   async showLoading(show: boolean) {

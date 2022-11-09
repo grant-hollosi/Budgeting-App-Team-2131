@@ -42,7 +42,6 @@ export class HeaderComponent implements OnInit {
 
   back() {
     this.router.navigate(['home']);
-    console.log("Going back");
   }
 
   navigate(page: string) {
