@@ -8,7 +8,6 @@ export class DataService {
 
   results: any[];
   previousQuery: string;
-  public promise: any;
   constructor(private http: HttpClient) { 
     this.results = new Array();
   }
@@ -19,11 +18,13 @@ export class DataService {
 
   populate(query: string) {
     if (this.previousQuery && query == this.previousQuery) {
-      return this.promise;
+      return new Promise((resolve) => {
+        resolve(this.results);
+      });
     } else {
       this.wipe();
       let data = this.getQuery(query);
-      this.promise = new Promise((resolve) => {
+      return new Promise((resolve) => {
         data.then((result) => {
           if (Array.isArray(result)) {
             this.results = result;
@@ -32,7 +33,6 @@ export class DataService {
           }
         });
       });
-      return this.promise;
     }
   }
 

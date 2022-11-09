@@ -8,10 +8,16 @@
     <div *ngIf="results">
       <ion-item *ngFor="let result of results" detail="true" role="article" (click)="navigate('../fund-details/', result)">
         <ion-label>
-          <h2>{{result['Commodity']}}</h2>
+          <div *ngIf="result['Commodity']; then title; else no_title"></div>
+            <ng-template #title><h2>{{result['Commodity']}}</h2></ng-template>
+            <ng-template #no_title><h2>No Commodity Given</h2></ng-template>
           <div *ngIf="result['TransDate'] == '0000-00-00 00:00:00'; then no_date; else date"></div>
-          <ng-template #date><p><ion-text color="primary">{{result['AOR']}}</ion-text><ion-text>{{result['TransDate'] | date: 'MM/dd/YYYY'}}</ion-text></p></ng-template>
-          <ng-template #no_date><p><ion-text color='primary'>{{result['AOR']}}</ion-text></p></ng-template>
+            <ng-template #date>
+              <div *ngIf="result['AOR']; then aor; else no_aor"></div> 
+                <ng-template #aor><p><ion-text color="primary"><strong>{{result['AOR']}}</strong></ion-text><ion-text style="margin: 0 0 0 5px">{{result['TransDate'] | date: 'MM/dd/YYYY'}}</ion-text></p></ng-template>
+                <ng-template #no_aor><p>{{result['TransDate'] | date: 'MM/dd/YYYY'}}</p></ng-template>
+              </ng-template>
+            <ng-template #no_date><p><ion-text color='primary'><strong>{{result['AOR']}}</strong></ion-text></p></ng-template>
         </ion-label>
         <div *ngIf="result['Obligations'] < 0; then red; else positive"></div>
           <ng-template #red><ion-text color="danger">${{result['Obligations'] | number:'1.2-2'}}</ion-text></ng-template>

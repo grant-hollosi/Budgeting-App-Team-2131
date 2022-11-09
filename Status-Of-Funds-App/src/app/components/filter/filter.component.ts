@@ -104,12 +104,6 @@ export class FilterComponent implements OnInit {
     if (aor_selected) {
       this.home.filters['aor'] = `AND AOR IN (${selected_aors})`
     }
-    
-    // DATE FILTER
-    if (this.date_picker.value) {
-      let date = moment(this.date_picker.value).format('YYYY-MM-DD');
-      this.home.filters['date'] = `AND TransDate > '${date} 00:00:00'`;
-    }
 
     // FLAG FILTER
     let selected_statuses = '';
@@ -189,9 +183,10 @@ export class FilterComponent implements OnInit {
     this.home.ngOnInit();
   }
 
-  dateChanged(event) {
-    if (event.detail.value > this.date_picker.max) {
-      this.date_picker.value = this.date_picker.max;
+  dateChanged() {
+    if (this.date_picker.value) {
+      let date = moment(this.date_picker.value).format('YYYY-MM-DD');
+      this.home.filters['date'] = `AND (TransDate > '${date} 00:00:00' OR TransDate = '0000-00-00 00:00:00')`;
     }
   }
 
