@@ -41,8 +41,7 @@ export class HomePage implements OnInit {
   }
 
   loadData(event) {
-    setTimeout(() => {
-      event.target.complete();
+    event.target.complete();
       this.start_id += this.chunk;
       this.end_id = this.start_id + this.chunk;
       let query = this.dataService.populate(`SELECT * FROM dataTable WHERE id BETWEEN ${this.start_id} AND ${this.end_id}`);
@@ -56,7 +55,6 @@ export class HomePage implements OnInit {
       if (DataTransfer.length === 1000) {
         event.target.disabled = true;
       }
-    }, 500);
   }
 
   toggleFlag(event) {
