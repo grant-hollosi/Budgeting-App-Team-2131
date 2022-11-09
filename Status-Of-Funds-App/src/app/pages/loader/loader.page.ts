@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/services/data.service';
+import { HomePage } from '../home/home.page';
 
 @Component({
   selector: 'app-loader',
@@ -8,12 +10,14 @@ import { Router } from '@angular/router';
 })
 export class LoaderPage implements OnInit {
 
-  constructor(private router: Router) { }
+  public data: any;
+  constructor(private router: Router, private dataService: DataService) {}
 
   ngOnInit() {
-    setTimeout(() => {
+    this.data = this.dataService.populate(`SELECT * FROM dataTable WHERE id > 1`);
+    this.data.then((result) => {
       this.router.navigate(['home']);
-    }, 1000);
+    });
   }
 
 }

@@ -1,9 +1,10 @@
-import { AuthService } from '../../services/auth.service';
-import {take, map} from 'rxjs/operators';
+import { AuthService } from "../../services/auth.service";
+import {take, map, filter} from 'rxjs/operators';
 
 import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonButton, IonIcon, IonInfiniteScroll, IonList } from '@ionic/angular';
+import { IonButton, IonIcon, IonInfiniteScroll, IonList, LoadingController } from '@ionic/angular';
+
 
 import { HttpClient } from '@angular/common/http';
 
@@ -16,31 +17,42 @@ import { HttpClient } from '@angular/common/http';
 export class HomePage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonList) list: IonList;
+
   datauser: any;
-  results: any[];
+  public all_results: any[];
+  public results: any[];
   chunk: any;
   start_id: any;
-  end_id: any;
-
-  constructor(private auth: AuthService, private router: Router, public http: HttpClient) { }
-
-  ngOnInit() {
-    this.chunk = 50;
-    this.start_id = 2;
-    this.end_id = this.start_id + this.chunk;
-    this.results = new Array();
-    // let data = this.getQuery("SELECT * FROM dataTable WHERE id BETWEEN 1 AND 5");
-    // data.then((crud) => console.log(crud));
-
-    // data = this.getQuery("SELECT * FROM dataTable WHERE id BETWEEN 20 AND 25");
-    // data.then((crud) => console.log(crud));
-    this.populate(`SELECT * FROM dataTable WHERE id BETWEEN ${this.start_id} AND ${this.end_id}`);
+  public list_item: any;
+  public query = `SELECT * FROM dataTable WHERE id > 1`;
+  private loading: any;
+  public sort_by = '';
+  public filters = {
+    'aor': '',
+    'date': '',
+    'amount': ''
   }
 
-  populate(query) {
-    let data = this.getQuery(query);
-    data.then((result) => {
-      if (Array.isArray(result)) { this.results = this.results.concat(result); }
+  constructor(private auth: AuthService, private router: Router, private dataService: DataService, private loadingCtrl: LoadingController) { }
+
+  ngOnInit() {
+    this.showLoading(true);
+    this.chunk = 100;
+    this.start_id = 0;
+    this.results = new Array();
+    let query = this.query;
+    for (let key in this.filters) {
+      query = query.concat(' ', this.filters[key]).trim();
+    }
+
+    query = query.concat(' ', this.sort_by).trim();
+    let fetch = this.dataService.populate(query);
+    fetch.then((result) => {
+      if (Array.isArray(result)) {
+        this.all_results = result;
+        this.results = this.results.concat(this.all_results.slice(this.start_id, this.start_id + this.chunk));
+        this.showLoading(false);
+      }
     });
   }
 
@@ -59,8 +71,7 @@ export class HomePage implements OnInit {
     setTimeout(() => {
       event.target.complete();
       this.start_id += this.chunk;
-      this.end_id = this.start_id + this.chunk;
-      this.populate(`SELECT * FROM dataTable WHERE id BETWEEN ${this.start_id} AND ${this.end_id}`);
+      this.results = this.results.concat(this.all_results.slice(this.start_id, this.start_id + this.chunk));
 
       // Determines if all data has been loaded
       // and disables infinite scroll if so.
@@ -76,16 +87,22 @@ export class HomePage implements OnInit {
     event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
   }
   
-  navigate(page :string, extras: any) {
-    this.router.navigate([page], {state: {data: extras}});
+  navigate(page: string, item: any) {
+    // this.router.navigate([page]);
+    this.router.navigate([page], {state: {data: {'result': item}}});
   }
 
-  filter() {
-    console.log('filter clicked');
-  }
-
-  sort() {
-    console.log('sort clicked');
+  async showLoading(show: boolean) {
+    if (show) {
+      this.loading = await this.loadingCtrl.create({
+        message: 'Retrieving filtered data...',
+        spinner: 'bubbles',
+        duration: 1000
+      });
+      this.loading.present();
+    } else if (this.loading) {
+      this.loading.dismiss();
+    }
   }
 
 }

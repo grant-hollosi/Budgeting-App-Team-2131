@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 export class DataService {
 
   results: any[];
+  previousQuery: string;
   constructor(private http: HttpClient) { 
     this.results = new Array();
   }
@@ -16,16 +17,23 @@ export class DataService {
   }
 
   populate(query: string) {
-    this.wipe();
-    let data = this.getQuery(query);
-    return new Promise((resolve) => {
-      data.then((result) => {
-        if (Array.isArray(result)) {
-          this.results = result;
-          resolve(this.results);
-        }
+    if (this.previousQuery && query == this.previousQuery) {
+      return new Promise((resolve) => {
+        resolve(this.results);
       });
-    });
+    } else {
+      this.wipe();
+      let data = this.getQuery(query);
+      return new Promise((resolve) => {
+        data.then((result) => {
+          if (Array.isArray(result)) {
+            this.results = result;
+            this.previousQuery = query;
+            resolve(this.results);
+          }
+        });
+      });
+    }
   }
 
   async getQuery(query) {

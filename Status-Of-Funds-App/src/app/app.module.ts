@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { FundDetailsPage } from './pages/fund-details/fund-details.page';
 
 @NgModule({
   declarations: [AppComponent],
