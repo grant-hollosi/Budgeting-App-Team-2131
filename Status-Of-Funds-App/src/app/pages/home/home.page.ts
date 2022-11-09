@@ -6,9 +6,7 @@ import { Router } from '@angular/router';
 import { IonButton, IonIcon, IonInfiniteScroll, IonList, LoadingController } from '@ionic/angular';
 
 
-import { ApiService } from './../../api.service';
-// import { HttpClient } from '@angular/common/http';
-import { DataService } from "src/app/services/data.service";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -58,6 +56,17 @@ export class HomePage implements OnInit {
     });
   }
 
+  async getQuery(query) {
+    let url = "https://rxlhaqtsbl.execute-api.us-east-2.amazonaws.com/v1/populate/?query=" + query;
+    let req = this.http.get(url);
+    let results = new Promise((resolve) => {
+      req.subscribe((data) => {
+        resolve(JSON.parse(data.toString()));
+      })
+    });
+    return results;
+  }
+
   loadData(event) {
     setTimeout(() => {
       event.target.complete();
@@ -74,6 +83,7 @@ export class HomePage implements OnInit {
 
   toggleFlag(event) {
     event.stopPropagation();
+    console.log(event.target.children);
     event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
   }
   
