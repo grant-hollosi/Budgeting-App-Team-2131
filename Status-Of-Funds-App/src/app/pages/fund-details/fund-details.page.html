@@ -14,54 +14,54 @@
                 <ion-label><h2>DPI</h2></ion-label>
                 <div *ngIf="data.DPI; then show_dpi; else blank_dpi"></div>
                     <ng-template #show_dpi><ion-text>{{data.DPI}}</ion-text></ng-template>
-                    <ng-template #blank_dpi><ion-text>NO DPI LISTED</ion-text></ng-template>
+                    <ng-template #blank_dpi><ion-text>N/A</ion-text></ng-template>
             </ion-item>
             <ion-item>
                 <ion-label><h2>AOR</h2></ion-label>
                 <div *ngIf="data.AOR; then show_aor; else blank_aor"></div>
                     <ng-template #show_aor><ion-text>{{data.AOR}}</ion-text></ng-template>
-                    <ng-template #blank_aor><ion-text>NO AOR LISTED</ion-text></ng-template>
+                    <ng-template #blank_aor><ion-text>N/A</ion-text></ng-template>
             </ion-item>
             <ion-item>
                 <ion-label><h2>Funded Program</h2></ion-label>
                 <div *ngIf="data.FundedProgram; then show_FP; else blank_FP"></div>
                     <ng-template #show_FP><ion-text>{{data.FundedProgram}}</ion-text></ng-template>
-                    <ng-template #blank_FP><ion-text>NO FUNDED PROGRAM LISTED</ion-text></ng-template>
+                    <ng-template #blank_FP><ion-text>N/A</ion-text></ng-template>
             </ion-item>
             <ion-item>
                 <ion-label><h2>Cost Center</h2></ion-label>
                 <div *ngIf="data.CostCenter; then show_CC; else blank_CC"></div>
                     <ng-template #show_CC><ion-text>{{data.CostCenter}}</ion-text></ng-template>
-                    <ng-template #blank_CC><ion-text>NO COST CENTER LISTED</ion-text></ng-template>
+                    <ng-template #blank_CC><ion-text>N/A</ion-text></ng-template>
             </ion-item>
             <ion-item>
                 <ion-label><h2>Obligations</h2></ion-label>
                 <div *ngIf="data.Obligations; then show_obli; else blank_obli"></div>
                     <ng-template #show_obli><ion-text>{{data.Obligations}}</ion-text></ng-template>
-                    <ng-template #blank_obli><ion-text>NO OBLIGATIONS LISTED</ion-text></ng-template>
+                    <ng-template #blank_obli><ion-text>N/A</ion-text></ng-template>
             </ion-item>
             <ion-item>
                 <ion-label><h2>Commitments</h2></ion-label>
                 <div *ngIf="data.Commitments; then show_comm; else blank_comm"></div>
                     <ng-template #show_comm><ion-text>{{data.Commitments}}</ion-text></ng-template>
-                    <ng-template #blank_comm><ion-text>NO COMMITMENTS LISTED</ion-text></ng-template>
+                    <ng-template #blank_comm><ion-text>N/A</ion-text></ng-template>
             </ion-item>
             <ion-item>
                 <ion-label><h2>Disbursements</h2></ion-label>
                 <div *ngIf="data.Disbursements; then show_disb; else blank_disb"></div>
                     <ng-template #show_disb><ion-text>{{data.Disbursements}}</ion-text></ng-template>
-                    <ng-template #blank_disb><ion-text>NO DISBURSEMENTS LISTED</ion-text></ng-template>
+                    <ng-template #blank_disb><ion-text>N/A</ion-text></ng-template>
             </ion-item>
             <ion-item>
                 <ion-label><h2>SAG</h2></ion-label>
                 <div *ngIf="data.SAG; then show_sag; else blank_sag"></div>
                     <ng-template #show_sag><ion-text>{{data.SAG}}</ion-text></ng-template>
-                    <ng-template #blank_sag><ion-text>NO SAG LISTED</ion-text></ng-template>
+                    <ng-template #blank_sag><ion-text>N/A</ion-text></ng-template>
             </ion-item>
             <ion-item>
                 <ion-label><h2>Date</h2></ion-label>
                 <div *ngIf="data.TransDate == '0000-00-00 00:00:00'; then blank_date; else show_date"></div>
-                    <ng-template #blank_date><ion-text>NO DATE LISTED</ion-text></ng-template>
+                    <ng-template #blank_date><ion-text>N/A</ion-text></ng-template>
                     <ng-template #show_date><ion-text>{{data.TransDate | date: 'MM/dd/YYYY'}}</ion-text></ng-template>
             </ion-item>
         </ion-list>
