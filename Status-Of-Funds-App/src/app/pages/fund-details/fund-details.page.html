@@ -9,7 +9,27 @@
         </ion-label>
     </div>
     <div *ngIf = "data">
-        <ion-grid class = "ion-margin">
+        <ion-list style="margin:0px 30px">
+            <div *ngIf="data.DPI; then show_dpi"></div>
+            <ng-template #show_dpi><ion-item>
+                <ion-label><h2>DPI</h2></ion-label>
+                <ion-text>{{data.DPI}}</ion-text>
+            </ion-item></ng-template>
+            <div *ngIf="AOR; then show_aor; else blank_aor"></div>
+            <ng-template #show_aor><ion-item>
+                <ion-label><h2>AOR</h2></ion-label>
+                <ion-text>{{data.AOR}}</ion-text>
+            </ion-item>
+            </ng-template>
+            <ng-template #blank_aor>
+                <ion-item>
+                    <ion-label><h2>AOR</h2></ion-label>
+                    <ion-text>NO AOR LISTED</ion-text>
+                </ion-item>
+            </ng-template>
+            {{data.TransDate | date:'MM/dd/YYYY'}}
+        </ion-list>
+        <!-- <ion-grid class = "ion-margin">
             <ion-row>
                 <ion-col>DPI</ion-col>
                 <ion-col>{{data.DPI}}</ion-col>
@@ -46,7 +66,7 @@
                 <ion-col>Date</ion-col>
                 <ion-col>{{data.TransDate}}</ion-col>
             </ion-row>
-        </ion-grid>
+        </ion-grid> -->
     </div>
 </ion-content>
 
