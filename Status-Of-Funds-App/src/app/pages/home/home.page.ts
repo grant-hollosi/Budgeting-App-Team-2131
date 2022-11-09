@@ -1,11 +1,11 @@
-import { AuthService } from "../../services/auth.service";
+import { AuthService } from '../../services/auth.service';
 import {take, map} from 'rxjs/operators';
 
 import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonIcon, IonInfiniteScroll, IonList } from '@ionic/angular';
 
-import { DataService } from "src/app/services/data.service";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -22,20 +22,37 @@ export class HomePage implements OnInit {
   start_id: any;
   end_id: any;
 
-  constructor(private auth: AuthService, private router: Router, private dataService: DataService) { }
+  constructor(private auth: AuthService, private router: Router, public http: HttpClient) { }
 
   ngOnInit() {
-    this.chunk = 100;
+    this.chunk = 50;
     this.start_id = 2;
     this.end_id = this.start_id + this.chunk;
     this.results = new Array();
-    this.dataService.wipe();
-    let query = this.dataService.populate(`SELECT * FROM dataTable WHERE id BETWEEN ${this.start_id} AND ${this.end_id}`);
-    query.then((result) => {
-      if (Array.isArray(result)) {
-        this.results = result;
-      }
+    // let data = this.getQuery("SELECT * FROM dataTable WHERE id BETWEEN 1 AND 5");
+    // data.then((crud) => console.log(crud));
+
+    // data = this.getQuery("SELECT * FROM dataTable WHERE id BETWEEN 20 AND 25");
+    // data.then((crud) => console.log(crud));
+    this.populate(`SELECT * FROM dataTable WHERE id BETWEEN ${this.start_id} AND ${this.end_id}`);
+  }
+
+  populate(query) {
+    let data = this.getQuery(query);
+    data.then((result) => {
+      if (Array.isArray(result)) { this.results = this.results.concat(result); }
     });
+  }
+
+  async getQuery(query) {
+    let url = "https://rxlhaqtsbl.execute-api.us-east-2.amazonaws.com/v1/populate/?query=" + query;
+    let req = this.http.get(url);
+    let results = new Promise((resolve) => {
+      req.subscribe((data) => {
+        resolve(JSON.parse(data.toString()));
+      })
+    });
+    return results;
   }
 
   loadData(event) {
@@ -43,12 +60,8 @@ export class HomePage implements OnInit {
       event.target.complete();
       this.start_id += this.chunk;
       this.end_id = this.start_id + this.chunk;
-      let query = this.dataService.populate(`SELECT * FROM dataTable WHERE id BETWEEN ${this.start_id} AND ${this.end_id}`);
-      query.then((result) => {
-        if (Array.isArray(result)) {
-          this.results = this.results.concat(result);
-        }
-      });
+      this.populate(`SELECT * FROM dataTable WHERE id BETWEEN ${this.start_id} AND ${this.end_id}`);
+
       // Determines if all data has been loaded
       // and disables infinite scroll if so.
       if (DataTransfer.length === 1000) {
@@ -59,10 +72,11 @@ export class HomePage implements OnInit {
 
   toggleFlag(event) {
     event.stopPropagation();
+    console.log(event.target.children);
     event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
   }
   
-  navigate(page: string, extras: any) {
+  navigate(page :string, extras: any) {
     this.router.navigate([page], {state: {data: extras}});
   }
 

@@ -1,37 +1,53 @@
 <app-header title="Fund Details" [goBack]="true">
-    <style>
-        .container {
-            height: 800px;
-            width: 300px;
-            border-radius: 10px;
-            border: 2px solid gray;
 
-        }
-    </style>
 </app-header>
 <ion-content role="Fund Details" detail = "true">
-    <div class = "container" *ngIf = "data">
-        <ion-label class = "ionBody">
-            <h1><u>{{data.id}}: {{data.Commodity}}</u> <ion-button (click)="toggleFlag($event)" fill="clear" color="dark">
-                <ion-icon name="flag-outline" slot="end"></ion-icon>
-            </ion-button></h1>
-            <h2>
-                ID: {{data.ID}}
-            </h2> 
+    <div class = "ion-text-center" *ngIf = "data">
+        <ion-label>
+            <h1><u>{{data.Commodity}}</u></h1>
+            <h2>Rec ID: {{data.recID}}</h2> 
         </ion-label>
-        <body> 
-            <h1 style = "margin-left: 20px">
-                DPI: {{data.DPI}}<br>
-                AOR: {{data.AOR}}<br>
-                Funded Program: {{data.FundedProgram}}<br>
-                Cost Center: {{data.CostCenter}}<br>
-                Obligations: {{data.Obligations}}<br>
-                Commitments: {{data.Commitments}}<br>
-                Disbursements: {{data.Disbursements}}<br>
-                SAG: {{data.SAG}}<br>
-                Transaction Date: {{data.TransDate}}<br>
-            </h1>
-        </body>
+    </div>
+    <div *ngIf = "data">
+        <ion-grid class = "ion-margin">
+            <ion-row>
+                <ion-col>DPI</ion-col>
+                <ion-col>{{data.DPI}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>AOR</ion-col>
+                <ion-col>{{data.AOR}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>Funded Program</ion-col>
+                <ion-col>{{data.FundedProgram}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>Cost Center</ion-col>
+                <ion-col>{{data.CostCenter}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>Obligations</ion-col>
+                <ion-col>{{data.Obligations}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>Commitments</ion-col>
+                <ion-col>{{data.Commitments}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>Disbursements</ion-col>
+                <ion-col>{{data.Disbursements}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>SAG</ion-col>
+                <ion-col>{{data.SAG}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>Date</ion-col>
+                <ion-col>{{data.TransDate}}</ion-col>
+            </ion-row>
+        </ion-grid>
     </div>
 </ion-content>
+
 <app-tabs></app-tabs>
