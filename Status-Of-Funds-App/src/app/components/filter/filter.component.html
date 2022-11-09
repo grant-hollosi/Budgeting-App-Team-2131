@@ -32,10 +32,14 @@
             <ion-icon name="cash"></ion-icon>
           </ion-item>
           <div class="ion-padding" slot="content">
-            <ion-range [pin]="true" [dualKnobs]="true" [min]="min" [max]="max" [value]="{lower:min, upper: max}">
-              <label slot="start">{{min}}</label>
-              <label slot="end">{{max}}</label>
-            </ion-range>
+            <ion-item>
+              <ion-label>Lower Range:</ion-label>
+              <ion-input #lower type='number' [placeholder]="min | number: '1.0':'en-US'"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Upper Range:</ion-label>
+              <ion-input #upper type='number' [placeholder]="max | number: '1.0':'en-US'"></ion-input>
+            </ion-item>
             <ion-button expand="block" color="primary" (click)="filter('amount')">Apply Filters</ion-button>
           </div>
         </ion-accordion>
@@ -117,27 +121,38 @@
     </ion-header>
     <ion-content class="ion-padding">
       <ion-list>
-        <ion-item detail="true">
+        <ion-item tappable (click)="sort_by='alphabet'; sort('alphabet')">
           <ion-label>
             <h2>Alphabetically</h2>
           </ion-label>
+          <div *ngIf="directions['alphabet'] == 'forward'; then alpha_down; else alpha_up"></div>
+          <ng-template #alpha_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
+          <ng-template #alpha_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>
         </ion-item>
-        <ion-item detail="true">
+        <ion-item (click)="sort_by='date'; sort('date')">
           <ion-label>
             <h2>Date</h2>
           </ion-label>
+          <div *ngIf="directions['date'] == 'forward'; then date_down; else date_up"></div>
+          <ng-template #date_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
+          <ng-template #date_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>
         </ion-item>
-        <ion-item detail="true">
+        <ion-item (click)="sort_by='amount'; sort('amount')">
           <ion-label>
             <h2>Amount</h2>
           </ion-label>
-        </ion-item>
-        <ion-item detail="true">
+          <div *ngIf="directions['amount'] == 'forward'; then amount_down; else amount_up"></div>
+          <ng-template #amount_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
+          <ng-template #amount_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>        </ion-item>
+        <ion-item (click)="sort_by = 'aor'; sort('aor')">
           <ion-label>
             <h2>AOR</h2>
           </ion-label>
-        </ion-item>
+          <div *ngIf="directions['aor'] == 'forward'; then aor_down; else aor_up"></div>
+          <ng-template #aor_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
+          <ng-template #aor_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>        </ion-item>
       </ion-list>
+      <ion-button expand="full" color="dark" (click)="clearSort()">Clear Sort</ion-button>
     </ion-content>
   </ng-template>
 </ion-modal>

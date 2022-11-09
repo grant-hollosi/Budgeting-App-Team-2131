@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { IonModal, IonRange, IonDatetime, IonCheckbox } from '@ionic/angular';
+import { IonModal, IonRange, IonDatetime, IonCheckbox, IonInput } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from 'src/app/services/data.service';
 import * as moment from 'moment';
@@ -14,7 +14,8 @@ export class FilterComponent implements OnInit {
 
   @Input() title: string;
   @Input() goBack: boolean;
-  @ViewChild(IonRange) range: IonRange;
+  @ViewChild("lower") lower: IonInput;
+  @ViewChild("upper") upper: IonInput;
   @ViewChild(IonDatetime) date_picker: IonDatetime;
   @ViewChildren(IonCheckbox) checkboxes: IonCheckbox;
 
@@ -25,6 +26,13 @@ export class FilterComponent implements OnInit {
   private min: any;
   private max: any;
   public maxDate: any;
+  private sort_by: any;
+  private directions = {
+    'alphabet': 'forward',
+    'date': 'forward',
+    'amount': 'forward',
+    'aor': 'forward'
+  }
 
   constructor(private dataService: DataService, private home: HomePage) {
     this.aors = new Array();
@@ -33,7 +41,7 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    let fetch = this.dataService.populate(`SELECT DISTINCT AOR FROM dataTable`);
+    let fetch = this.dataService.populate(`SELECT DISTINCT AOR FROM dataTable WHERE id > 1`);
     fetch.then((result) => {
       if (Array.isArray(result)) {
         for (let r in result) {
@@ -68,37 +76,48 @@ export class FilterComponent implements OnInit {
   }
 
   filter(filter_by: string){
-    if (filter_by == 'amount') {
-      this.home.query = `SELECT * FROM dataTable WHERE Obligations BETWEEN ${this.range.value['lower']} AND ${this.range.value['upper']}`;
-    } else if (filter_by == 'aor') {
-      let selected_aors = '';
-      for (let cb in this.checkboxes['_results']) {
-        if (this.checkboxes['_results'][cb].checked && this.checkboxes['_results'][cb]['el']['id'] == 'aor') {
-          selected_aors = selected_aors.concat(`\'${this.checkboxes['_results'][cb].value}\'`, ',');
+    switch (filter_by) {
+      case 'amount':
+        if (this.lower.value && this.upper.value) {
+          this.home.filters['amount'] = `AND Obligations BETWEEN ${this.lower.value} AND ${this.upper.value}`; 
+        } else if (this.lower.value) {
+          this.home.filters['amount'] = `AND Obligations >= ${this.lower.value}`;
+        } else if (this.upper.value) {
+          this.home.filters['amount'] = `AND Obligations <= ${this.upper.value}`;
         }
-      }
-      selected_aors = selected_aors.slice(0, -1);
-      this.home.query = `SELECT * FROM dataTable WHERE AOR IN (${selected_aors})`;
-    } else if (filter_by == 'date') {
-      let date = moment(this.date_picker.value).format('YYYY-MM-DD');
-      this.home.query = `SELECT * FROM dataTable WHERE TransDate >= '${date} 00:00:00'`
-    } else if (filter_by == 'flag') {
-      let selected_statuses = '';
-      for (let cb in this.checkboxes['_results']) {
-        if (this.checkboxes['_results'][cb].checked && this.checkboxes['_results'][cb]['el']['id'] == 'flag') {
-          selected_statuses = selected_statuses.concat(this.checkboxes['_results'][cb].value, ',');
+        break;
+      case 'aor':
+        let selected_aors = '';
+        for (let cb in this.checkboxes['_results']) {
+          if (this.checkboxes['_results'][cb].checked && this.checkboxes['_results'][cb]['el']['id'] == 'aor') {
+            selected_aors = selected_aors.concat(`\'${this.checkboxes['_results'][cb].value}\'`, ',');
+          }
         }
-      }
-      selected_statuses = selected_statuses.slice(0, -1);
+        selected_aors = selected_aors.slice(0, -1);
+        this.home.filters['aor'] = `AND AOR IN (${selected_aors})`
+        break;
+      case 'date':
+        let date = moment(this.date_picker.value).format('YYYY-MM-DD');
+        this.home.filters['date'] = `AND TransDate >= '${date} 00:00:00'`;
+        break;
+      case 'flag':
+        let selected_statuses = '';
+        for (let cb in this.checkboxes['_results']) {
+          if (this.checkboxes['_results'][cb].checked && this.checkboxes['_results'][cb]['el']['id'] == 'flag') {
+            selected_statuses = selected_statuses.concat(this.checkboxes['_results'][cb].value, ',');
+          }
+        }
+        selected_statuses = selected_statuses.slice(0, -1);
+        break;
     }
-    this.home.showLoading(true);
     this.home.ngOnInit();
     this.setOpen(false, 'filter');
   }
 
   clearFilters() {
-    this.home.showLoading(true);
-    this.home.query = `SELECT * FROM dataTable WHERE id > 1`;
+    for (let key in this.home.filters) {
+      this.home.filters[key] = '';
+    }
     this.home.ngOnInit();
     this.setOpen(false, 'filter');
   }
@@ -107,10 +126,56 @@ export class FilterComponent implements OnInit {
     console.log("Beginning search");
   }
 
-  sort(){
-    console.log("Opening sorting options");
+  async sort(sort_by: string){
+    switch(sort_by) {
+      case 'alphabet':
+        if (this.directions['alphabet'] == 'forward') {
+          this.home.sort_by = 'ORDER BY Commodity ASC';
+          this.directions['alphabet'] = 'backward';
+        } else {
+          this.home.sort_by = 'ORDER BY Commodity DESC';
+          this.directions['alphabet'] = 'forward';
+        }
+        break;
+      case 'date':
+        if (this.directions['date'] == 'forward') {
+          this.home.sort_by = 'ORDER BY TransDate ASC';
+          this.directions['date'] = 'backward';
+        } else {
+          this.home.sort_by = 'ORDER BY TransDate DESC';
+          this.directions['date'] = 'forward';
+        }
+        break;
+      case 'amount':
+        if (this.directions['amount'] == 'forward') {
+          this.home.sort_by = 'ORDER BY Obligations ASC';
+          this.directions['amount'] = 'backward';
+        } else {
+          this.home.sort_by = 'ORDER BY Obligations DESC';
+          this.directions['amount'] = 'forward';
+        }
+        break;
+      case 'aor':
+        if (this.directions['aor'] == 'forward') {
+          this.home.sort_by = 'ORDER BY AOR ASC';
+          this.directions['aor'] = 'backward';
+        } else {
+          this.home.sort_by = 'ORDER BY AOR DESC';
+          this.directions['aor'] = 'forward';
+        }
+        break;
+    }
+    // this.setOpen(false, 'sort');
+    this.home.ngOnInit();
+  }
 
-    console.log('filter pressed');
+  clearSort() {
+    this.home.sort_by = '';
+    for (let key in this.directions) {
+      this.directions[key] = 'forward';
+    }
+    this.setOpen(false, 'sort');
+    this.home.ngOnInit();
   }
 
 }
