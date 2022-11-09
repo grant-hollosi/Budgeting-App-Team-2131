@@ -48,7 +48,6 @@ export class HomePage implements OnInit {
     }
 
     query = query.concat(' ', this.sort_by).trim();
-    console.log(query);
     let fetch = this.dataService.populate(query);
     fetch.then((result) => {
       if (Array.isArray(result)) {
