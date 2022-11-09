@@ -14,10 +14,10 @@ export class LoaderPage implements OnInit {
   constructor(private router: Router, private dataService: DataService) {}
 
   ngOnInit() {
-    this.data = this.dataService.populate(`SELECT * FROM dataTable WHERE id BETWEEN 2 AND 102`);
-    setTimeout(() => {
+    this.data = this.dataService.populate(`SELECT * FROM dataTable WHERE id > 1`);
+    this.data.then((result) => {
       this.router.navigate(['home']);
-    }, 1000);
+    });
   }
 
 }
