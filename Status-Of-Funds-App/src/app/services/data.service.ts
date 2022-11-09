@@ -37,6 +37,7 @@ export class DataService {
   }
 
   async getQuery(query) {
+    console.log(query);
     let url = "https://rxlhaqtsbl.execute-api.us-east-2.amazonaws.com/v1/populate/?query=" + query;
     let req = this.http.get(url);
     let results = new Promise((resolve) => {
