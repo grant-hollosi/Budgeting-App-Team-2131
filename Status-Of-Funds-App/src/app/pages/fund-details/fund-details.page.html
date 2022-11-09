@@ -2,14 +2,12 @@
 
 </app-header>
 <ion-content role="Fund Details" detail = "true">
-    <div class = "ion-text-center" *ngIf = "data">
-        <ion-label>
-            <h1><u>{{data.Commodity}}</u></h1>
-            <h2>Rec ID: {{data.recID}}</h2> 
-        </ion-label>
-    </div>
     <div *ngIf = "data">
-        <ion-list style="margin:0px 30px">
+        <ion-list [inset]="true" lines="true">
+            <ion-item>
+                <ion-label><h1><u>{{data.Commodity}}</u></h1>
+                <p>Rec ID: {{data.recID}}</p></ion-label>
+            </ion-item>
             <ion-item>
                 <ion-label><h2>DPI</h2></ion-label>
                 <div *ngIf="data.DPI; then show_dpi; else blank_dpi"></div>
@@ -37,13 +35,13 @@
             <ion-item>
                 <ion-label><h2>Obligations</h2></ion-label>
                 <div *ngIf="data.Obligations; then show_obli; else blank_obli"></div>
-                    <ng-template #show_obli><ion-text>{{data.Obligations}}</ion-text></ng-template>
+                    <ng-template #show_obli><ion-text>${{data.Obligations | number:'1.2-2'}}</ion-text></ng-template>
                     <ng-template #blank_obli><ion-text>N/A</ion-text></ng-template>
             </ion-item>
             <ion-item>
                 <ion-label><h2>Commitments</h2></ion-label>
                 <div *ngIf="data.Commitments; then show_comm; else blank_comm"></div>
-                    <ng-template #show_comm><ion-text>{{data.Commitments}}</ion-text></ng-template>
+                    <ng-template #show_comm><ion-text>${{data.Commitments | number:'1.2-2'}}</ion-text></ng-template>
                     <ng-template #blank_comm><ion-text>N/A</ion-text></ng-template>
             </ion-item>
             <ion-item>
