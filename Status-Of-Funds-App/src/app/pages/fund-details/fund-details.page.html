@@ -10,11 +10,12 @@
     </div>
     <div *ngIf = "data">
         <ion-list style="margin:0px 30px">
-            <div *ngIf="data.DPI; then show_dpi"></div>
-            <ng-template #show_dpi><ion-item>
+            <ion-item>
                 <ion-label><h2>DPI</h2></ion-label>
-                <ion-text>{{data.DPI}}</ion-text>
-            </ion-item></ng-template>
+                <div *ngIf="data.DPI; then show_dpi; else blank_dpi"></div>
+                    <ng-template #show_dpi><ion-text>{{data.DPI}}</ion-text></ng-template>
+                    <ng-template #blank_dpi><ion-text>NO DPI LISTED</ion-text></ng-template>
+            </ion-item>
             <div *ngIf="AOR; then show_aor; else blank_aor"></div>
             <ng-template #show_aor><ion-item>
                 <ion-label><h2>AOR</h2></ion-label>
