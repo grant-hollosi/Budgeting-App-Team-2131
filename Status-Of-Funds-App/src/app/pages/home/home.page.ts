@@ -56,8 +56,7 @@ export class HomePage implements OnInit {
   }
 
   loadData(event) {
-    setTimeout(() => {
-      event.target.complete();
+    event.target.complete();
       this.start_id += this.chunk;
       this.results = this.results.concat(this.all_results.slice(this.start_id, this.start_id + this.chunk));
 
@@ -66,7 +65,6 @@ export class HomePage implements OnInit {
       if (DataTransfer.length === 1000) {
         event.target.disabled = true;
       }
-    }, 500);
   }
 
   toggleFlag(event) {
