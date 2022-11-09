@@ -26,6 +26,7 @@ export class FilterComponent implements OnInit {
   private min: any;
   private max: any;
   public maxDate: any;
+  public minDate: any;
   private sort_by: any;
   private directions = {
     'alphabet': 'forward',
@@ -61,10 +62,15 @@ export class FilterComponent implements OnInit {
       this.max = result[0]['MAX(Obligations)'];
     });
 
-    fetch = this.dataService.populate("SELECT MAX(TransDate) FROM dataTable");
+    fetch = this.dataService.populate("SELECT MAX(TransDate) FROM dataTable WHERE id > 1");
     fetch.then((result) => {
       this.maxDate = result[0]['MAX(TransDate)'].slice(0, -1);
     });
+
+    fetch = this.dataService.populate("SELECT MIN(TransDate) FROM dataTable WHERE id > 1 AND NOT TransDate = '0000-00-00 00:00:00'");
+    fetch.then((result) => {
+      this.minDate = result[0]['MIN(TransDate)'].slice(0, -1);
+    })
   }
 
   setOpen(isOpen: boolean, variable: string) {
@@ -75,41 +81,45 @@ export class FilterComponent implements OnInit {
     }
   }
 
-  filter(filter_by: string){
-    switch (filter_by) {
-      case 'amount':
-        if (this.lower.value && this.upper.value) {
-          this.home.filters['amount'] = `AND Obligations BETWEEN ${this.lower.value} AND ${this.upper.value}`; 
-        } else if (this.lower.value) {
-          this.home.filters['amount'] = `AND Obligations >= ${this.lower.value}`;
-        } else if (this.upper.value) {
-          this.home.filters['amount'] = `AND Obligations <= ${this.upper.value}`;
-        }
-        break;
-      case 'aor':
-        let selected_aors = '';
-        for (let cb in this.checkboxes['_results']) {
-          if (this.checkboxes['_results'][cb].checked && this.checkboxes['_results'][cb]['el']['id'] == 'aor') {
-            selected_aors = selected_aors.concat(`\'${this.checkboxes['_results'][cb].value}\'`, ',');
-          }
-        }
-        selected_aors = selected_aors.slice(0, -1);
-        this.home.filters['aor'] = `AND AOR IN (${selected_aors})`
-        break;
-      case 'date':
-        let date = moment(this.date_picker.value).format('YYYY-MM-DD');
-        this.home.filters['date'] = `AND TransDate >= '${date} 00:00:00'`;
-        break;
-      case 'flag':
-        let selected_statuses = '';
-        for (let cb in this.checkboxes['_results']) {
-          if (this.checkboxes['_results'][cb].checked && this.checkboxes['_results'][cb]['el']['id'] == 'flag') {
-            selected_statuses = selected_statuses.concat(this.checkboxes['_results'][cb].value, ',');
-          }
-        }
-        selected_statuses = selected_statuses.slice(0, -1);
-        break;
+  filter(){
+    // AMOUNT FILTER
+    if (this.lower.value && this.upper.value) {
+      this.home.filters['amount'] = `AND Obligations BETWEEN ${this.lower.value} AND ${this.upper.value}`; 
+    } else if (this.lower.value) {
+      this.home.filters['amount'] = `AND Obligations >= ${this.lower.value}`;
+    } else if (this.upper.value) {
+      this.home.filters['amount'] = `AND Obligations <= ${this.upper.value}`;
     }
+
+    // AOR FILTER
+    let aor_selected = false;
+    let selected_aors = '';
+    for (let cb in this.checkboxes['_results']) {
+      if (this.checkboxes['_results'][cb].checked && this.checkboxes['_results'][cb]['el']['id'] == 'aor') {
+        aor_selected = true;
+        selected_aors = selected_aors.concat(`\'${this.checkboxes['_results'][cb].value}\'`, ',');
+      }
+    }
+    selected_aors = selected_aors.slice(0, -1);
+    if (aor_selected) {
+      this.home.filters['aor'] = `AND AOR IN (${selected_aors})`
+    }
+    
+    // DATE FILTER
+    if (this.date_picker.value) {
+      let date = moment(this.date_picker.value).format('YYYY-MM-DD');
+      this.home.filters['date'] = `AND TransDate > '${date} 00:00:00'`;
+    }
+
+    // FLAG FILTER
+    let selected_statuses = '';
+    for (let cb in this.checkboxes['_results']) {
+      if (this.checkboxes['_results'][cb].checked && this.checkboxes['_results'][cb]['el']['id'] == 'flag') {
+        selected_statuses = selected_statuses.concat(this.checkboxes['_results'][cb].value, ',');
+      }
+    }
+    selected_statuses = selected_statuses.slice(0, -1);
+
     this.home.ngOnInit();
     this.setOpen(false, 'filter');
   }
@@ -118,6 +128,7 @@ export class FilterComponent implements OnInit {
     for (let key in this.home.filters) {
       this.home.filters[key] = '';
     }
+    this.date_picker.value = this.minDate;
     this.home.ngOnInit();
     this.setOpen(false, 'filter');
   }
@@ -176,6 +187,12 @@ export class FilterComponent implements OnInit {
     }
     this.setOpen(false, 'sort');
     this.home.ngOnInit();
+  }
+
+  dateChanged(event) {
+    if (event.detail.value > this.date_picker.max) {
+      this.date_picker.value = this.date_picker.max;
+    }
   }
 
 }

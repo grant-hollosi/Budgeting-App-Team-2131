@@ -40,7 +40,6 @@
               <ion-label>Upper Range:</ion-label>
               <ion-input #upper type='number' [placeholder]="max | number: '1.0':'en-US'"></ion-input>
             </ion-item>
-            <ion-button expand="block" color="primary" (click)="filter('amount')">Apply Filters</ion-button>
           </div>
         </ion-accordion>
         <ion-accordion value="second">
@@ -57,7 +56,6 @@
                 <ng-template #label><ion-label>{{aor}}</ion-label></ng-template>
                 <ng-template #blank_label><ion-label #blank_label>Blank</ion-label></ng-template>
             </ion-item>
-            <ion-button expand="block" color="primary" (click)="filter('aor')">Apply Filters</ion-button>
           </div>
         </ion-accordion>
         <ion-accordion value="third">
@@ -69,13 +67,12 @@
           </ion-item>
           <div slot="content">
             <ion-datetime
+              (ionChange)="dateChanged($event)"
               presentation="date"
               hourCycle="h23"
               [max]="maxDate"
-              [value]="maxDate"
-              >
+              [value]="minDate">
               <span slot='title'>Select earliest date</span></ion-datetime>
-              <ion-button expand="block" color="primary" (click)="filter('date')">Apply Filters</ion-button>
           </div>
         </ion-accordion>
         <ion-accordion value="fourth">
@@ -96,11 +93,11 @@
               <ion-label>Unflagged</ion-label>
               <ion-icon #flagged name="flag-outline" slot="end"></ion-icon>
             </ion-item>
-            <ion-button expand="block" color="primary" (click)="filter('flag')">Apply Filters</ion-button>
           </div>
         </ion-accordion>
       </ion-accordion-group>
       <div>
+        <ion-button expand="block" color="primary" (click)="filter()">Apply Filters</ion-button>
         <ion-button expand="block" color="dark" (click)="clearFilters()">Clear Filters</ion-button>
       </div>
     </ion-content>
