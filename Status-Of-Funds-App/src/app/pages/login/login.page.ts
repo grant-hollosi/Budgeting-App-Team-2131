@@ -25,8 +25,9 @@ export class LoginPage implements OnInit {
 
   async login() {
     try {
-      this.auth.signIn(this.user).subscribe(async user => {
-        const role = user.role;
+      this.auth.signIn(this.user).then(async (user) => {
+        console.log(user);
+        const role = user['role'];
         if (role) {
           this.router.navigateByUrl('/loader');
         }
@@ -36,7 +37,7 @@ export class LoginPage implements OnInit {
       const loginError = await this.toastController.create({
         message: 'Login Failed',
         duration: 3000,
-        position: 'top',
+        position: 'bottom',
         color: 'danger',
         buttons:
         [

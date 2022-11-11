@@ -1,10 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { triggerAsyncId } from 'async_hooks';
+const bcrypt = require('bcryptjs');
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+
+  hashingConfig = {
+    parallelism: 1,
+    memoryCost: 64000,
+    timeCost: 3
+  }
 
   results: any[];
   previousQuery: string;
@@ -53,5 +61,45 @@ export class DataService {
 
   getItem(id: number) {
     return this.populate(`SELECT * FROM dataTable WHERE id = ${id}`);
+  }
+
+  changePassword(password: string, user: string) {
+    let crypt = bcrypt.hashSync(password, 10);
+    let query = `UPDATE passwords SET password = '${crypt}' WHERE user_type = '${user}'`;
+    let fetch = this.getQuery(query);
+    return new Promise((resolve) => {
+      fetch.then((result) => {
+        resolve(result);
+      })
+    })
+  }
+
+  signIn(password: string) {
+    let fetch = this.getQuery(`SELECT * FROM passwords`);
+    return new Promise((resolve) => {
+      fetch.then((result) => {
+        if (Array.isArray(result)) {
+          for (let r in result) {
+            if (result[r].user_type && result[r].password && bcrypt.compareSync(password, result[r].password)) {
+              resolve(result[r].user_type);
+            }
+          }
+        }
+        resolve(false);
+      })
+    });
+  }
+
+  existingPassword(user: string, password: string) {
+    let fetch = this.getQuery(`SELECT password FROM passwords WHERE user_type = '${user}'`);
+    return new Promise((resolve) => {
+      fetch.then((result) => {
+        if (result[0].password && bcrypt.compareSync(password, result[0].password)) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      })
+    })
   }
 }

@@ -27,7 +27,7 @@
         <ion-accordion value="first">
           <ion-item lines="inset" slot="header" detail="true">
             <ion-label>
-              <h2>Amount</h2>
+              <h2>Obligation Amount</h2>
             </ion-label>
             <ion-icon name="cash"></ion-icon>
           </ion-item>
@@ -136,7 +136,7 @@
         </ion-item>
         <ion-item (click)="sort_by='amount'; sort('amount')">
           <ion-label>
-            <h2>Amount</h2>
+            <h2>Obligation Amount</h2>
           </ion-label>
           <div *ngIf="directions['amount'] == 'forward'; then amount_down; else amount_up"></div>
           <ng-template #amount_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>

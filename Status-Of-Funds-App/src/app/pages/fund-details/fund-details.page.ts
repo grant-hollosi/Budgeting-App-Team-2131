@@ -16,7 +16,6 @@ export class FundDetailsPage implements OnInit {
 
   ngOnInit() {
     this.storage.get('id').then((val) => {
-      console.log(val);
       let fetch = this.dataService.getItem(val);
       fetch.then((result) => {
         this.data = result[0];
