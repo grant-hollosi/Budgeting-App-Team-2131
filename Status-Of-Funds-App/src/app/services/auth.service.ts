@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { AlertController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { ExceptionCode } from '@capacitor/core';
+import { DataService } from './data.service';
 const TOKEN_KEY = 'user-access-token';
 
 @Injectable({
@@ -15,7 +16,7 @@ export class AuthService {
   authState = new BehaviorSubject(null);
 
   // Storage to store web token or any other cookies you might want to save
-  constructor(public storage: Storage, private alertCtrl: AlertController) {
+  constructor(public storage: Storage, private alertCtrl: AlertController, private dataService: DataService) {
     this.loadUser();
     this.user = this.authState.asObservable().pipe(
       filter(response => response)
@@ -34,28 +35,33 @@ export class AuthService {
   }
 
   // Return Observable<any>
-  signIn(credentials): Observable<any> {
+  signIn(credentials) {
     let pw = credentials.pw;
     let user = null;
     
     // Send this info to backend and get appropriate web token
     // This is the hard coded version
 
-    if (pw === "adminPassword123") {
-      user = { pw, role: "ADMIN" };
-    } else if (pw === "userPassword123") {
-      user = { pw, role: "USER" };
-    } else {
-      throw new Error("Incorrect Login");
-    }
+    let fetch = new Promise((resolve) => {
+      this.dataService.signIn(pw).then((result: string) => {
+        if (result)  {
+          user = {
+            pw, role: result.toUpperCase()
+          }
+          this.authState.next(user);
+          this.storage.set(TOKEN_KEY, user);
+          resolve(user);
+        } else {
+          throw new Error("Incorrect Login");
+        }
+      })
+    });
 
-    this.authState.next(user);
     
     // Stores Token Locally
-    this.storage.set(TOKEN_KEY, user);
 
     // Video guide said to use return of(user), but of is not recognized
-    return of(user); 
+    return fetch; 
   }
 
   async showAlert() {

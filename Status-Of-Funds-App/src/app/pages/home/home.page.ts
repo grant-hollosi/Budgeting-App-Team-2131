@@ -75,10 +75,10 @@ export class HomePage implements OnInit {
     event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
   }
   
-  navigate(page: string, item: any) {
-    // this.router.navigate([page]);
-    this.storage.set('id', item.id);
-    this.router.navigate([page]);
+  navigate(page: any, item: any) {
+    this.storage.set('id', item.id).then(() => {
+      this.router.navigate([page]);
+    });
   }
 
   async showLoading(show: boolean) {
