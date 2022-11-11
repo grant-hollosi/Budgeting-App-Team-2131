@@ -26,8 +26,10 @@
             <ng-template #black><ion-text color="dark">${{result['Obligations'] | number:'1.2-2'}}</ion-text></ng-template>
             <ng-template #green><ion-text color="success">${{result['Obligations'] | number:'1.2-2'}}</ion-text></ng-template>
           </ng-template>        
-        <ion-button (click)="toggleFlag($event)" fill="clear" color="dark">
-          <ion-icon style="height: 24px; width: 24px" name="flag-outline" slot="end"></ion-icon>
+        <ion-button (click)="toggleFlag($event, result['id'])" fill="clear" color="dark">
+          <div *ngIf="isFlagged(result['id']); then flagged; else unflagged"></div>
+            <ng-template #unflagged><ion-icon style="height: 24px; width: 24px" name="flag-outline" slot="end"></ion-icon></ng-template>
+            <ng-template #flagged><ion-icon style="height: 24px; width: 24px" name="flag" slot="end"></ion-icon></ng-template>
         </ion-button>
       </ion-item>
     </div>

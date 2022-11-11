@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { DataService } from 'src/app/services/data.service';
 import * as moment from 'moment';
 import { HomePage } from 'src/app/pages/home/home.page';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-filter',
@@ -35,7 +36,7 @@ export class FilterComponent implements OnInit {
     'aor': 'forward'
   }
 
-  constructor(private dataService: DataService, private home: HomePage) {
+  constructor(private dataService: DataService, private home: HomePage, private storage: Storage) {
     this.aors = new Array();
     this.min = 0;
     this.max = 0;
@@ -81,7 +82,7 @@ export class FilterComponent implements OnInit {
     }
   }
 
-  filter(){
+  async filter(){
     // AMOUNT FILTER
     if (this.lower.value && this.upper.value) {
       this.home.filters['amount'] = `AND Obligations BETWEEN ${this.lower.value} AND ${this.upper.value}`; 
@@ -106,13 +107,28 @@ export class FilterComponent implements OnInit {
     }
 
     // FLAG FILTER
-    let selected_statuses = '';
+    let selected_statuses = {};
     for (let cb in this.checkboxes['_results']) {
-      if (this.checkboxes['_results'][cb].checked && this.checkboxes['_results'][cb]['el']['id'] == 'flag') {
-        selected_statuses = selected_statuses.concat(this.checkboxes['_results'][cb].value, ',');
+      if (this.checkboxes['_results'][cb]['el']['id'] == 'flag') {
+        selected_statuses[this.checkboxes['_results'][cb].value] = this.checkboxes['_results'][cb].checked;
       }
     }
-    selected_statuses = selected_statuses.slice(0, -1);
+
+    if (selected_statuses['flagged'] && !selected_statuses['unflagged']) {
+      await this.storage.get('flagged').then((result: number[]) => {
+        if (result) {
+          this.home.filters['flag'] = `AND id IN (${result.toString()})`;
+        }
+      })
+    } else if (!selected_statuses['flagged'] && selected_statuses['unflagged']) {
+      await this.storage.get('flagged').then((result: number[]) => {
+        if (result) {
+          this.home.filters['flag'] = `AND NOT id IN (${result.toString()})`
+        }
+      })
+    } else {
+      this.home.filters['flag'] = '';
+    }
 
     this.home.ngOnInit();
     this.setOpen(false, 'filter');
