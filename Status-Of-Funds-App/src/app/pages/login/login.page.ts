@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastController } from '@ionic/angular';
 import { reduce } from 'rxjs/operators';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-login',
@@ -13,9 +14,12 @@ export class LoginPage implements OnInit {
   user = {
     pw: ''
   };
-  constructor(private router: Router, private auth: AuthService, private toastController: ToastController) { }
+  constructor(private router: Router, private auth: AuthService, private toastController: ToastController, private storage: Storage) { }
 
   ngOnInit() {
+    this.storage.forEach((val, key) => {
+      console.log(val, key);
+    })
   }
 
   // New login() with authentication services

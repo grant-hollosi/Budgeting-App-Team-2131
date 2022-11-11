@@ -50,6 +50,11 @@ export class AuthService {
           }
           this.authState.next(user);
           this.storage.set(TOKEN_KEY, user);
+          this.storage.get('flagged').then((result) => {
+            if (!result) {
+              this.storage.set('flagged', []);
+            }
+          })
           resolve(user);
         } else {
           throw new Error("Incorrect Login");

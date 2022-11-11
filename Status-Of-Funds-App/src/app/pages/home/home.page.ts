@@ -31,8 +31,10 @@ export class HomePage implements OnInit {
   public filters = {
     'aor': '',
     'date': '',
-    'amount': ''
+    'amount': '',
+    'flag': ''
   }
+  private flags: number[];
 
   constructor(private auth: AuthService, private router: Router, public dataService: DataService, private loadingCtrl: LoadingController, private storage: Storage) { }
 
@@ -44,9 +46,10 @@ export class HomePage implements OnInit {
     let query = this.query;
     for (let key in this.filters) {
       query = query.concat(' ', this.filters[key]).trim();
+      console.log(key, this.filters[key]);
     }
     query = query.concat(' ', this.sort_by).trim();
-
+    // console.log(query);
     let fetch = this.dataService.populate(query);
     fetch.then((result) => {
       if (Array.isArray(result)) {
@@ -54,6 +57,10 @@ export class HomePage implements OnInit {
         this.results = this.results.concat(this.all_results.slice(this.start_id, this.start_id + this.chunk));
         this.showLoading(false);
       }
+    });
+
+    this.storage.get('flagged').then((result: number[]) => {
+      this.flags = result;
     });
   }
 
@@ -69,10 +76,30 @@ export class HomePage implements OnInit {
       }
   }
 
-  toggleFlag(event) {
+  isFlagged(id: number) {
+    if (this.flags) {
+      return this.flags.includes(id);
+    }
+    return false;
+  }
+
+  toggleFlag(event, recID: number) {
+    console.log(recID);
     event.stopPropagation();
-    console.log(event.target.children);
     event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
+    this.storage.get('flagged').then((result: number[]) => {
+      if (event.target.children[0].name === 'flag') {
+        result.push(recID);
+        this.storage.set('flagged', result).then((result) => {
+          console.log(result);
+        })
+      } else {
+        let new_result = result.slice(0, result.indexOf(recID)).concat(result.slice(result.indexOf(recID) + 1, result.length));
+        this.storage.set('flagged', new_result).then((result) => {
+          console.log(result);
+        });
+      }
+    });
   }
   
   navigate(page: any, item: any) {

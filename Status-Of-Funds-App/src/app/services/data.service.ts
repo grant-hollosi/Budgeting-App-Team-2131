@@ -25,6 +25,7 @@ export class DataService {
   }
 
   populate(query: string) {
+    console.log(query);
     if (this.previousQuery && query == this.previousQuery) {
       return new Promise((resolve) => {
         resolve(this.results);
