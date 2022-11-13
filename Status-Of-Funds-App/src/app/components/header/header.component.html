@@ -24,7 +24,7 @@
     </ion-header>
     <ion-content class="ion-padding">
       <ion-list>
-        <ion-item detail="true">
+        <ion-item onclick="window.open('https://github.com/grant-hollosi/Budgeting-App-Team-2131/wiki')" detail="true">
           <ion-label>
             <h2>Help</h2>
           </ion-label>
@@ -34,22 +34,32 @@
             <h2>Logout</h2>
           </ion-label>
         </ion-item>
-        <ion-item detail="true">
+        <ion-item (click)="setOpen(true, 'aboutUs')" detail="true">
           <ion-label>
             <h2>About us</h2>
           </ion-label>
         </ion-item>
-        <ion-item detail="true">
-          <ion-label>
-            <h2>Privacy Policy</h2>
-          </ion-label>
-        </ion-item>
-        <ion-item detail="true">
-          <ion-label>
-            <h2>Terms and Conditions</h2>
-          </ion-label>
-        </ion-item>
       </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="isAboutUsModalOpen">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title size="medium">About Us</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpen(false, 'aboutUs')">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <p>This project was developed by Team 2131, a group of students from the Georgia Institute of Technology.
+         The team developed this project following the needs of the 75th Ranger Regiment and in accordance with the 
+        design principles provided by those taught in Georgia Tech's Computer Science Junior Design program.</p>
     </ion-content>
   </ng-template>
 </ion-modal>
