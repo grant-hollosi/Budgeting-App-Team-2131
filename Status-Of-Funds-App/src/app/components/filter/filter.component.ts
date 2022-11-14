@@ -115,22 +115,22 @@ export class FilterComponent implements OnInit {
     }
 
     if (selected_statuses['flagged'] && !selected_statuses['unflagged']) {
-      await this.storage.get('flagged').then((result: number[]) => {
+      await this.storage.get('flagged').then((result: object) => {
         if (result) {
-          this.home.filters['flag'] = `AND id IN (${result.toString()})`;
+          this.home.filters['flag'] = `AND id IN (${result[this.home.user['role']].toString()})`;
         }
       })
     } else if (!selected_statuses['flagged'] && selected_statuses['unflagged']) {
-      await this.storage.get('flagged').then((result: number[]) => {
+      await this.storage.get('flagged').then((result: object) => {
         if (result) {
-          this.home.filters['flag'] = `AND NOT id IN (${result.toString()})`
+          this.home.filters['flag'] = `AND NOT id IN (${result[this.home.user['role']].toString()})`
         }
       })
     } else {
       this.home.filters['flag'] = '';
     }
 
-    this.home.ngOnInit();
+    this.home.ionViewWillEnter();
     this.setOpen(false, 'filter');
   }
 
@@ -139,7 +139,7 @@ export class FilterComponent implements OnInit {
       this.home.filters[key] = '';
     }
     this.date_picker.value = this.minDate;
-    this.home.ngOnInit();
+    this.home.ionViewWillEnter();
     this.setOpen(false, 'filter');
   }
 
@@ -187,7 +187,7 @@ export class FilterComponent implements OnInit {
         break;
     }
     // this.setOpen(false, 'sort');
-    this.home.ngOnInit();
+    this.home.ionViewWillEnter();
   }
 
   clearSort() {
@@ -196,7 +196,7 @@ export class FilterComponent implements OnInit {
       this.directions[key] = 'forward';
     }
     this.setOpen(false, 'sort');
-    this.home.ngOnInit();
+    this.home.ionViewWillEnter();
   }
 
   dateChanged() {

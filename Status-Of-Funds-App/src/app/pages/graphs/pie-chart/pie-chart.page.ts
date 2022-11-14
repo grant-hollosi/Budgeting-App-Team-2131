@@ -21,6 +21,7 @@ export class PieChartPage implements OnInit {
     query.then((result) => {
       if (Array.isArray(result)) {
         this.results = result;
+
         setTimeout(() => this.generateBarChart(), 200); 
         // Need to wait until the correct svg height is loaded -> if we don't wait then the first graph gets created really big
       }
