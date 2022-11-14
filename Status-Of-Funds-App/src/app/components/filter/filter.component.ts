@@ -108,27 +108,28 @@ export class FilterComponent implements OnInit {
 
     // FLAG FILTER
     let selected_statuses = {};
-    for (let cb in this.checkboxes['_results']) {
-      if (this.checkboxes['_results'][cb]['el']['id'] == 'flag') {
-        selected_statuses[this.checkboxes['_results'][cb].value] = this.checkboxes['_results'][cb].checked;
+    this.home.filters['flag'] = '';
+    await this.storage.get('user-access-token').then(async (user) => {
+      for (let cb in this.checkboxes['_results']) {
+        if (this.checkboxes['_results'][cb]['el']['id'] == 'flag') {
+          selected_statuses[this.checkboxes['_results'][cb].value] = this.checkboxes['_results'][cb].checked;
+        }
       }
-    }
 
-    if (selected_statuses['flagged'] && !selected_statuses['unflagged']) {
-      await this.storage.get('flagged').then((result: object) => {
-        if (result) {
-          this.home.filters['flag'] = `AND id IN (${result[this.home.user['role']].toString()})`;
-        }
-      })
-    } else if (!selected_statuses['flagged'] && selected_statuses['unflagged']) {
-      await this.storage.get('flagged').then((result: object) => {
-        if (result) {
-          this.home.filters['flag'] = `AND NOT id IN (${result[this.home.user['role']].toString()})`
-        }
-      })
-    } else {
-      this.home.filters['flag'] = '';
-    }
+      if (selected_statuses['flagged'] && !selected_statuses['unflagged']) {
+        await this.storage.get('flagged').then((result: object) => {
+          if (result[user['role']].length) {
+            this.home.filters['flag'] = `AND id IN (${result[user['role']].toString()})`;
+          }
+        })
+      } else if (!selected_statuses['flagged'] && selected_statuses['unflagged']) {
+        await this.storage.get('flagged').then((result: object) => {
+          if (result[user['role']].length) {
+            this.home.filters['flag'] = `AND NOT id IN (${result[user['role']].toString()})`
+          }
+        })
+      }
+    });
 
     this.home.ionViewWillEnter();
     this.setOpen(false, 'filter');

@@ -30,11 +30,7 @@ export class HeaderComponent implements OnInit {
   async logout() {
     this.setOpen(false, "settings");
     this.storage.get('flagged').then((result) => {
-      console.log(result);
       this.storage.clear().then((clear) => {
-        this.storage.forEach((val, key) => {
-          console.log(val, key);
-        })
         this.storage.set('flagged', result).then((result) => {
           this.navigate('/');
         })

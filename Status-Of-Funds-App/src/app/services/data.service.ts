@@ -96,7 +96,6 @@ export class DataService {
       fetch.then(async (users) => {
         if (Array.isArray(users)) {
           for (let u in users) {
-            console.log(users);
             let exists = await this.passwordExists(users[u]['user_type'], password);
             if (exists) {
               resolve(true);

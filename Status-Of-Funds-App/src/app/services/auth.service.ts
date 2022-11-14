@@ -57,7 +57,7 @@ export class AuthService {
           })
           resolve(user);
         } else {
-          throw new Error("Incorrect Login");
+          resolve(new Error("Incorrect Login"));
         }
       })
     });

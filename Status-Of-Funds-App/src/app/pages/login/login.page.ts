@@ -22,31 +22,30 @@ export class LoginPage implements OnInit {
 
 
   async login() {
-    try {
-      this.auth.signIn(this.user).then(async (user) => {
-        // console.log(user);
+    this.auth.signIn(this.user).then(async (user) => {
+      if (!(user instanceof Error)) {
         const role = user['role'];
         if (role) {
           this.router.navigateByUrl('/loader');
         }
-      });
-    } catch (e) {
-      console.log(e);
-      const loginError = await this.toastController.create({
-        message: 'Login Failed',
-        duration: 3000,
-        position: 'bottom',
-        color: 'danger',
-        buttons:
-        [
-          {
-            text: 'Dismiss',
-            role: 'cancel'
-          }
-        ]
-      });
+      } else {
+        console.log(user);
+        const loginError = await this.toastController.create({
+          message: 'Login Failed',
+          duration: 3000,
+          position: 'bottom',
+          color: 'danger',
+          buttons:
+          [
+            {
+              text: 'Dismiss',
+              role: 'cancel'
+            }
+          ]
+        });
 
-      await loginError.present();
-    }
+        await loginError.present();
+      }
+    });
   }
 }

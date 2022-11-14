@@ -40,7 +40,6 @@ export class HomePage implements OnInit {
     'flag': ''
   }
   private flags: number[];
-  public user: object;
 
   constructor(private auth: AuthService, private router: Router, public dataService: DataService, private loadingCtrl: LoadingController, private storage: Storage) { }
 
@@ -53,9 +52,8 @@ export class HomePage implements OnInit {
     this.initData();
 
     this.storage.get('user-access-token').then((user) => {
-      this.user = user;
       this.storage.get('flagged').then((result: object) => {
-        this.flags = result[this.user['role']];
+        this.flags = result[user['role']];
         // console.log(this.flags);
       });
     });
@@ -101,22 +99,16 @@ export class HomePage implements OnInit {
   }
 
   toggleFlag(event, recID: number) {
-    console.log(recID);
     event.stopPropagation();
     event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
     this.storage.get('user-access-token').then((user) => {
       this.storage.get('flagged').then((result: object) => {
-        console.log(result);
         if (event.target.children[0].name === 'flag') {
           result[user['role']].push(recID);
-          this.storage.set('flagged', result).then((result) => {
-            console.log(result);
-          })
+          this.storage.set('flagged', result);
         } else {
           let new_result = result[user.role].slice(0, result[user.role].indexOf(recID)).concat(result[user.role].slice(result[user.role].indexOf(recID) + 1, result[user.role].length));
-          this.storage.set('flagged', new_result).then((result) => {
-            console.log(result);
-          });
+          this.storage.set('flagged', new_result);
         }
       });
     });
