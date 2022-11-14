@@ -25,9 +25,9 @@ export class DashboardPage implements OnInit {
 
   ngOnInit() {}
  
-  async showAlert() {
+  async authenticateAdmin() {
     const alert = await this.alertCtrl.create({
-      header: 'Please input admin password.',
+      header: "Please enter the admin password.",
       buttons: ['Cancel', 'OK'],
       inputs: [
         {
@@ -39,11 +39,12 @@ export class DashboardPage implements OnInit {
         },
       ]
     });
+
     await alert.present();
     const result = await alert.onDidDismiss();
     // this.changePassword(result.data.values[0])
     if (result.data) {
-      this.dataService.existingPassword('admin', result.data.values[0]).then(async (result) => {
+      this.dataService.passwordExists('admin', result.data.values[0]).then(async (result) => {
         if (result) {
           this.setOpen(true, 'password_modal');
         } else {
@@ -92,31 +93,62 @@ export class DashboardPage implements OnInit {
     }
   }
 
-  submit_passwords(validation: object) {
-    for (let v in validation) {
-      if (validation[v]['user'] && validation[v]['input']) {
-        if (this.isValid[validation[v]['user']] && validation[v]['input']) {
-          this.dataService.changePassword(validation[v]['input'], validation[v]['user']).then(async (result) => {
-            this.setOpen(false, 'password_modal');
+  async showError(message: string) {
+    return await this.alertCtrl.create({
+      header: message,
+      buttons: ['OK'],
+    });
+  }
 
-            const success = await this.toastCtrl.create({
-              message: 'Passwords updated',
-              duration: 3000,
-              position: 'bottom',
-              color: 'success',
-              buttons:
-              [
-                {
-                  text: 'Dismiss',
-                  role: 'cancel'
-                }
-              ]
-            });
-      
-            await success.present();
-          })
+  async submit_passwords(validation: object) {
+    let error;
+    if (validation[0] && validation[1]) {
+      if (validation[0]['input'] == validation[1]['input']) {
+        error = await this.showError("Passwords cannot match!");
+        await error.present();
+      } else {
+
+        for (let v in validation) {
+          if (validation[v]['user'] && validation[v]['input']) {
+            let exists = await this.dataService.existingPassword(validation[v]['input']);
+            if (exists) {
+              error = await this.showError(`${validation[v]['user'].toUpperCase()} password already exists. Please try a different password.`);
+              await error.present();
+            }
+          }
+        }
+
+        if (!error) {
+          for (let v in validation) {
+            if (validation[v]['user'] && validation[v]['input']) {
+              if (this.isValid[validation[v]['user']]) {
+                this.dataService.changePassword(validation[v]['input'], validation[v]['user']).then(async (result) => {
+                  this.setOpen(false, 'password_modal');
+
+                  const success = await this.toastCtrl.create({
+                    message: 'Passwords updated',
+                    duration: 3000,
+                    position: 'bottom',
+                    color: 'success',
+                    buttons:
+                    [
+                      {
+                        text: 'Dismiss',
+                        role: 'cancel'
+                      }
+                    ]
+                  });
+            
+                  await success.present();
+                })
+              }
+            }
+          }
         }
       }
+    } else {
+      error = await this.showError("Unknown error. Please try again.");
+      await error.present();
     }
   }
 

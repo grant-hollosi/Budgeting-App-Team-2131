@@ -90,7 +90,25 @@ export class DataService {
     });
   }
 
-  existingPassword(user: string, password: string) {
+  async existingPassword(password: string) {
+    let fetch = this.getQuery(`SELECT user_type FROM passwords`);
+    return new Promise((resolve) => {
+      fetch.then(async (users) => {
+        if (Array.isArray(users)) {
+          for (let u in users) {
+            console.log(users);
+            let exists = await this.passwordExists(users[u]['user_type'], password);
+            if (exists) {
+              resolve(true);
+            }
+          }
+        }
+        resolve(false);
+      })
+    });
+  }
+
+  async passwordExists(user: string, password: string) {
     let fetch = this.getQuery(`SELECT password FROM passwords WHERE user_type = '${user}'`);
     return new Promise((resolve) => {
       fetch.then((result) => {
