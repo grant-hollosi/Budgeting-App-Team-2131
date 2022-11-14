@@ -52,7 +52,7 @@ export class AuthService {
           this.storage.set(TOKEN_KEY, user);
           this.storage.get('flagged').then((result) => {
             if (!result) {
-              this.storage.set('flagged', []);
+              this.storage.set('flagged', {'USER': [], 'ADMIN': []});
             }
           })
           resolve(user);

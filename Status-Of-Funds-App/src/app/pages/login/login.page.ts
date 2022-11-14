@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastController } from '@ionic/angular';
-import { reduce } from 'rxjs/operators';
-import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-login',
@@ -14,13 +12,9 @@ export class LoginPage implements OnInit {
   user = {
     pw: ''
   };
-  constructor(private router: Router, private auth: AuthService, private toastController: ToastController, private storage: Storage) { }
+  constructor(private router: Router, private auth: AuthService, private toastController: ToastController) { }
 
-  ngOnInit() {
-    this.storage.forEach((val, key) => {
-      console.log(val, key);
-    })
-  }
+  ngOnInit() {  }
 
   // New login() with authentication services
   // subscribe() is basically a method to display an Observable. Here is a quick read to describe what it is, I'm not entirely sure yet 
@@ -30,7 +24,7 @@ export class LoginPage implements OnInit {
   async login() {
     try {
       this.auth.signIn(this.user).then(async (user) => {
-        console.log(user);
+        // console.log(user);
         const role = user['role'];
         if (role) {
           this.router.navigateByUrl('/loader');

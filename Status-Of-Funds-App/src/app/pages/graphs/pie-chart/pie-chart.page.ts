@@ -20,7 +20,7 @@ export class PieChartPage implements OnInit {
     query.then((result) => {
       if (Array.isArray(result)) {
         this.results = result;
-        console.log(this.results);
+        // console.log(this.results);
         this.generatePieChart();
       }
     });
@@ -42,7 +42,7 @@ export class PieChartPage implements OnInit {
     const height = 450;
     const margin = 40;
 
-    console.log(width, height);
+    // console.log(width, height);
 
     const radius = Math.min(width, height) / 2 - margin
 
@@ -75,7 +75,7 @@ export class PieChartPage implements OnInit {
                   .value((d) => d.Obligations)
     const data_ready = pie(data)
 
-    console.log(data_ready);
+    // console.log(data_ready);
     
     const arc = d3.arc()
       .innerRadius(0)

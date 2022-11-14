@@ -12,7 +12,9 @@ export class LoaderPage implements OnInit {
   public data: any;
   constructor(private router: Router, private dataService: DataService) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewDidEnter() {
     this.data = this.dataService.populate(`SELECT * FROM dataTable WHERE id > 1`);
     this.data.then((result) => {
       this.router.navigate(['home']);
