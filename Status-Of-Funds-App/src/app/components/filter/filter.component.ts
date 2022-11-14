@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild, ViewChildren } from '@angular/core
 import { IonModal, IonRange, IonDatetime, IonCheckbox, IonInput } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from 'src/app/services/data.service';
-import * as moment from 'moment';
+import * as moment from '../../../../node_modules/moment';
 import { HomePage } from 'src/app/pages/home/home.page';
 import { Storage } from '@ionic/storage';
 
