@@ -30,7 +30,7 @@ export class HomePage implements OnInit {
   chunk: any;
   start_id: any;
   public list_item: any;
-  public query = `SELECT * FROM dataTable WHERE id > 1`;
+  public query = `SELECT * FROM dataTable`;
   private loading: any;
   public sort_by = '';
   public filters = {
@@ -67,11 +67,20 @@ export class HomePage implements OnInit {
     this.chunk = 100;
     this.start_id = 0;
     let query = this.query;
+    let applied_filter = false;
     for (let key in this.filters) {
-      query = query.concat(' ', this.filters[key]).trim();
+      console.log(this.filters[key] && !applied_filter);
+      if (!applied_filter && this.filters[key]) {
+        applied_filter = true;
+        console.log("APPLYING FIRST FILTER", this.filters[key]);
+        query = query.concat(' WHERE ', this.filters[key]);
+        console.log(query);
+      } else if (this.filters[key]) {
+        query = query.concat(' AND ', this.filters[key])
+      }
     }
     query = query.concat(' ', this.sort_by).trim();
-    // console.log(query);
+    console.log(query);
     let fetch = this.dataService.populate(query);
     fetch.then((result) => {
       if (Array.isArray(result)) {

@@ -43,7 +43,7 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    let fetch = this.dataService.populate(`SELECT DISTINCT AOR FROM dataTable WHERE id > 1`);
+    let fetch = this.dataService.populate(`SELECT DISTINCT AOR FROM dataTable`);
     fetch.then((result) => {
       if (Array.isArray(result)) {
         for (let r in result) {
@@ -53,22 +53,22 @@ export class FilterComponent implements OnInit {
       }
     });
 
-    fetch = this.dataService.populate("SELECT MIN(Obligations) FROM dataTable WHERE id > 1");
+    fetch = this.dataService.populate("SELECT MIN(Obligations) FROM dataTable");
     fetch.then((result) => {
       this.min = result[0]['MIN(Obligations)'];
     });
 
-    fetch = this.dataService.populate("SELECT MAX(Obligations) FROM dataTable WHERE id > 1");
+    fetch = this.dataService.populate("SELECT MAX(Obligations) FROM dataTable");
     fetch.then((result) => {
       this.max = result[0]['MAX(Obligations)'];
     });
 
-    fetch = this.dataService.populate("SELECT MAX(TransDate) FROM dataTable WHERE id > 1");
+    fetch = this.dataService.populate("SELECT MAX(TransDate) FROM dataTable");
     fetch.then((result) => {
       this.maxDate = result[0]['MAX(TransDate)'].slice(0, -1);
     });
 
-    fetch = this.dataService.populate("SELECT MIN(TransDate) FROM dataTable WHERE id > 1 AND NOT TransDate = '0000-00-00 00:00:00'");
+    fetch = this.dataService.populate("SELECT MIN(TransDate) FROM dataTable WHERE NOT TransDate = '0000-00-00 00:00:00'");
     fetch.then((result) => {
       console.log(result);
       this.minDate = result[0]['MIN(TransDate)'].slice(0, -1);
@@ -86,11 +86,11 @@ export class FilterComponent implements OnInit {
   async filter(){
     // AMOUNT FILTER
     if (this.lower.value && this.upper.value) {
-      this.home.filters['amount'] = `AND Obligations BETWEEN ${this.lower.value} AND ${this.upper.value}`; 
+      this.home.filters['amount'] = `Obligations BETWEEN ${this.lower.value} AND ${this.upper.value}`; 
     } else if (this.lower.value) {
-      this.home.filters['amount'] = `AND Obligations >= ${this.lower.value}`;
+      this.home.filters['amount'] = `Obligations >= ${this.lower.value}`;
     } else if (this.upper.value) {
-      this.home.filters['amount'] = `AND Obligations <= ${this.upper.value}`;
+      this.home.filters['amount'] = `Obligations <= ${this.upper.value}`;
     }
 
     // AOR FILTER
@@ -104,7 +104,7 @@ export class FilterComponent implements OnInit {
     }
     selected_aors = selected_aors.slice(0, -1);
     if (aor_selected) {
-      this.home.filters['aor'] = `AND AOR IN (${selected_aors})`
+      this.home.filters['aor'] = `AOR IN (${selected_aors})`
     }
 
     // FLAG FILTER
@@ -120,13 +120,13 @@ export class FilterComponent implements OnInit {
       if (selected_statuses['flagged'] && !selected_statuses['unflagged']) {
         await this.storage.get('flagged').then((result: object) => {
           if (result[user['role']].length) {
-            this.home.filters['flag'] = `AND RecID IN (${result[user['role']].toString()})`;
+            this.home.filters['flag'] = `RecID IN (${result[user['role']].toString()})`;
           }
         })
       } else if (!selected_statuses['flagged'] && selected_statuses['unflagged']) {
         await this.storage.get('flagged').then((result: object) => {
           if (result[user['role']].length) {
-            this.home.filters['flag'] = `AND NOT RecID IN (${result[user['role']].toString()})`
+            this.home.filters['flag'] = `NOT RecID IN (${result[user['role']].toString()})`
           }
         })
       }

@@ -55,6 +55,7 @@ export class DataService {
   }
 
   async getQuery(query) {
+    console.log(query);
     let url = this.url + "v1/populate/?query=" + query;
     let req = this.http.get(url);
     let results = new Promise((resolve) => {
@@ -66,7 +67,7 @@ export class DataService {
   }
 
   async upload(file) {
-    let url = `https://rxlhaqtsbl.execute-api.us-east-2.amazonaws.com/v1/upload/`;
+    let url = `${this.url}v1/upload/`;
     console.log(url);
     // const formData: FormData = new FormData();
     // formData.append('file', file, file.name);

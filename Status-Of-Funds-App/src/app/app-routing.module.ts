@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { TabsComponent } from './components/tabs/tabs.component';
-import { UploadPage } from './pages/upload/upload.page';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -61,14 +60,6 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule), 
     canActivate: [AuthGuard], 
-    data: {
-      role: 'ADMIN'
-    }
-  },
-  {
-    path: 'upload',
-    loadChildren: () => import('./pages/upload/upload.module').then(m => m.UploadPageModule), 
-    canActivate: [AuthGuard],
     data: {
       role: 'ADMIN'
     }
