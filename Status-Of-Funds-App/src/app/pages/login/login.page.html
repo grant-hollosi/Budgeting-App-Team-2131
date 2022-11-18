@@ -10,6 +10,41 @@
       <ion-label position="floating">Password</ion-label>
       <ion-input type="password" [(ngModel)]="user.pw" (keyup.enter)="login()"></ion-input>
     </ion-item>
-    <ion-button (click)="login()">Login</ion-button>
+    <ion-row>
+      <ion-button (click)="login()">Login</ion-button>
+      <ion-button (click)="setOpen(true, 'server_modal')">Server URL</ion-button>
+    </ion-row>
   </div>
 </ion-content>
+
+<ion-modal 
+  #server_modal
+  [initialBreakpoint]="0.75"
+  [breakpoints]="[0, 0.25, 0.5, 0.75, 1.0]"
+  (didDismiss)="setOpen(false, 'server_modal')"
+>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Server Setup</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpen(false, 'server_modal')">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-item #server_item counter="true">
+          <ion-label position="floating">URL</ion-label>
+          <ion-input #server_endpoint></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-button size="medium" fill="outline" color="danger" (click)="setOpen(false, 'server_modal')">Cancel</ion-button>
+          <ion-button size="medium" (click)="changeServer(this.server.value)">Submit</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController, IonModal, IonInput } from '@ionic/angular';
+import { reduce } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
+import { DataService } from 'src/app/services/data.service';
+
+// import { promises as fsPromises } from 'fs';
+// import { join } from 'path';
 
 @Component({
   selector: 'app-login',
@@ -10,10 +15,13 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  @ViewChild('server_modal') server_modal: IonModal
+  @ViewChild('server_endpoint') server: IonInput;
+
   user = {
     pw: ''
   };
-  constructor(private router: Router, private auth: AuthService, private toastController: ToastController, private storage: Storage) { }
+  constructor(private dataService: DataService, private alertCtrl: AlertController, private router: Router, private auth: AuthService, private toastCtrl: ToastController, private storage: Storage) { }
 
 
   ngOnInit() {
@@ -47,9 +55,20 @@ export class LoginPage implements OnInit {
             }
           ]
         });
-
         await loginError.present();
       }
     });
   }
+
+  setOpen(open: boolean, modal: string) {
+    if (modal == 'server_modal') {
+      this.server_modal.isOpen = open;
+    }
+  }
+
+  async changeServer(url: string) {
+    console.log("Server: ", url);
+    this.storage.set("server-url", url);
+  }
+  
 }

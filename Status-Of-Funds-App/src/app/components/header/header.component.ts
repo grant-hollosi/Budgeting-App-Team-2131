@@ -29,12 +29,20 @@ export class HeaderComponent implements OnInit {
 
   async logout() {
     this.setOpen(false, "settings");
-    this.storage.get('flagged').then((result) => {
-      this.storage.clear().then((clear) => {
-        this.storage.set('flagged', result).then((result) => {
-          this.navigate('/');
+    this.storage.get('flagged').then((flags) => {
+      this.storage.get('server-url').then((url) => {
+        console.log(flags, url);
+        this.storage.clear().then((clear) => {
+          // this.storage.forEach((val, key) => {
+          //   console.log(val, key);
+          // })
+          this.storage.set('flagged', flags).then((result) => {
+            this.storage.set('server-url', url).then((done) => {
+              this.navigate('/');
+            });
+          })
         })
-      })
+      });
     });
   }
 
