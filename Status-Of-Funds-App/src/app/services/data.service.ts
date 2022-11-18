@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { triggerAsyncId } from 'async_hooks';
+import { Storage } from '@ionic/storage';
 const bcrypt = require('bcryptjs');
 
 @Injectable({
@@ -16,8 +17,17 @@ export class DataService {
 
   results: any[];
   previousQuery: string;
-  constructor(private http: HttpClient) { 
+  url: string;
+  constructor(private http: HttpClient, private storage: Storage) { 
     this.results = new Array();
+    this.storage.get('server-url').then((url) => {
+      if (url) {
+        this.url = url;
+        console.log(url)
+      } else {
+        throw Error("Server URL undefined");
+      }
+      })
   }
 
   wipe() {
@@ -46,7 +56,7 @@ export class DataService {
   }
 
   async getQuery(query) {
-    let url = "https://rxlhaqtsbl.execute-api.us-east-2.amazonaws.com/v1/populate/?query=" + query;
+    let url = this.url + "v1/populate/?query=" + query;
     let req = this.http.get(url);
     let results = new Promise((resolve) => {
       req.subscribe((data) => {

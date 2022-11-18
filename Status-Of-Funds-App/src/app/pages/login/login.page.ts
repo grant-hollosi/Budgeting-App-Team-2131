@@ -69,28 +69,9 @@ export class LoginPage implements OnInit {
     }
   }
 
-  async changeServer(endpoint: string) {
-    console.log("Server: ", endpoint);
-    let jsonServer = JSON.stringify(endpoint, null, 2);
-    console.log("JSON: ", jsonServer);
-    //this.asyncWriteFile('./server-info.json', jsonServer);
+  async changeServer(url: string) {
+    console.log("Server: ", url);
+    this.storage.set("server-url", url);
   }
-
-  // async asyncWriteFile(filename: string, data: any) {
-  //   try {
-  //     await fsPromises.writeFile(join(__dirname, filename), data, {
-  //       flag: 'w',
-  //     });
-
-  //     const contents = await fsPromises.readFile(
-  //       join(__dirname, filename),
-  //       'utf-8',
-  //     );
-  //     console.log("Contents: ", contents);
-  //   } catch (err) {
-  //     console.log(err);
-  //     return 'Something went wrong';
-  //   }
-  // }
   
 }

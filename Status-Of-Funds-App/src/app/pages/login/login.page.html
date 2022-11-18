@@ -12,7 +12,7 @@
     </ion-item>
     <ion-row>
       <ion-button (click)="login()">Login</ion-button>
-      <ion-button (click)="setOpen(true, 'server_modal')">Setup</ion-button>
+      <ion-button (click)="setOpen(true, 'server_modal')">Server URL</ion-button>
     </ion-row>
   </div>
 </ion-content>
@@ -37,7 +37,7 @@
     <ion-content class="ion-padding">
       <ion-list>
         <ion-item #server_item counter="true">
-          <ion-label position="floating">Endpoint</ion-label>
+          <ion-label position="floating">URL</ion-label>
           <ion-input #server_endpoint></ion-input>
         </ion-item>
         <ion-item lines="none">
