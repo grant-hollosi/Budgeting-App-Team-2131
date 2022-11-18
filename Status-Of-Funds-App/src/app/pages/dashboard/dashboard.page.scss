@@ -1,12 +1,11 @@
 .flex-container {
-    display:flex;
-    justify-content: flex-end;
-    align-items: center;
+    display: flex;
     flex-direction: column;
-    width: 100vw;
-    height: 100%;
+    align-items: center;
+    justify-content: space-around;
 }
 
-ion-button {
-    width: 100%;
+img {
+    max-width: 300px;
+    width: 75%;
 }

@@ -55,6 +55,20 @@ export class DataService {
     return results;
   }
 
+  async upload(file) {
+    let url = `https://rxlhaqtsbl.execute-api.us-east-2.amazonaws.com/v1/upload/`;
+    console.log(url);
+    // const formData: FormData = new FormData();
+    // formData.append('file', file, file.name);
+    let req = this.http.post(url, file);
+    let results = new Promise((resolve) => {
+      req.subscribe((data) => {
+        resolve(JSON.parse(data.toString()));
+      })
+    })
+    return results;
+  }
+
   getResults() {
     return this.results;
   }

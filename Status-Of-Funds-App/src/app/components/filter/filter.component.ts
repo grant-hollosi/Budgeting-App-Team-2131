@@ -70,6 +70,7 @@ export class FilterComponent implements OnInit {
 
     fetch = this.dataService.populate("SELECT MIN(TransDate) FROM dataTable WHERE id > 1 AND NOT TransDate = '0000-00-00 00:00:00'");
     fetch.then((result) => {
+      console.log(result);
       this.minDate = result[0]['MIN(TransDate)'].slice(0, -1);
     })
   }
@@ -119,13 +120,13 @@ export class FilterComponent implements OnInit {
       if (selected_statuses['flagged'] && !selected_statuses['unflagged']) {
         await this.storage.get('flagged').then((result: object) => {
           if (result[user['role']].length) {
-            this.home.filters['flag'] = `AND id IN (${result[user['role']].toString()})`;
+            this.home.filters['flag'] = `AND RecID IN (${result[user['role']].toString()})`;
           }
         })
       } else if (!selected_statuses['flagged'] && selected_statuses['unflagged']) {
         await this.storage.get('flagged').then((result: object) => {
           if (result[user['role']].length) {
-            this.home.filters['flag'] = `AND NOT id IN (${result[user['role']].toString()})`
+            this.home.filters['flag'] = `AND NOT RecID IN (${result[user['role']].toString()})`
           }
         })
       }

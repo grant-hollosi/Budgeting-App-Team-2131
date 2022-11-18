@@ -45,6 +45,9 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.initData();
+    this.storage.forEach((value, key) => {
+      console.log(key, value);
+    })
   }
 
   ionViewWillEnter() {
@@ -54,7 +57,7 @@ export class HomePage implements OnInit {
     this.storage.get('user-access-token').then((user) => {
       this.storage.get('flagged').then((result: object) => {
         this.flags = result[user['role']];
-        // console.log(this.flags);
+        console.log(this.flags);
       });
     });
   }

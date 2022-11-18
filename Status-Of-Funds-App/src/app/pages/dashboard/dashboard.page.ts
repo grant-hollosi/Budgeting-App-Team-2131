@@ -11,8 +11,10 @@ const bcrypt = require('bcryptjs');
 })
 export class DashboardPage implements OnInit {
   @ViewChild('password_modal') password_modal: IonModal;
+  @ViewChild('data_modal') data_modal: IonModal;
   @ViewChild('admin_password') admin_pass: IonInput;
   @ViewChild('user_password') user_pass: IonInput;
+  @ViewChild('file_input') file_input: IonInput;
 
   isValid = {
     user: true,
@@ -20,6 +22,7 @@ export class DashboardPage implements OnInit {
   }
 
   errorMessage = '';
+  private file: File;
 
   constructor(private alertCtrl: AlertController, private dataService: DataService, private toastCtrl: ToastController) { }
 
@@ -152,9 +155,23 @@ export class DashboardPage implements OnInit {
     }
   }
 
+  setFiles(event) {
+    this.file = event.target.files[0];
+  }
+
+  uploadFile() {
+    console.log(this.file);
+    let results = this.dataService.upload(this.file);
+    results.then((result) => {
+      console.log(result);
+    })
+  }
+
   setOpen(open: boolean, modal: string) {
     if (modal == 'password_modal') {
       this.password_modal.isOpen = open;
+    } else if (modal == 'data_modal') {
+      this.data_modal.isOpen = open;
     }
   }
 
