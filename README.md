@@ -11,6 +11,19 @@ Sidarth Rajan
 - App Info: The app will permit the user to view the Regiment’s financial data and history from the convenience of their smartphone. The user groups are those who can view the data, and those who can view and upload more data. <br /><br />
 [Licensed under the Apache License](https://github.com/grant-hollosi/Budgeting-App-Team-2131/blob/master/LICENSE)
 # Release Notes
+## Version 0.4.0
+### New Features
+- Changed to a serverless approach to pull data from the database
+- There is now a graphs page that holds appropriate charts depending on the data
+- The home page is now populated with 50 items per page
+- The fund details page displays the specific item's data if navigated to from the home page
+- There is some more documentation in the settings page
+- The login system is now based on a salt and hash system
+- Admin users now have the capability to change passwords
+### Bug Fixes
+- The settings page is displayed correctly now even if not on the home screen
+### Known Problems
+- We do not have a way to upload to the database through the app yet
 ## Version 0.3.0
 ### New Features
 - Back End Server is created and it has functionality to make signed requests to upload to the S3 bucket.
