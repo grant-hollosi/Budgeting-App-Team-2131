@@ -119,8 +119,8 @@ export class HomePage implements OnInit {
           result[user['role']].push(recID);
           this.storage.set('flagged', result);
         } else {
-          let new_result = result[user.role].slice(0, result[user.role].indexOf(recID)).concat(result[user.role].slice(result[user.role].indexOf(recID) + 1, result[user.role].length));
-          this.storage.set('flagged', new_result);
+          result[user['role']] = result[user['role']].slice(0, result[user['role']].indexOf(recID)).concat(result[user['role']].slice(result[user['role']].indexOf(recID) + 1, result[user['role']].length));
+          this.storage.set('flagged', result);
         }
       });
     });
