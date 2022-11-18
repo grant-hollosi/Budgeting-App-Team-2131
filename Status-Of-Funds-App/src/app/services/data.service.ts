@@ -35,7 +35,6 @@ export class DataService {
   }
 
   populate(query: string) {
-    console.log(query);
     if (this.previousQuery && query == this.previousQuery) {
       return new Promise((resolve) => {
         resolve(this.results);
@@ -63,6 +62,20 @@ export class DataService {
         resolve(JSON.parse(data.toString()));
       })
     });
+    return results;
+  }
+
+  async upload(file) {
+    let url = `https://rxlhaqtsbl.execute-api.us-east-2.amazonaws.com/v1/upload/`;
+    console.log(url);
+    // const formData: FormData = new FormData();
+    // formData.append('file', file, file.name);
+    let req = this.http.post(url, file);
+    let results = new Promise((resolve) => {
+      req.subscribe((data) => {
+        resolve(JSON.parse(data.toString()));
+      })
+    })
     return results;
   }
 
@@ -101,7 +114,24 @@ export class DataService {
     });
   }
 
-  existingPassword(user: string, password: string) {
+  async existingPassword(password: string) {
+    let fetch = this.getQuery(`SELECT user_type FROM passwords`);
+    return new Promise((resolve) => {
+      fetch.then(async (users) => {
+        if (Array.isArray(users)) {
+          for (let u in users) {
+            let exists = await this.passwordExists(users[u]['user_type'], password);
+            if (exists) {
+              resolve(true);
+            }
+          }
+        }
+        resolve(false);
+      })
+    });
+  }
+
+  async passwordExists(user: string, password: string) {
     let fetch = this.getQuery(`SELECT password FROM passwords WHERE user_type = '${user}'`);
     return new Promise((resolve) => {
       fetch.then((result) => {

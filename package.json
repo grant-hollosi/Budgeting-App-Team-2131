@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@ionic-native/file": "^5.36.0",
+    "d3": "^7.6.1",
+    "moment": "^2.29.4",
     "mysql": "^2.18.1"
   }
 }

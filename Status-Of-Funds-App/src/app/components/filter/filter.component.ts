@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild, ViewChildren } from '@angular/core
 import { IonModal, IonRange, IonDatetime, IonCheckbox, IonInput } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from 'src/app/services/data.service';
-import * as moment from 'moment';
+import * as moment from '../../../../node_modules/moment';
 import { HomePage } from 'src/app/pages/home/home.page';
 import { Storage } from '@ionic/storage';
 
@@ -70,6 +70,7 @@ export class FilterComponent implements OnInit {
 
     fetch = this.dataService.populate("SELECT MIN(TransDate) FROM dataTable WHERE id > 1 AND NOT TransDate = '0000-00-00 00:00:00'");
     fetch.then((result) => {
+      console.log(result);
       this.minDate = result[0]['MIN(TransDate)'].slice(0, -1);
     })
   }
@@ -108,29 +109,30 @@ export class FilterComponent implements OnInit {
 
     // FLAG FILTER
     let selected_statuses = {};
-    for (let cb in this.checkboxes['_results']) {
-      if (this.checkboxes['_results'][cb]['el']['id'] == 'flag') {
-        selected_statuses[this.checkboxes['_results'][cb].value] = this.checkboxes['_results'][cb].checked;
+    this.home.filters['flag'] = '';
+    await this.storage.get('user-access-token').then(async (user) => {
+      for (let cb in this.checkboxes['_results']) {
+        if (this.checkboxes['_results'][cb]['el']['id'] == 'flag') {
+          selected_statuses[this.checkboxes['_results'][cb].value] = this.checkboxes['_results'][cb].checked;
+        }
       }
-    }
 
-    if (selected_statuses['flagged'] && !selected_statuses['unflagged']) {
-      await this.storage.get('flagged').then((result: number[]) => {
-        if (result) {
-          this.home.filters['flag'] = `AND id IN (${result.toString()})`;
-        }
-      })
-    } else if (!selected_statuses['flagged'] && selected_statuses['unflagged']) {
-      await this.storage.get('flagged').then((result: number[]) => {
-        if (result) {
-          this.home.filters['flag'] = `AND NOT id IN (${result.toString()})`
-        }
-      })
-    } else {
-      this.home.filters['flag'] = '';
-    }
+      if (selected_statuses['flagged'] && !selected_statuses['unflagged']) {
+        await this.storage.get('flagged').then((result: object) => {
+          if (result[user['role']].length) {
+            this.home.filters['flag'] = `AND RecID IN (${result[user['role']].toString()})`;
+          }
+        })
+      } else if (!selected_statuses['flagged'] && selected_statuses['unflagged']) {
+        await this.storage.get('flagged').then((result: object) => {
+          if (result[user['role']].length) {
+            this.home.filters['flag'] = `AND NOT RecID IN (${result[user['role']].toString()})`
+          }
+        })
+      }
+    });
 
-    this.home.ngOnInit();
+    this.home.ionViewWillEnter();
     this.setOpen(false, 'filter');
   }
 
@@ -139,7 +141,7 @@ export class FilterComponent implements OnInit {
       this.home.filters[key] = '';
     }
     this.date_picker.value = this.minDate;
-    this.home.ngOnInit();
+    this.home.ionViewWillEnter();
     this.setOpen(false, 'filter');
   }
 
@@ -187,7 +189,7 @@ export class FilterComponent implements OnInit {
         break;
     }
     // this.setOpen(false, 'sort');
-    this.home.ngOnInit();
+    this.home.ionViewWillEnter();
   }
 
   clearSort() {
@@ -196,7 +198,7 @@ export class FilterComponent implements OnInit {
       this.directions[key] = 'forward';
     }
     this.setOpen(false, 'sort');
-    this.home.ngOnInit();
+    this.home.ionViewWillEnter();
   }
 
   dateChanged() {

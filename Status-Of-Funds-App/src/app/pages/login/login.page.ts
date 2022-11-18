@@ -23,10 +23,9 @@ export class LoginPage implements OnInit {
   };
   constructor(private dataService: DataService, private alertCtrl: AlertController, private router: Router, private auth: AuthService, private toastCtrl: ToastController, private storage: Storage) { }
 
+
   ngOnInit() {
-    this.storage.forEach((val, key) => {
-      console.log(val, key);
-    })
+    // this.storage.clear();
   }
 
   // New login() with authentication services
@@ -35,32 +34,30 @@ export class LoginPage implements OnInit {
 
 
   async login() {
-    try {
-      this.auth.signIn(this.user).then(async (user) => {
-        console.log(user);
+    this.auth.signIn(this.user).then(async (user) => {
+      if (!(user instanceof Error)) {
         const role = user['role'];
         if (role) {
           this.router.navigateByUrl('/loader');
         }
-      });
-    } catch (e) {
-      console.log(e);
-      const loginError = await this.toastCtrl.create({
-        message: 'Login Failed',
-        duration: 3000,
-        position: 'bottom',
-        color: 'danger',
-        buttons:
-        [
-          {
-            text: 'Dismiss',
-            role: 'cancel'
-          }
-        ]
-      });
-
-      await loginError.present();
-    }
+      } else {
+        console.log(user);
+        const loginError = await this.toastController.create({
+          message: 'Login Failed',
+          duration: 3000,
+          position: 'bottom',
+          color: 'danger',
+          buttons:
+          [
+            {
+              text: 'Dismiss',
+              role: 'cancel'
+            }
+          ]
+        });
+        await loginError.present();
+      }
+    });
   }
 
   setOpen(open: boolean, modal: string) {

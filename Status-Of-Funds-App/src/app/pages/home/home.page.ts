@@ -1,13 +1,14 @@
 import { AuthService } from "../../services/auth.service";
 import {take, map, filter} from 'rxjs/operators';
 
-import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonIcon, IonInfiniteScroll, IonList, LoadingController } from '@ionic/angular';
 import { DataService } from "src/app/services/data.service";
 import { HttpClient } from '@angular/common/http';
 import { FundDetailsPage } from "../fund-details/fund-details.page";
 import { Storage } from "@ionic/storage";
+import { userInfo } from "os";
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,10 @@ import { Storage } from "@ionic/storage";
   styleUrls: ['./home.page.scss'],
 })
 
+
+@Injectable({
+  providedIn: 'root'
+})
 export class HomePage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonList) list: IonList;
@@ -39,14 +44,31 @@ export class HomePage implements OnInit {
   constructor(private auth: AuthService, private router: Router, public dataService: DataService, private loadingCtrl: LoadingController, private storage: Storage) { }
 
   ngOnInit() {
+    this.initData();
+    this.storage.forEach((value, key) => {
+      console.log(key, value);
+    })
+  }
+
+  ionViewWillEnter() {
     this.showLoading(true);
+    this.initData();
+
+    this.storage.get('user-access-token').then((user) => {
+      this.storage.get('flagged').then((result: object) => {
+        this.flags = result[user['role']];
+        console.log(this.flags);
+      });
+    });
+  }
+
+  initData() {
+    this.results = new Array();
     this.chunk = 100;
     this.start_id = 0;
-    this.results = new Array();
     let query = this.query;
     for (let key in this.filters) {
       query = query.concat(' ', this.filters[key]).trim();
-      console.log(key, this.filters[key]);
     }
     query = query.concat(' ', this.sort_by).trim();
     // console.log(query);
@@ -57,10 +79,6 @@ export class HomePage implements OnInit {
         this.results = this.results.concat(this.all_results.slice(this.start_id, this.start_id + this.chunk));
         this.showLoading(false);
       }
-    });
-
-    this.storage.get('flagged').then((result: number[]) => {
-      this.flags = result;
     });
   }
 
@@ -84,21 +102,18 @@ export class HomePage implements OnInit {
   }
 
   toggleFlag(event, recID: number) {
-    console.log(recID);
     event.stopPropagation();
     event.target.children[0].name = event.target.children[0].name === 'flag' ? 'flag-outline' : 'flag';
-    this.storage.get('flagged').then((result: number[]) => {
-      if (event.target.children[0].name === 'flag') {
-        result.push(recID);
-        this.storage.set('flagged', result).then((result) => {
-          console.log(result);
-        })
-      } else {
-        let new_result = result.slice(0, result.indexOf(recID)).concat(result.slice(result.indexOf(recID) + 1, result.length));
-        this.storage.set('flagged', new_result).then((result) => {
-          console.log(result);
-        });
-      }
+    this.storage.get('user-access-token').then((user) => {
+      this.storage.get('flagged').then((result: object) => {
+        if (event.target.children[0].name === 'flag') {
+          result[user['role']].push(recID);
+          this.storage.set('flagged', result);
+        } else {
+          let new_result = result[user.role].slice(0, result[user.role].indexOf(recID)).concat(result[user.role].slice(result[user.role].indexOf(recID) + 1, result[user.role].length));
+          this.storage.set('flagged', new_result);
+        }
+      });
     });
   }
   
