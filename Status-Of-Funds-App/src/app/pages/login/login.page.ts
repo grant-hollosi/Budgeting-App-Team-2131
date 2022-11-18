@@ -63,48 +63,6 @@ export class LoginPage implements OnInit {
     }
   }
 
-  async showAlert() {
-    const alert = await this.alertCtrl.create({
-      header: 'Please input admin password.',
-      buttons: ['Cancel', 'OK'],
-      inputs: [
-        {
-          type: 'password',
-          placeholder: 'Password',
-          attributes: {
-            maxlength: 20,
-          },
-        },
-      ]
-    });
-    await alert.present();
-    const result = await alert.onDidDismiss();
-    // this.changePassword(result.data.values[0])
-    if (result.data) {
-      this.dataService.existingPassword('admin', result.data.values[0]).then(async (result) => {
-        if (result) {
-          this.setOpen(true, 'server_modal');
-        } else {
-          const loginError = await this.toastCtrl.create({
-            message: 'Authentication Failed',
-            duration: 3000,
-            position: 'bottom',
-            color: 'danger',
-            buttons:
-            [
-              {
-                text: 'Dismiss',
-                role: 'cancel'
-              }
-            ]
-          });
-    
-          await loginError.present();
-        }
-      });
-    }
-  }
-
   setOpen(open: boolean, modal: string) {
     if (modal == 'server_modal') {
       this.server_modal.isOpen = open;
