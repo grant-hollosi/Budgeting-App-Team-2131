@@ -42,7 +42,7 @@ export class LoginPage implements OnInit {
         }
       } else {
         console.log(user);
-        const loginError = await this.toastController.create({
+        const loginError = await this.toastCtrl.create({
           message: 'Login Failed',
           duration: 3000,
           position: 'bottom',
