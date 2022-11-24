@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { LineGraphPage } from './line-graph.page';
+import { GraphPage } from './graph.page';
 
-describe('LineGraphPage', () => {
-  let component: LineGraphPage;
-  let fixture: ComponentFixture<LineGraphPage>;
+describe('GraphPage', () => {
+  let component: GraphPage;
+  let fixture: ComponentFixture<GraphPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LineGraphPage ],
+      declarations: [ GraphPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LineGraphPage);
+    fixture = TestBed.createComponent(GraphPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

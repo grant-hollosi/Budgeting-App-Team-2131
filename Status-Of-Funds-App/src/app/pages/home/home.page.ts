@@ -29,65 +29,31 @@ export class HomePage implements OnInit {
   public results: any[];
   chunk: any;
   start_id: any;
-  public list_item: any;
-  public query = `SELECT * FROM dataTable`;
   private loading: any;
-  public sort_by = '';
-  public filters = {
-    'aor': '',
-    'date': '',
-    'amount': '',
-    'flag': ''
-  }
   private flags: number[];
 
   constructor(private auth: AuthService, private router: Router, public dataService: DataService, private loadingCtrl: LoadingController, private storage: Storage) { }
 
-  ngOnInit() {
-    this.initData();
-    this.storage.forEach((value, key) => {
-      console.log(key, value);
-    })
-  }
+  ngOnInit() {}
 
   ionViewWillEnter() {
     this.showLoading(true);
-    this.initData();
+
+    this.results = new Array();
+    this.chunk = 100;
+    this.start_id = 0;
+    this.storage.get('filtered_results').then((result) => {
+      if (result && Array.isArray(result)) {
+        this.all_results = result;
+        this.results = this.results.concat(this.all_results.slice(this.start_id, this.start_id + this.chunk));
+      }
+    })
 
     this.storage.get('user-access-token').then((user) => {
       this.storage.get('flagged').then((result: object) => {
         this.flags = result[user['role']];
-        console.log(this.flags);
+        // console.log(this.flags);
       });
-    });
-  }
-
-  initData() {
-    this.results = new Array();
-    this.chunk = 100;
-    this.start_id = 0;
-    let query = this.query;
-    let applied_filter = false;
-    for (let key in this.filters) {
-      console.log(this.filters[key] && !applied_filter);
-      if (!applied_filter && this.filters[key]) {
-        applied_filter = true;
-        console.log("APPLYING FIRST FILTER", this.filters[key]);
-        query = query.concat(' WHERE ', this.filters[key]);
-        console.log(query);
-      } else if (this.filters[key]) {
-        query = query.concat(' AND ', this.filters[key])
-      }
-    }
-    query = query.concat(' ', this.sort_by).trim();
-    console.log(query);
-    let fetch = this.dataService.populate(query);
-    fetch.then((result) => {
-      if (Array.isArray(result)) {
-        this.all_results = result;
-        this.results = this.results.concat(this.all_results.slice(this.start_id, this.start_id + this.chunk));
-        this.showLoading(false);
-      }
     });
   }
 

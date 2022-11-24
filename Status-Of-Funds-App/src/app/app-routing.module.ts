@@ -25,30 +25,6 @@ const routes: Routes = [
     }
   },
   {
-    path: 'pie-chart',
-    loadChildren: () => import('./pages/graphs/pie-chart/pie-chart.module').then(m => m.PieChartPageModule), 
-    canActivate: [AuthGuard], 
-    data: {
-      role: 'USER'
-    }
-  },
-  {
-    path: 'line-graph',
-    loadChildren: () => import('./pages/graphs/line-graph/line-graph.module').then(m => m.LineGraphPageModule), 
-    canActivate: [AuthGuard], 
-    data: {
-      role: 'USER'
-    }
-  },
-  {
-    path: 'bar-graph',
-    loadChildren: () => import('./pages/graphs/bar-graph/bar-graph.module').then(m => m.BarGraphPageModule), 
-    canActivate: [AuthGuard], 
-    data: {
-      role: 'USER'
-    }
-  },
-  {
     path: 'fund-details',
     loadChildren: () => import('./pages/fund-details/fund-details.module').then(m => m.FundDetailsPageModule), 
     canActivate: [AuthGuard], 
@@ -64,6 +40,14 @@ const routes: Routes = [
       role: 'ADMIN'
     }
   },
+  {
+    path: 'graph',
+    loadChildren: () => import('./pages/graph/graph.module').then(m => m.GraphPageModule),
+    canActivate: [AuthGuard],
+    data: {
+      role: 'USER'
+    }
+  }
 
 
 ];

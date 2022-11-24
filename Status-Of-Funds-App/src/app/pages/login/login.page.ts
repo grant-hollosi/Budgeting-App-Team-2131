@@ -25,9 +25,9 @@ export class LoginPage implements OnInit {
 
 
   ngOnInit() {
-    this.storage.forEach((value, key) => {
-      console.log(key, value);
-    })
+    // this.storage.forEach((value, key) => {
+    //   console.log(key, value);
+    // })
   }
 
   // New login() with authentication services
@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
           this.router.navigateByUrl('/loader');
         }
       } else {
-        console.log(user);
+        // console.log(user);
         const loginError = await this.toastCtrl.create({
           message: 'Login Failed',
           duration: 3000,

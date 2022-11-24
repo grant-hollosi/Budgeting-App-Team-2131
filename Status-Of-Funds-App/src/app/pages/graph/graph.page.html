@@ -1,0 +1,100 @@
+<app-header title="Graphs" [goBack]="false"></app-header>
+
+<ion-content style="height: 100vh">
+  <div class="pie-chart" style="width:100%;height:90%">
+    <svg id="myPlot" style="width:100%;height:100%;"></svg>
+  </div>
+  <div class="flex-container" style="height:10%">
+    <ion-item lines="none">
+      <ion-button expand="block" size="medium" fill="outline" (click)="setOpen(true, 'graph_modal')">Graph Settings</ion-button>
+      <ion-button expand="block" size="medium" (click)="setOpen(true, 'results_modal')">View Results</ion-button>
+    </ion-item>
+  </div>
+</ion-content>
+
+<app-tabs page="graphs"></app-tabs>
+
+<ion-modal 
+  #graph_modal
+  [initialBreakpoint]="0.5"
+  [breakpoints]="[0, 0.25, 0.5, 0.75, 1.0]"
+  (didDismiss)="setOpen(false, 'graph_modal')">
+
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Graph Settings</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpen(false, 'graph_modal')">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-item>
+          <ion-select #graph_type [value]="type" placeholder="Select Graph Type">
+            <ion-select-option value="bar">Bar Graph</ion-select-option>
+            <ion-select-option value="pie">Pie Chart</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-select #column_group [value]="group" placeholder="Select Column to Group By">
+            <ion-select-option value="AOR">AOR</ion-select-option>
+            <ion-select-option value="Commodity">Commodity</ion-select-option>
+            <ion-select-option value="CostCenter">Cost Center</ion-select-option>
+            <ion-select-option value="FundedProgram">Funded Program</ion-select-option>
+            <ion-select-option value="SAG">SAG</ion-select-option>
+            <ion-select-option value="DPI">DPI</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-button size="medium" fill="outline" color="danger" (click)="setOpen(false, 'graph_modal')">Cancel</ion-button>
+          <ion-button size="medium" (click)="submit_settings(this.graph_type.value, this.column_group.value)">Submit</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal
+  #results_modal
+  [initialBreakpoint]="0.75"
+  [breakpoints]="[0, 0.25, 0.5, 0.75, 1.0]"
+  (didDismiss)="setOpen(false, 'results_modal')">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Results</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpen(false, 'results_modal')">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <ion-list>
+        <div *ngIf="results">
+          <ion-item *ngFor="let result of results" detail="false">
+            <ion-label>
+              <div *ngIf="blankTitle(result); then blank_title; else title"></div>
+                <ng-template #title><h2>{{result[group]}}</h2></ng-template>
+                <ng-template #blank_title><h2>Blank</h2></ng-template>
+              <p><ion-text>{{group}}</ion-text></p>
+            </ion-label>
+            <div *ngIf="result['SUM(Obligations)'] < 0; then red; else positive"></div>
+              <ng-template #red><ion-text color="danger">${{result['SUM(Obligations)'] | number:'1.2-2'}}</ion-text></ng-template>
+              <ng-template #positive>
+                <div *ngIf="result['SUM(Obligations)'] == 0; then black; else green"></div>
+                  <ng-template #black><ion-text color="dark">${{result['SUM(Obligations)'] | number:'1.2-2'}}</ion-text></ng-template>
+                  <ng-template #green><ion-text color="success">${{result['SUM(Obligations)'] | number:'1.2-2'}}</ion-text></ng-template>
+              </ng-template>
+          </ion-item>
+        </div>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

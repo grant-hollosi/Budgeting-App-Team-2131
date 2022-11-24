@@ -1,39 +1,85 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 // import { d3 } from 'd3'
-import * as d3 from '../../../../../node_modules/d3';
+import * as d3 from 'd3';
 import { DataService } from 'src/app/services/data.service';
+import { Storage } from '@ionic/storage';
+import { IonModal, IonSelect, ToastController } from '@ionic/angular';
+import { formatMoney } from 'accounting';
 
 @Component({
-  selector: 'app-pie-chart',
-  templateUrl: './pie-chart.page.html',
-  styleUrls: ['./pie-chart.page.scss'],
+  selector: 'app-graph',
+  templateUrl: './graph.page.html',
+  styleUrls: ['./graph.page.scss'],
 })
-export class PieChartPage implements OnInit {
-  results: any[];
+export class GraphPage implements OnInit {
+  @ViewChild('graph_modal') graph_modal: IonModal;
+  @ViewChild('results_modal') results_modal: IonModal;
+  @ViewChild('graph_type') graph_type: IonSelect;
+  @ViewChild('column_group') column_group: IonSelect;
+  public results: any[];
   homeResults: any[];
+  recids: number[];
+  public type: string;
+  public group: string;
 
-  constructor(private dataService: DataService) {  }
+  constructor(private dataService: DataService, private storage: Storage, private toastCtrl: ToastController) {  }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
     this.results = new Array();
+    this.recids = new Array();
     this.dataService.wipe();
-    let query = this.dataService.populate(`SELECT * FROM dataTable GROUP BY FundedProgram`);
-    query.then((result) => {
-      if (Array.isArray(result)) {
-        this.results = result;
 
-        setTimeout(() => this.generateBarChart(), 200); 
-        // Need to wait until the correct svg height is loaded -> if we don't wait then the first graph gets created really big
+    this.storage.get('filtered_results').then((result) => {
+      this.recids = []
+      for (let r in result) {
+        this.recids.push(result[r]['recID']);
       }
-    });
+      this.setOpen(true, 'graph_modal');
+    })
   }
 
-  generatePieChart() {
+  updateResults(type: string, column: string) {
+    this.type = type;
+    this.group = column;
+    let query = this.dataService.getQuery(`SELECT ${column}, SUM(Obligations) FROM dataTable WHERE recID in (${this.recids}) GROUP BY ${column}`)
+      query.then((result) => {
+        if (Array.isArray(result)) {
+          this.results = result;
+          this.results = this.results.sort(function(b, a) {
+            return a['SUM(Obligations)'] - b['SUM(Obligations)'];
+          })
+          switch (type) {
+            case 'bar':
+              this.generateBarChart(column);
+              break;
+            case 'pie':
+              this.generatePieChart(column);
+              break;
+          }
+          // Need to wait until the correct svg height is loaded -> if we don't wait then the first graph gets created really big
+        }
+      });
+  }
+
+  setOpen(open: boolean, modal: string) {
+    if (modal == 'graph_modal') {
+      this.graph_modal.isOpen = open;
+    } else if (modal == 'results_modal') {
+      this.results_modal.isOpen = open;
+    }
+  }
+
+  generatePieChart(column: string) {
     // Pie chart
     const data = this.results.filter((program) => {
-      return program.Obligations > 0;
+      return program['SUM(Obligations)'] >= 0;
     });
 
+    data.sort(function(b, a) {
+      return a['SUM(Obligations)'] - b['SUM(Obligations)'];
+    });
 
     d3.selectAll('svg > *').remove();
     d3.select('body').selectAll('div.tooltip').remove();
@@ -71,7 +117,7 @@ export class PieChartPage implements OnInit {
     const color = d3.scaleOrdinal(d3.schemeSet2);
     
     const pie = d3.pie()
-                  .value((d) => d.Obligations)
+                  .value((d) => d['SUM(Obligations)'])
     const data_ready = pie(data)
     
     const arc = d3.arc()
@@ -98,7 +144,7 @@ export class PieChartPage implements OnInit {
       })
       .on('mousemove', function(event, d) {
         tooltip
-          .html('Obligation Amount: $' + d.value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ','))
+          .html(`${column}: ${d.data[column]}<br>Obligation Amount: ${formatMoney(d.value)}`)
           .style('left', event.x + 20 + 'px')
           .style('top', event.y + 'px')
       })
@@ -110,26 +156,26 @@ export class PieChartPage implements OnInit {
           .style('opacity', 0.8)
       });
     
-    arcs.append('text')
-      .attr('transform', function(d) {
-        d.innerRadius = 0;
-        d.outerRadius = radius;
-        return 'translate(' + arc.centroid(d) + ')';
-      })
-      .attr('text-anchor', 'middle')
-      .text(function(d, i) {
-        return data[i].FundedProgram;
-      });
+    // arcs.append('text')
+    //   .attr('transform', function(d) {
+    //     d.innerRadius = 0;
+    //     d.outerRadius = radius;
+    //     return 'translate(' + arc.centroid(d) + ')';
+    //   })
+    //   .attr('text-anchor', 'middle')
+    //   .text(function(d, i) {
+    //     return data[i][column];
+    //   });
   }
 
-  generateBarChart() {
+  generateBarChart(column: string) {
     // Horizontal bar chart
     const data = this.results.filter((program) => {
-      return program.Obligations > 0;
+      return program['SUM(Obligations)'] >= 0;
     });
 
     data.sort(function(b, a) {
-      return a.Obligations - b.Obligations;
+      return a['SUM(Obligations)'] - b['SUM(Obligations)'];
     });
 
     d3.selectAll('svg > *').remove();
@@ -166,7 +212,7 @@ export class PieChartPage implements OnInit {
     // Add X axis
     const x = d3.scaleBand()
       .range([0, width])
-      .domain(data.map(function(d) { return d.FundedProgram; }))
+      .domain(data.map(function(d) { return d[column]; }))
       .padding(0.2);
     svg.append('g')
       .attr('transform', 'translate(0,' + height + ')')
@@ -177,7 +223,7 @@ export class PieChartPage implements OnInit {
 
     // Y axis
     const y = d3.scaleLinear()
-      .domain([0, data[0].Obligations])
+      .domain([0, data[0]['SUM(Obligations)']])
       .range([height, 0]);
     svg.append('g')
       .call(d3.axisLeft(y));
@@ -187,10 +233,10 @@ export class PieChartPage implements OnInit {
       .data(data)
       .enter()
       .append('rect')
-      .attr('x', function(d) { return x(d.FundedProgram); } )
-      .attr('y', function(d) { return y(d.Obligations); })
+      .attr('x', function(d) { return x(d[column]); } )
+      .attr('y', function(d) { return y(d['SUM(Obligations)']); })
       .attr('width', x.bandwidth())
-      .attr('height', function(d) { return height - y(d.Obligations); })
+      .attr('height', function(d) { return height - y(d['SUM(Obligations)']); })
       .attr('fill', '#69b3a2')
       .on('mouseover', function(d) {
         tooltip
@@ -201,7 +247,7 @@ export class PieChartPage implements OnInit {
       })
       .on('mousemove', function(event, d) {
         tooltip
-          .html('Obligation Amount: $' + d.Obligations.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ','))
+          .html(`Obligation Amount: ${formatMoney(d['SUM(Obligations)'])}`)
           .style('left', event.x + 20 + 'px')
           .style('top', event.y + 'px')
       })
@@ -213,5 +259,39 @@ export class PieChartPage implements OnInit {
           .style('opacity', 0.8)
       });
 
+  }
+
+  async submit_settings(type: string, column: string) {
+    if (type && column) {
+      this.updateResults(type, column);
+      this.setOpen(false, 'graph_modal');
+    } else {
+      let message = '';
+      if (!type && !column) {
+        message = "Please select a Graph Type and Column Group!"
+      } else if (!type) {
+        message = "Please select a Graph Type!";
+      } else {
+        message = "Please select a Column Group!";
+      }
+      const error = await this.toastCtrl.create({
+        message: message,
+        duration: 3000,
+        position: 'bottom',
+        color: 'danger',
+        buttons:
+        [
+          {
+            text: 'Dismiss',
+            role: 'cancel'
+          }
+        ]
+      });
+      error.present();
+    }
+  }
+
+  blankTitle(result) {
+    return result[this.group].trim() == '';
   }
 }

@@ -28,12 +28,18 @@ export class FilterComponent implements OnInit {
   private max: any;
   public maxDate: any;
   public minDate: any;
-  private sort_by: any;
+  private sort_by = '';
   private directions = {
-    'alphabet': 'forward',
-    'date': 'forward',
-    'amount': 'forward',
-    'aor': 'forward'
+    'alphabet': '',
+    'date': '',
+    'amount': '',
+    'aor': ''
+  }
+  private filters = {
+    'aor': '',
+    'date': '',
+    'amount': '',
+    'flag': ''
   }
 
   constructor(private dataService: DataService, private home: HomePage, private storage: Storage) {
@@ -43,7 +49,7 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    let fetch = this.dataService.populate(`SELECT DISTINCT AOR FROM dataTable`);
+    let fetch = this.dataService.getQuery(`SELECT DISTINCT AOR FROM dataTable`);
     fetch.then((result) => {
       if (Array.isArray(result)) {
         for (let r in result) {
@@ -53,24 +59,23 @@ export class FilterComponent implements OnInit {
       }
     });
 
-    fetch = this.dataService.populate("SELECT MIN(Obligations) FROM dataTable");
+    fetch = this.dataService.getQuery("SELECT MIN(Obligations) FROM dataTable");
     fetch.then((result) => {
       this.min = result[0]['MIN(Obligations)'];
     });
 
-    fetch = this.dataService.populate("SELECT MAX(Obligations) FROM dataTable");
+    fetch = this.dataService.getQuery("SELECT MAX(Obligations) FROM dataTable");
     fetch.then((result) => {
       this.max = result[0]['MAX(Obligations)'];
     });
 
-    fetch = this.dataService.populate("SELECT MAX(TransDate) FROM dataTable");
+    fetch = this.dataService.getQuery("SELECT MAX(TransDate) FROM dataTable");
     fetch.then((result) => {
       this.maxDate = result[0]['MAX(TransDate)'].slice(0, -1);
     });
 
-    fetch = this.dataService.populate("SELECT MIN(TransDate) FROM dataTable WHERE NOT TransDate = '0000-00-00 00:00:00'");
+    fetch = this.dataService.getQuery("SELECT MIN(TransDate) FROM dataTable WHERE NOT TransDate = '0000-00-00 00:00:00'");
     fetch.then((result) => {
-      console.log(result);
       this.minDate = result[0]['MIN(TransDate)'].slice(0, -1);
     })
   }
@@ -86,11 +91,11 @@ export class FilterComponent implements OnInit {
   async filter(){
     // AMOUNT FILTER
     if (this.lower.value && this.upper.value) {
-      this.home.filters['amount'] = `Obligations BETWEEN ${this.lower.value} AND ${this.upper.value}`; 
+      this.filters['amount'] = `Obligations BETWEEN ${this.lower.value} AND ${this.upper.value}`; 
     } else if (this.lower.value) {
-      this.home.filters['amount'] = `Obligations >= ${this.lower.value}`;
+      this.filters['amount'] = `Obligations >= ${this.lower.value}`;
     } else if (this.upper.value) {
-      this.home.filters['amount'] = `Obligations <= ${this.upper.value}`;
+      this.filters['amount'] = `Obligations <= ${this.upper.value}`;
     }
 
     // AOR FILTER
@@ -104,12 +109,12 @@ export class FilterComponent implements OnInit {
     }
     selected_aors = selected_aors.slice(0, -1);
     if (aor_selected) {
-      this.home.filters['aor'] = `AOR IN (${selected_aors})`
+      this.filters['aor'] = `AOR IN (${selected_aors})`
     }
 
     // FLAG FILTER
     let selected_statuses = {};
-    this.home.filters['flag'] = '';
+    this.filters['flag'] = '';
     await this.storage.get('user-access-token').then(async (user) => {
       for (let cb in this.checkboxes['_results']) {
         if (this.checkboxes['_results'][cb]['el']['id'] == 'flag') {
@@ -120,92 +125,107 @@ export class FilterComponent implements OnInit {
       if (selected_statuses['flagged'] && !selected_statuses['unflagged']) {
         await this.storage.get('flagged').then((result: object) => {
           if (result[user['role']].length) {
-            this.home.filters['flag'] = `RecID IN (${result[user['role']].toString()})`;
+            this.filters['flag'] = `RecID IN (${result[user['role']].toString()})`;
           }
         })
       } else if (!selected_statuses['flagged'] && selected_statuses['unflagged']) {
         await this.storage.get('flagged').then((result: object) => {
           if (result[user['role']].length) {
-            this.home.filters['flag'] = `NOT RecID IN (${result[user['role']].toString()})`
+            this.filters['flag'] = `NOT RecID IN (${result[user['role']].toString()})`
           }
         })
       }
     });
 
-    this.home.ionViewWillEnter();
+    this.updateResults();
     this.setOpen(false, 'filter');
   }
 
   clearFilters() {
-    for (let key in this.home.filters) {
-      this.home.filters[key] = '';
+    for (let key in this.filters) {
+      this.filters[key] = '';
     }
     this.date_picker.value = this.minDate;
-    this.home.ionViewWillEnter();
-    this.setOpen(false, 'filter');
-  }
-
-  search(){
-    console.log("Beginning search");
+    this.updateResults();
   }
 
   async sort(sort_by: string){
     switch(sort_by) {
       case 'alphabet':
         if (this.directions['alphabet'] == 'forward') {
-          this.home.sort_by = 'ORDER BY Commodity ASC';
+          this.sort_by = 'ORDER BY Commodity ASC';
           this.directions['alphabet'] = 'backward';
         } else {
-          this.home.sort_by = 'ORDER BY Commodity DESC';
+          this.sort_by = 'ORDER BY Commodity DESC';
           this.directions['alphabet'] = 'forward';
         }
         break;
       case 'date':
         if (this.directions['date'] == 'forward') {
-          this.home.sort_by = 'ORDER BY TransDate ASC';
+          this.sort_by = 'ORDER BY TransDate ASC';
           this.directions['date'] = 'backward';
         } else {
-          this.home.sort_by = 'ORDER BY TransDate DESC';
+          this.sort_by = 'ORDER BY TransDate DESC';
           this.directions['date'] = 'forward';
         }
         break;
       case 'amount':
         if (this.directions['amount'] == 'forward') {
-          this.home.sort_by = 'ORDER BY Obligations ASC';
+          this.sort_by = 'ORDER BY Obligations ASC';
           this.directions['amount'] = 'backward';
         } else {
-          this.home.sort_by = 'ORDER BY Obligations DESC';
+          this.sort_by = 'ORDER BY Obligations DESC';
           this.directions['amount'] = 'forward';
         }
         break;
       case 'aor':
         if (this.directions['aor'] == 'forward') {
-          this.home.sort_by = 'ORDER BY AOR ASC';
+          this.sort_by = 'ORDER BY AOR ASC';
           this.directions['aor'] = 'backward';
         } else {
-          this.home.sort_by = 'ORDER BY AOR DESC';
+          this.sort_by = 'ORDER BY AOR DESC';
           this.directions['aor'] = 'forward';
         }
         break;
     }
     // this.setOpen(false, 'sort');
-    this.home.ionViewWillEnter();
+    this.updateResults();
   }
 
   clearSort() {
-    this.home.sort_by = '';
+    this.sort_by = '';
     for (let key in this.directions) {
-      this.directions[key] = 'forward';
+      this.directions[key] = '';
     }
-    this.setOpen(false, 'sort');
-    this.home.ionViewWillEnter();
+    this.updateResults();
   }
 
   dateChanged() {
     if (this.date_picker.value) {
       let date = moment(this.date_picker.value).format('YYYY-MM-DD');
-      this.home.filters['date'] = `AND (TransDate > '${date} 00:00:00' OR TransDate = '0000-00-00 00:00:00')`;
+      this.filters['date'] = `(TransDate > '${date} 00:00:00' OR TransDate = '0000-00-00 00:00:00')`;
     }
+  }
+
+  updateResults() {
+    let query = "SELECT * FROM dataTable";
+    let applied_filter = false;
+    for (let key in this.filters) {
+      // console.log(this.filters[key] && !applied_filter);
+      if (!applied_filter && this.filters[key]) {
+        applied_filter = true;
+        // console.log("APPLYING FIRST FILTER", this.filters[key]);
+        query = query.concat(' WHERE ', this.filters[key]);
+        // console.log(query);
+      } else if (this.filters[key]) {
+        query = query.concat(' AND ', this.filters[key])
+      }
+    }
+    query = query.concat(' ', this.sort_by).trim();
+    // console.log(query);
+    this.dataService.populate(query).then((result) => {
+      this.home.ionViewWillEnter();
+    })
   }
 
 }

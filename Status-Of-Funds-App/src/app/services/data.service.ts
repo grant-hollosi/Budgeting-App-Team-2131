@@ -20,14 +20,23 @@ export class DataService {
   url: string;
   constructor(private http: HttpClient, private storage: Storage) { 
     this.results = new Array();
-    this.storage.get('server-url').then((url) => {
-      if (url) {
-        this.url = url;
-        console.log(url)
-      } else {
-        throw Error("Server URL undefined");
-      }
+    this.initiateURL();
+  }
+
+  initiateURL() {
+    return new Promise((resolve, reject) => {
+      this.storage.get('server-url').then((url) => {
+        if (url) {
+          this.url = url;
+          if (this.url.slice(-1) != '/') {
+            this.url = this.url.concat('/');
+          }
+          resolve(this.url);
+        } else {
+          reject("Server URL undefined");
+        }
       })
+    });
   }
 
   wipe() {
@@ -47,7 +56,9 @@ export class DataService {
           if (Array.isArray(result)) {
             this.results = result;
             this.previousQuery = query;
-            resolve(this.results);
+            this.storage.set('filtered_results', result).then((done) => {
+              resolve(this.results);
+            })
           }
         });
       });
@@ -55,7 +66,9 @@ export class DataService {
   }
 
   async getQuery(query) {
-    console.log(query);
+    if (!this.url) {
+      await this.initiateURL();
+    }
     let url = this.url + "v1/populate/?query=" + query;
     let req = this.http.get(url);
     let results = new Promise((resolve) => {
@@ -67,8 +80,11 @@ export class DataService {
   }
 
   async upload(file) {
+    if (!this.url) {
+      await this.initiateURL();
+    }
     let url = `${this.url}v1/upload/`;
-    console.log(url);
+    // console.log(url);
     // const formData: FormData = new FormData();
     // formData.append('file', file, file.name);
     let req = this.http.post(url, file);
@@ -85,7 +101,7 @@ export class DataService {
   }
 
   getItem(id: number) {
-    return this.populate(`SELECT * FROM dataTable WHERE id = ${id}`);
+    return this.getQuery(`SELECT * FROM dataTable WHERE id = ${id}`);
   }
 
   changePassword(password: string, user: string) {

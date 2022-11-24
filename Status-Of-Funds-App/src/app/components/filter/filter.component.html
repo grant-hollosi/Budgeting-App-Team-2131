@@ -3,7 +3,6 @@
     <span><ion-button (click)="setOpen(true, 'filter')" slot="end" fill="clear">
       <ion-icon name="funnel" slot="icon-only" color="dark"></ion-icon>
     </ion-button></span>
-    <ion-searchbar (click)="search()" [ngModel]="inputValue" showCancelButton="never" placeholder="Search..."></ion-searchbar>
     <span><ion-button (click)="setOpen(true, 'sort')" slot="end" fill="clear">
       <ion-icon name="filter" slot="icon-only" color="dark"></ion-icon>
     </ion-button></span>
@@ -118,7 +117,7 @@
     </ion-header>
     <ion-content class="ion-padding">
       <ion-list>
-        <ion-item tappable (click)="sort_by='alphabet'; sort('alphabet')">
+        <ion-item tappable (click)="sort('alphabet')">
           <ion-label>
             <h2>Alphabetically</h2>
           </ion-label>
@@ -126,7 +125,7 @@
           <ng-template #alpha_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
           <ng-template #alpha_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>
         </ion-item>
-        <ion-item (click)="sort_by='date'; sort('date')">
+        <ion-item (click)="sort('date')">
           <ion-label>
             <h2>Date</h2>
           </ion-label>
@@ -134,14 +133,14 @@
           <ng-template #date_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
           <ng-template #date_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>
         </ion-item>
-        <ion-item (click)="sort_by='amount'; sort('amount')">
+        <ion-item (click)="sort('amount')">
           <ion-label>
             <h2>Obligation Amount</h2>
           </ion-label>
           <div *ngIf="directions['amount'] == 'forward'; then amount_down; else amount_up"></div>
           <ng-template #amount_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
           <ng-template #amount_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>        </ion-item>
-        <ion-item (click)="sort_by = 'aor'; sort('aor')">
+        <ion-item (click)="sort('aor')">
           <ion-label>
             <h2>AOR</h2>
           </ion-label>

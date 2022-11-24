@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PieChartPageRoutingModule } from './pie-chart-routing.module';
+import { GraphPageRoutingModule } from './graph-routing.module';
 
-import { PieChartPage } from './pie-chart.page';
+import { GraphPage } from './graph.page';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { TabsComponent } from 'src/app/components/tabs/tabs.component';
 
@@ -15,8 +15,8 @@ import { TabsComponent } from 'src/app/components/tabs/tabs.component';
     CommonModule,
     FormsModule,
     IonicModule,
-    PieChartPageRoutingModule
+    GraphPageRoutingModule
   ],
-  declarations: [PieChartPage, HeaderComponent, TabsComponent]
+  declarations: [GraphPage, HeaderComponent, TabsComponent]
 })
-export class PieChartPageModule {}
+export class GraphPageModule {}
