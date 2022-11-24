@@ -24,7 +24,7 @@ export class GraphPage implements OnInit {
 
   constructor(private dataService: DataService, private storage: Storage, private toastCtrl: ToastController) {  }
 
-  ngOnInit() {}
+  ngOnInit() {  }
 
   ionViewWillEnter() {
     this.results = new Array();
@@ -74,7 +74,7 @@ export class GraphPage implements OnInit {
   generatePieChart(column: string) {
     // Pie chart
     const data = this.results.filter((program) => {
-      return program['SUM(Obligations)'] >= 0;
+      return program['SUM(Obligations)'] > 0;
     });
 
     data.sort(function(b, a) {
@@ -144,7 +144,7 @@ export class GraphPage implements OnInit {
       })
       .on('mousemove', function(event, d) {
         tooltip
-          .html(`${column}: ${d.data[column]}<br>Obligation Amount: ${formatMoney(d.value)}`)
+          .html(`<b>${column}:</b><br>${d.data[column]}<br><b>Obligation Amount:</b><br>${formatMoney(d.data['SUM(Obligations)'])}`)
           .style('left', event.x + 20 + 'px')
           .style('top', event.y + 'px')
       })
@@ -171,7 +171,7 @@ export class GraphPage implements OnInit {
   generateBarChart(column: string) {
     // Horizontal bar chart
     const data = this.results.filter((program) => {
-      return program['SUM(Obligations)'] >= 0;
+      return program['SUM(Obligations)'] > 0;
     });
 
     data.sort(function(b, a) {
@@ -212,7 +212,10 @@ export class GraphPage implements OnInit {
     // Add X axis
     const x = d3.scaleBand()
       .range([0, width])
-      .domain(data.map(function(d) { return d[column]; }))
+      .domain(data.map(function(d) { 
+        if (d[column].trim())  return d[column];
+        else  return "BLANK"
+      }))
       .padding(0.2);
     svg.append('g')
       .attr('transform', 'translate(0,' + height + ')')
@@ -233,7 +236,10 @@ export class GraphPage implements OnInit {
       .data(data)
       .enter()
       .append('rect')
-      .attr('x', function(d) { return x(d[column]); } )
+      .attr('x', function(d) { 
+        if (d[column].trim()) return x(d[column]);
+        else  return x("BLANK"); 
+      } )
       .attr('y', function(d) { return y(d['SUM(Obligations)']); })
       .attr('width', x.bandwidth())
       .attr('height', function(d) { return height - y(d['SUM(Obligations)']); })
@@ -247,7 +253,7 @@ export class GraphPage implements OnInit {
       })
       .on('mousemove', function(event, d) {
         tooltip
-          .html(`Obligation Amount: ${formatMoney(d['SUM(Obligations)'])}`)
+          .html(`<b>${column}:</b><br>${d[column]}<br><b>Obligation Amount:</b><br>${formatMoney(d['SUM(Obligations)'])}`)
           .style('left', event.x + 20 + 'px')
           .style('top', event.y + 'px')
       })

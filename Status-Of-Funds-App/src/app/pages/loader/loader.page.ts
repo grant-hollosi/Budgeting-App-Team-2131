@@ -15,7 +15,7 @@ export class LoaderPage implements OnInit {
   ngOnInit() {}
 
   ionViewDidEnter() {
-    this.data = this.dataService.populate(`SELECT * FROM dataTable WHERE id > 1`);
+    this.data = this.dataService.populate(`SELECT * FROM dataTable`);
     this.data.then((result) => {
       this.router.navigate(['home']);
     });
