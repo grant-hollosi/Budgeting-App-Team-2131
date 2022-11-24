@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
   @Input() goBack: boolean;
 
   isSettingsModalOpen = false;
+  isAboutUsModalOpen = false;
   // @ViewChild(IonModal) help: IonModal;
 
   constructor(private storage: Storage, private router: Router) { }
@@ -24,6 +25,14 @@ export class HeaderComponent implements OnInit {
   setOpen(isOpen: boolean, variable: string) {
     if (variable == "settings") {
       this.isSettingsModalOpen = isOpen;
+    }
+    if (variable == "aboutUs" && isOpen) {
+      this.isSettingsModalOpen = false;
+      this.isAboutUsModalOpen = isOpen;
+    }
+    if (variable == "aboutUs" && !isOpen) {
+      this.isSettingsModalOpen = true;
+      this.isAboutUsModalOpen = isOpen;
     }
   }
 
@@ -45,6 +54,8 @@ export class HeaderComponent implements OnInit {
       });
     });
   }
+
+
 
 
   settings() {
