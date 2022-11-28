@@ -7,6 +7,11 @@
             <ion-item>
                 <ion-label><h1><u>{{data.Commodity}}</u></h1>
                 <p>Rec ID: {{data.recID}}</p></ion-label>
+                <ion-button (click)="toggleFlag($event, data['recID'])" fill="clear" color="dark">
+                    <div *ngIf="isFlagged(data['recID']); then flagged; else unflagged"></div>
+                      <ng-template #unflagged><ion-icon style="height: 24px; width: 24px" name="flag-outline" slot="end"></ion-icon></ng-template>
+                      <ng-template #flagged><ion-icon style="height: 24px; width: 24px" name="flag" slot="end"></ion-icon></ng-template>
+                  </ion-button>
             </ion-item>
             <ion-item>
                 <ion-label><h2>DPI</h2></ion-label>
@@ -63,44 +68,6 @@
                     <ng-template #show_date><ion-text>{{data.TransDate | date: 'MM/dd/YYYY'}}</ion-text></ng-template>
             </ion-item>
         </ion-list>
-        <!-- <ion-grid class = "ion-margin">
-            <ion-row>
-                <ion-col>DPI</ion-col>
-                <ion-col>{{data.DPI}}</ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>AOR</ion-col>
-                <ion-col>{{data.AOR}}</ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>Funded Program</ion-col>
-                <ion-col>{{data.FundedProgram}}</ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>Cost Center</ion-col>
-                <ion-col>{{data.CostCenter}}</ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>Obligations</ion-col>
-                <ion-col>{{data.Obligations}}</ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>Commitments</ion-col>
-                <ion-col>{{data.Commitments}}</ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>Disbursements</ion-col>
-                <ion-col>{{data.Disbursements}}</ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>SAG</ion-col>
-                <ion-col>{{data.SAG}}</ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>Date</ion-col>
-                <ion-col>{{data.TransDate}}</ion-col>
-            </ion-row>
-        </ion-grid> -->
     </div>
 </ion-content>
 
