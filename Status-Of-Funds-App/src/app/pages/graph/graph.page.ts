@@ -40,6 +40,11 @@ export class GraphPage implements OnInit {
     })
   }
 
+  ionViewWillLeave() {
+    d3.selectAll('svg > *').remove();
+    d3.select('body').selectAll('div.tooltip').remove();
+  }
+
   updateResults(type: string, column: string) {
     this.type = type;
     this.group = column;
