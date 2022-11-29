@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -10,14 +11,16 @@ import { DataService } from 'src/app/services/data.service';
 export class LoaderPage implements OnInit {
 
   public data: any;
-  constructor(private router: Router, private dataService: DataService) {}
+  constructor(private router: Router, private dataService: DataService, private storage: Storage) {}
 
   ngOnInit() {}
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.data = this.dataService.populate(`SELECT * FROM dataTable`);
     this.data.then((result) => {
-      this.router.navigate(['home']);
+      this.storage.get('filtered_results').then((results) => {
+        this.router.navigate(['home']);
+      })
     });
   }
 
