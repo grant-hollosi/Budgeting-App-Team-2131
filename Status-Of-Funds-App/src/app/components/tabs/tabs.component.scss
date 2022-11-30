@@ -1,24 +1,20 @@
 ion-toolbar {
-    height: 50px;
-}
-
-ion-icon {
-    width: 32px;
-    height: 32px;
-}
-
-ion-button {
-    height: 32px;
-}
-
-ion-item {
-    cursor: pointer;
+    height: 100px;
 }
 
 ion-tabs {
-    height: 50px;
+    height: 100px;
 }
 
-ion-tabs-bar {
-    height: 50px;
+ion-tab-bar {
+    height: 100px;
+}
+
+ion-icon {
+    height: 32px;
+    width: 32px;
+}
+
+ion-label {
+    height: 12px;
 }
