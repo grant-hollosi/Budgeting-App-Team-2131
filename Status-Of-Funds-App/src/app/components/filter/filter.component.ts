@@ -24,6 +24,7 @@ export class FilterComponent implements OnInit {
   isSortModalOpen = false;
 
   aors: any[];
+  commodities: any[];
   private min: any;
   private max: any;
   public maxDate: any;
@@ -39,11 +40,13 @@ export class FilterComponent implements OnInit {
     'aor': '',
     'date': '',
     'amount': '',
-    'flag': ''
+    'flag': '',
+    'commodity':''
   }
 
   constructor(private dataService: DataService, private home: HomePage, private storage: Storage) {
     this.aors = new Array();
+    this.commodities = new Array();
     this.min = 0;
     this.max = 0;
   }
@@ -78,6 +81,16 @@ export class FilterComponent implements OnInit {
     fetch.then((result) => {
       this.minDate = result[0]['MIN(TransDate)'].slice(0, -1);
     })
+
+    fetch = this.dataService.getQuery("SELECT DISTINCT Commodity FROM dataTable");
+    fetch.then((result) => {
+      if (Array.isArray(result)) {
+        for (let r in result) {
+          this.commodities.push(result[r]['Commodity']);
+        }
+        this.commodities.sort();
+      }
+    })
   }
 
   setOpen(isOpen: boolean, variable: string) {
@@ -109,7 +122,7 @@ export class FilterComponent implements OnInit {
     }
     selected_aors = selected_aors.slice(0, -1);
     if (aor_selected) {
-      this.filters['aor'] = `AOR IN (${selected_aors})`
+      this.filters['aor'] = `AOR IN (${selected_aors})`;
     }
 
     // FLAG FILTER
@@ -131,11 +144,26 @@ export class FilterComponent implements OnInit {
       } else if (!selected_statuses['flagged'] && selected_statuses['unflagged']) {
         await this.storage.get('flagged').then((result: object) => {
           if (result[user['role']].length) {
-            this.filters['flag'] = `NOT RecID IN (${result[user['role']].toString()})`
+            this.filters['flag'] = `NOT RecID IN (${result[user['role']].toString()})`;
           }
-        })
+        });
       }
     });
+
+    let commodites_selected = false;
+    let selected_commodities = '';
+    for (let cb in this.checkboxes['_results']) {
+      if (this.checkboxes['_results'][cb].checked && this.checkboxes['_results'][cb]['el']['id'] == 'commodity') {
+        commodites_selected = true;
+        let value = this.checkboxes['_results'][cb].value.replace('&', '%26');
+        selected_commodities = selected_commodities.concat(`\'${value}\'`, ',');
+      }
+    }
+    selected_commodities = selected_commodities.slice(0, -1);
+    if (commodites_selected) {
+      this.filters['commodity'] = `Commodity IN (${selected_commodities})`;
+    }
+
 
     this.updateResults();
     this.setOpen(false, 'filter');
