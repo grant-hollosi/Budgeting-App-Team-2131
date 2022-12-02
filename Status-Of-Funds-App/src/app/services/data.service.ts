@@ -44,6 +44,7 @@ export class DataService {
   }
 
   populate(query: string) {
+    console.log(query);
     if (this.previousQuery && query == this.previousQuery) {
       return new Promise((resolve) => {
         this.storage.set('filtered_results', this.results).then((done) => {

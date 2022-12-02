@@ -51,13 +51,29 @@
           <div class="ion-padding" slot="content">
             <ion-item *ngFor="let aor of aors">
               <ion-checkbox id="aor" value="{{aor}}" slot="start"></ion-checkbox>
-              <div *ngIf="aor; then label; else blank_label"></div>
+              <div *ngIf="aor == ''; then blank_label; else label"></div>
                 <ng-template #label><ion-label>{{aor}}</ion-label></ng-template>
                 <ng-template #blank_label><ion-label #blank_label>Blank</ion-label></ng-template>
             </ion-item>
           </div>
         </ion-accordion>
         <ion-accordion value="third">
+          <ion-item lines="inset" slot="header" detail="true">
+            <ion-label>
+              <h2>Commodity</h2>
+            </ion-label>
+            <ion-icon name="document-text-outline"></ion-icon>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <ion-item *ngFor="let commodity of commodities">
+              <ion-checkbox id="commodity" value="{{commodity}}" slot="start"></ion-checkbox>
+              <div *ngIf="commodity == ''; then blank_label; else label"></div>
+                <ng-template #label><ion-label>{{commodity}}</ion-label></ng-template>
+                <ng-template #blank_label><ion-label>Blank</ion-label></ng-template>
+            </ion-item>
+          </div>
+        </ion-accordion>
+        <ion-accordion value="fourth">
           <ion-item lines="inset" slot="header" detail="true">
             <ion-label>
               <h2>Date</h2>
@@ -74,7 +90,7 @@
               <span slot='title'>Select earliest date</span></ion-datetime>
           </div>
         </ion-accordion>
-        <ion-accordion value="fourth">
+        <ion-accordion value="fifth">
           <ion-item lines="inset" slot="header" detail="true">
             <ion-label>
               <h2>Flag</h2>
