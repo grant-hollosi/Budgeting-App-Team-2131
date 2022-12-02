@@ -1,3 +1,39 @@
-ion-toolbar {
-    height: 50px;
+// ion-toolbar {
+//     height: 100px;
+// }
+
+// ion-tabs {
+//     height: 100px;
+// }
+
+// ion-tab-bar {
+//     height: 100px;
+// }
+
+// ion-tab-button {
+//     height: 100px;
+// }
+
+// ion-icon {
+//     height: 32px;
+//     width: 32px;
+// }
+
+// ion-label {
+//     height: 12px;
+// }
+
+ion-icon {
+    min-height: 32px;
+    min-width: 32px;
+}
+
+ion-tab-button {
+    min-height: 32px;
+    min-width: 32px;
+}
+
+ion-tab-bar {
+    min-height: 32px;
+    min-width: 32px;
 }
