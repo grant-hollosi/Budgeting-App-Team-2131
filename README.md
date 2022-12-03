@@ -21,7 +21,7 @@ Sidarth Rajan
 ### Bug Fixes
 - Data loads properly after scrolling on home screen and applying filters or sorts
 ### Known Problems
-- The app is not very generalized. For communication with a database, it requires the database to be name specifically, among other things
+- The app is not very generalized. For communication with a database, it requires the database to be named specifically, among other things
 ## Version 0.4.0
 ### New Features
 - Changed to a serverless approach to pull data from the database
