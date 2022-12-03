@@ -63,3 +63,10 @@ Sidarth Rajan
 - The logins are currently hard coded into the app. We would need to establish a database going into sprint 2 to continue further developments
 - No way to access the upload page
 - Users who refresh the page will lose access to the screens past the login screen as they are immediately logged out
+
+# Installation Guide
+## Pre-Requisites
+## Necessary Libraries
+## Download Instructions
+## Build Instructions
+## Installation
