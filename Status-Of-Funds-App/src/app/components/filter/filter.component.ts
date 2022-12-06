@@ -31,10 +31,10 @@ export class FilterComponent implements OnInit {
   public minDate: any;
   private sort_by = '';
   private directions = {
-    'alphabet': '',
-    'date': '',
-    'amount': '',
-    'aor': ''
+    'alphabet': ['', 'Commodity'],
+    'date': ['', 'TransDate'],
+    'amount': ['', 'Obligations'],
+    'aor': ['', 'AOR']
   }
   private filters = {
     'aor': '',
@@ -102,6 +102,10 @@ export class FilterComponent implements OnInit {
   }
 
   async filter(){
+    for (let key in this.filters) {
+      this.filters[key] = '';
+    }
+
     // AMOUNT FILTER
     if (this.lower.value && this.upper.value) {
       this.filters['amount'] = `Obligations BETWEEN ${this.lower.value} AND ${this.upper.value}`; 
@@ -164,7 +168,6 @@ export class FilterComponent implements OnInit {
       this.filters['commodity'] = `Commodity IN (${selected_commodities})`;
     }
 
-
     this.updateResults();
     this.setOpen(false, 'filter');
   }
@@ -178,43 +181,18 @@ export class FilterComponent implements OnInit {
   }
 
   async sort(sort_by: string){
-    switch(sort_by) {
-      case 'alphabet':
-        if (this.directions['alphabet'] == 'forward') {
-          this.sort_by = 'ORDER BY Commodity ASC';
-          this.directions['alphabet'] = 'backward';
+    for (let key in this.directions) {
+      if (key != sort_by) {
+        this.directions[key][0] = '';
+      } else {
+        if (this.directions[key][0] == 'backward') {
+          this.sort_by = `ORDER BY ${this.directions[key][1]} DESC`
+          this.directions[key][0] = 'forward';
         } else {
-          this.sort_by = 'ORDER BY Commodity DESC';
-          this.directions['alphabet'] = 'forward';
+          this.sort_by = `ORDER BY ${this.directions[key][1]} ASC`
+          this.directions[key][0] = 'backward';
         }
-        break;
-      case 'date':
-        if (this.directions['date'] == 'forward') {
-          this.sort_by = 'ORDER BY TransDate ASC';
-          this.directions['date'] = 'backward';
-        } else {
-          this.sort_by = 'ORDER BY TransDate DESC';
-          this.directions['date'] = 'forward';
-        }
-        break;
-      case 'amount':
-        if (this.directions['amount'] == 'forward') {
-          this.sort_by = 'ORDER BY Obligations ASC';
-          this.directions['amount'] = 'backward';
-        } else {
-          this.sort_by = 'ORDER BY Obligations DESC';
-          this.directions['amount'] = 'forward';
-        }
-        break;
-      case 'aor':
-        if (this.directions['aor'] == 'forward') {
-          this.sort_by = 'ORDER BY AOR ASC';
-          this.directions['aor'] = 'backward';
-        } else {
-          this.sort_by = 'ORDER BY AOR DESC';
-          this.directions['aor'] = 'forward';
-        }
-        break;
+      }
     }
     // this.setOpen(false, 'sort');
     this.updateResults();

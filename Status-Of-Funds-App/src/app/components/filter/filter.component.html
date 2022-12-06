@@ -137,32 +137,58 @@
           <ion-label>
             <h2>Alphabetically</h2>
           </ion-label>
-          <div *ngIf="directions['alphabet'] == 'forward'; then alpha_down; else alpha_up"></div>
-          <ng-template #alpha_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
-          <ng-template #alpha_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>
+            <div *ngIf="directions['alphabet'][0]; then alpha_sort; else no_alpha_sort"></div>
+            <ng-template #alpha_sort>
+              <div *ngIf="directions['alphabet'][0] == 'backward'; then alpha_down; else alpha_up"></div>
+                <ng-template #alpha_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
+                <ng-template #alpha_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>
+            </ng-template>
+            <ng-template #no_alpha_sort>
+              <ion-icon slot="end" name="remove-outline"></ion-icon>
+            </ng-template>
         </ion-item>
         <ion-item (click)="sort('date')">
           <ion-label>
             <h2>Date</h2>
           </ion-label>
-          <div *ngIf="directions['date'] == 'forward'; then date_down; else date_up"></div>
-          <ng-template #date_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
-          <ng-template #date_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>
+          <div *ngIf="directions['date'][0]; then date_sort; else no_date_sort"></div>
+            <ng-template #date_sort>
+              <div *ngIf="directions['date'][0] == 'backward'; then date_down; else date_up"></div>
+                <ng-template #date_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
+                <ng-template #date_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>
+            </ng-template>
+            <ng-template #no_date_sort>
+              <ion-icon slot="end" name="remove-outline"></ion-icon>
+            </ng-template>
         </ion-item>
         <ion-item (click)="sort('amount')">
           <ion-label>
             <h2>Obligation Amount</h2>
           </ion-label>
-          <div *ngIf="directions['amount'] == 'forward'; then amount_down; else amount_up"></div>
-          <ng-template #amount_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
-          <ng-template #amount_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>        </ion-item>
+          <div *ngIf="directions['amount'][0]; then amount_sort; else no_amount_sort"></div>
+            <ng-template #amount_sort>
+              <div *ngIf="directions['amount'][0] == 'backward'; then amount_down; else amount_up"></div>
+                <ng-template #amount_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
+                <ng-template #amount_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>
+            </ng-template>
+            <ng-template #no_amount_sort>
+              <ion-icon slot="end" name="remove-outline"></ion-icon>
+            </ng-template>
+        </ion-item>
         <ion-item (click)="sort('aor')">
           <ion-label>
             <h2>AOR</h2>
           </ion-label>
-          <div *ngIf="directions['aor'] == 'forward'; then aor_down; else aor_up"></div>
-          <ng-template #aor_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
-          <ng-template #aor_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>        </ion-item>
+          <div *ngIf="directions['aor'][0]; then aor_sort; else no_aor_sort"></div>
+            <ng-template #aor_sort>
+              <div *ngIf="directions['aor'][0] == 'backward'; then aor_down; else aor_up"></div>
+                <ng-template #aor_down><ion-icon slot='end' name="arrow-down"></ion-icon></ng-template>
+                <ng-template #aor_up><ion-icon slot='end' name="arrow-up"></ion-icon></ng-template>
+            </ng-template>
+            <ng-template #no_aor_sort>
+              <ion-icon slot="end" name="remove-outline"></ion-icon>
+            </ng-template>
+        </ion-item>
       </ion-list>
       <ion-button expand="full" color="dark" (click)="clearSort()">Clear Sort</ion-button>
     </ion-content>

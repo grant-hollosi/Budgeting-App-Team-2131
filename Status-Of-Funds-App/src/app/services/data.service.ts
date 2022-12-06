@@ -72,7 +72,7 @@ export class DataService {
     if (!this.url) {
       await this.initiateURL();
     }
-    let url = this.url + "v1/populate/?query=" + query;
+    let url = this.url + "populate/?query=" + query;
     let req = this.http.get(url);
     let results = new Promise((resolve) => {
       req.subscribe((data) => {
@@ -86,7 +86,7 @@ export class DataService {
     if (!this.url) {
       await this.initiateURL();
     }
-    let url = `${this.url}v1/upload/`;
+    let url = `${this.url}upload/`;
     // console.log(url);
     // const formData: FormData = new FormData();
     // formData.append('file', file, file.name);

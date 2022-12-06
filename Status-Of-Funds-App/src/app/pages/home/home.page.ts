@@ -39,11 +39,11 @@ export class HomePage implements OnInit {
   ionViewWillEnter() {
     this.showLoading(true);
 
-    this.results = new Array();
     this.chunk = 100;
     this.start_id = 0;
     this.storage.get('filtered_results').then((result) => {
       if (result && Array.isArray(result)) {
+        this.results = new Array();
         this.all_results = result;
         this.results = this.results.concat(this.all_results.slice(this.start_id, this.start_id + this.chunk));
       }

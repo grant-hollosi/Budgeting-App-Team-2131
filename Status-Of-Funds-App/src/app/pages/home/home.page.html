@@ -13,7 +13,7 @@
             <ng-template #no_title><h2>No Commodity Given</h2></ng-template>
           <div *ngIf="result['TransDate'] == '0000-00-00 00:00:00'; then no_date; else date"></div>
             <ng-template #date>
-              <div *ngIf="result['AOR']; then aor; else no_aor"></div> 
+              <div *ngIf="result['AOR'].trim(); then aor; else no_aor"></div> 
                 <ng-template #aor><p><ion-text color="primary"><strong>{{result['AOR']}}</strong></ion-text><ion-text style="margin: 0 0 0 5px">{{result['TransDate'] | date: 'MM/dd/YYYY'}}</ion-text></p></ng-template>
                 <ng-template #no_aor><p>{{result['TransDate'] | date: 'MM/dd/YYYY'}}</p></ng-template>
               </ng-template>
