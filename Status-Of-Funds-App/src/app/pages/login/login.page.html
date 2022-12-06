@@ -38,7 +38,7 @@
       <ion-list>
         <ion-item #server_item counter="true">
           <ion-label position="floating">URL</ion-label>
-          <ion-input #server_endpoint></ion-input>
+          <ion-input #server_endpoint [value]="url"></ion-input>
         </ion-item>
         <ion-item lines="none">
           <ion-button size="medium" fill="outline" color="danger" (click)="setOpen(false, 'server_modal')">Cancel</ion-button>

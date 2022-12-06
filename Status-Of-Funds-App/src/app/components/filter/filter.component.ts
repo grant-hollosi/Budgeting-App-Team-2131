@@ -201,7 +201,7 @@ export class FilterComponent implements OnInit {
   clearSort() {
     this.sort_by = '';
     for (let key in this.directions) {
-      this.directions[key] = '';
+      this.directions[key][0] = '';
     }
     this.updateResults();
   }

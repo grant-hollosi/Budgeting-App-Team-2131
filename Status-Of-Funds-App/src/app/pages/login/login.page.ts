@@ -21,6 +21,7 @@ export class LoginPage implements OnInit {
   user = {
     pw: ''
   };
+  url: string
   constructor(private dataService: DataService, private alertCtrl: AlertController, private router: Router, private auth: AuthService, private toastCtrl: ToastController, private storage: Storage) { }
 
 
@@ -28,6 +29,10 @@ export class LoginPage implements OnInit {
     // this.storage.forEach((value, key) => {
     //   console.log(key, value);
     // })
+    this.storage.get('server-url').then((url) => {
+      this.url = url
+    })
+
   }
 
   // New login() with authentication services
@@ -37,6 +42,7 @@ export class LoginPage implements OnInit {
 
   async login() {
     this.auth.signIn(this.user).then(async (user) => {
+      console.log(user)
       if (!(user instanceof Error)) {
         const role = user['role'];
         if (role) {
@@ -69,8 +75,14 @@ export class LoginPage implements OnInit {
   }
 
   async changeServer(url: string) {
+    if (url.slice(-1) != '/') {
+      url = url + '/';
+    }
     console.log("Server: ", url);
+    this.dataService.url = url;
+    this.url = url;
     this.storage.set("server-url", url);
+    this.setOpen(false, 'server_modal')
   }
   
 }
