@@ -64,6 +64,8 @@ Sidarth Rajan
 - No way to access the upload page
 - Users who refresh the page will lose access to the screens past the login screen as they are immediately logged out
 
+# Installation Guide
+
 ## Prerequisites
 
 * In order to install this app, the following criteria must be met: 
