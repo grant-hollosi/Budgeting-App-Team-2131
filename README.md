@@ -74,7 +74,7 @@ Sidarth Rajan
 
 * XCode must be installed onto the Mac device 
 
-* To do this, you can go to the [App Store on your device and download the XCode app](https://apps.apple.com/us/app/xcode/id497799835?mt=12) 
+> * To do this, you can go to the [App Store on your device and download the XCode app](https://apps.apple.com/us/app/xcode/id497799835?mt=12) 
 
 * You must have an iPhone with the necessary cables to connect the iPhone to the Mac device 
 
