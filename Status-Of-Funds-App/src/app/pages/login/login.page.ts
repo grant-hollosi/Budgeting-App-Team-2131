@@ -81,6 +81,9 @@ export class LoginPage implements OnInit {
     console.log("Server: ", url);
     this.dataService.url = url;
     this.url = url;
+    this.dataService.getQuery('CREATE TABLE IF NOT EXISTS passwords (user_type varchar(255) UNIQUE, password varchar (255))').then((result) => {
+      this.dataService.initiatePassword({'USER': 'userPassword123', 'ADMIN': 'adminPassword123'});
+    });
     this.storage.set("server-url", url);
     this.setOpen(false, 'server_modal')
   }

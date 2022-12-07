@@ -119,6 +119,22 @@ export class DataService {
     })
   }
 
+  initiatePassword(credentials: {}) {
+    let values = '';
+    for (let user in credentials) {
+      let crypt = bcrypt.hashSync(credentials[user], 10);
+      values += `('${user}', '${crypt}'), `;
+    }
+    values = values.trim().slice(0, -1);
+    let query = `INSERT IGNORE INTO passwords VALUES ${values}`;
+    let fetch = this.getQuery(query);
+    return new Promise((resolve) => {
+      fetch.then((result) => {
+        resolve(result)
+      })
+    })
+  }
+
   signIn(password: string) {
     let fetch = this.getQuery(`SELECT * FROM passwords`);
     return new Promise((resolve) => {
