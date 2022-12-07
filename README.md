@@ -182,6 +182,11 @@ Sidarth Rajan
 
 <img width="502" alt="Screen Shot 2022-12-06 at 7 05 54 PM" src="https://user-images.githubusercontent.com/55679464/206076913-59e294ab-7c36-4ab8-b729-fd9f7b7f53ec.png">
 
+## Back-End AWS Service Setup
+* Please create a root user account on AWS with your credentials
+* https://drive.google.com/file/d/1yxDQxb7pTTxll-ESVuS6yHtW6-dFLR-l/view?usp=sharing
+* The link above provides how to setup the various services on AWS, please send an email to [srajan39@gatech.edu](mailto:srajan39@gatech.edu) if you have any further questions. 
+
 ## Conclusion
 
 * The app should now be installed on the iPhone. Note, it is not necessary to do this whole process for every iPhone. Just begin from the step where the original iPhone was first plugged in. 
